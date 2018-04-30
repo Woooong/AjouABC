@@ -1,5 +1,5 @@
 from flask_sqlalchemy import SQLAlchemy
-from passlib.handlers import bcrypt
+from passlib.hash import bcrypt
 db = SQLAlchemy()
 
 
