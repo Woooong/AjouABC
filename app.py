@@ -4,7 +4,6 @@ from models import db, User
 app = Flask(__name__)
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
-
 @app.route("/")
 def hello():
     return "Hello World!"
