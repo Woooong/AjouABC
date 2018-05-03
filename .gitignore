@@ -92,3 +92,10 @@ ENV/
 
 # Jetbrains
 .idea/
+
+#ionic
+node_modules/
+platfomrs/
+plugins/
+www/lib
+platforms/
