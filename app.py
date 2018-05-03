@@ -6,7 +6,6 @@ app = Flask(__name__)
 app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
 
-
 @app.route("/")
 @app.route('/index')
 def index():
