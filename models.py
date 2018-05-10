@@ -36,11 +36,15 @@ class Emotion(db.Model):
     neutral = db.Column(db.Float)
     sadness = db.Column(db.Float)
     surprise = db.Column(db.Float)
+    result = db.Column(db.String(10))
 
     def __init__(self, user, str, date):
         self.user_id = user.id
         self.date = date
+        self._parse(str)
+        self._calculate_result()
 
+    def _parse(self, str):
         e = json.loads(str)
         self.anger = e['anger']
         self.contempt = e['contempt']
@@ -51,6 +55,8 @@ class Emotion(db.Model):
         self.sadness = e['sadness']
         self.surprise = e['surprise']
 
+    def _calculate_result(self):
+        self.result = ''
 
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
