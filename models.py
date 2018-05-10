@@ -1,13 +1,17 @@
+import json
+
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
+
 db = SQLAlchemy()
 SALT = b'$2b$12$lkx75uvI9VwWAAIErNb/7.'
+
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
-    emotion = db.relationship('Emotion', backref='user', lazy=True)
+    emotions = db.relationship('Emotion', backref='user', lazy=True)
 
     def __init__(self, username, password):
         self.username = username
@@ -15,6 +19,9 @@ class User(db.Model):
 
     def __repr__(self):
         return '<User %r>' % self.username
+
+    def append_emotion(self, e):
+        e.user = self
 
 
 class Emotion(db.Model):
@@ -29,3 +36,22 @@ class Emotion(db.Model):
     neutral = db.Column(db.Float)
     sadness = db.Column(db.Float)
     surprise = db.Column(db.Float)
+
+    def __init__(self, user, str, date):
+        self.user_id = user.id
+        self.date = date
+
+        e = json.loads(str)
+        self.anger = e['anger']
+        self.contempt = e['contempt']
+        self.disgust = e['disgust']
+        self.fear = e['fear']
+        self.happiness = e['happiness']
+        self.neutral = e['neutral']
+        self.sadness = e['sadness']
+        self.surprise = e['surprise']
+
+
+class Question(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    content = db.Column(db.String(1000), nullable=True)
