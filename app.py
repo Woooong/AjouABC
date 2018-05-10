@@ -6,7 +6,7 @@ from form import LoginForm, RegisterForm
 app = Flask(__name__)
 app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-KEY = 'ba18348cc0044f6d8e07630234f897d8'  # Replace with a valid subscription key (keeping the quotes in place).
+KEY = 'b07aafe6c35b45bdb8b19b1a45b410bb'  # Replace with a valid subscription key (keeping the quotes in place).
 BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
 
 
@@ -17,6 +17,7 @@ def index():
         current_user = session['current_user']
         return render_template('index.html', current_user=current_user)
     return render_template('index.html')
+
 
 @app.route('/login', methods=['GET', 'POST'])
 def login():
@@ -31,6 +32,7 @@ def login():
             return redirect((url_for('login')))
     return render_template('login.html', form=form)
 
+
 @app.route('/register', methods=['GET', 'POST'])
 def register():
     form = RegisterForm()
@@ -41,15 +43,17 @@ def register():
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
+
 @app.route('/logout')
 def logout():
     del session['current_user']
     return redirect(url_for('index'))
 
-gi
-@app.route("/api/getEmotion/<id>")
+
+@app.route("/api/getEmotion/<id>", methods=['POST'])
 def get_face_api(id):
 
+    print()
     CF.Key.set(KEY)
     CF.BaseUrl.set(BASE_URL)
 
