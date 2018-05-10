@@ -1,6 +1,9 @@
 #Testing db
 test.db
 
+# pytest
+.pytest_cache/
+
 
 
 
