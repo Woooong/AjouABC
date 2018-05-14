@@ -1,7 +1,7 @@
 import json
 
 import bcrypt
-from datetime import date
+from datetime import date, datetime
 
 from models import User, SALT, Emotion
 
@@ -43,7 +43,6 @@ def test_create_emotion():
 
 
 def test_user_create_emotion():
-
     u = User(username='ryun', password='aloha')
     u.id = 1
     str = '''{
@@ -60,3 +59,9 @@ def test_user_create_emotion():
     e = Emotion(user=u, str=str, date=date.today())
     u.append_emotion(e)
     assert u.emotions[0] == e
+
+
+def test_create_date_type():
+    d = datetime.now().date()
+
+    assert str(d) == '2018-05-14'

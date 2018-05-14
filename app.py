@@ -1,8 +1,10 @@
-import cognitive_face as CF
+import json
+
+import cognitive_face as face_api
 import requests as requests
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash
-from models import db, User
+from models import db, User, Emotion
 from form import LoginForm, RegisterForm
 
 app = Flask(__name__)
@@ -44,7 +46,8 @@ def login():
 def register():
     form = RegisterForm()
     if request.method == 'POST':
-        u = User(username=form.username.data, password=form.password.data)
+        # u = User(username=form.username.data, password=form.password.data)
+        u = User(username="uram", password="201221029")
         db.session.add(u)
         db.session.commit()
         return redirect(url_for('index'))
@@ -60,6 +63,7 @@ def logout():
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def get_face_api(user_id, device_id):
+
     if request.method == 'POST':
         # Face detection parameters
         params = {'returnFaceAttributes': 'emotion,age,gender',
@@ -69,22 +73,30 @@ def get_face_api(user_id, device_id):
         headers['Ocp-Apim-Subscription-Key'] = _key
         headers['Content-Type'] = 'application/octet-stream'
 
-        json = None
-
-        result = process_request(json, request.data, headers, params)
-        analysis_emotion(result[0]["faceAttributes"])
+        api_result = process_request(None, request.data, headers, params)
 
     else:
-        CF.Key.set(KEY)
-        CF.BaseUrl.set(BASE_URL)
+        face_api.Key.set(KEY)
+        face_api.BaseUrl.set(BASE_URL)
 
         # You can use this example JPG or replace the URL below with your own URL to a JPEG image.
         img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
 
-        faces = CF.face.detect(img_url, True, False, "emotion")
-        print(faces)
+        api_result = face_api.face.detect(img_url, True, False, 'emotion,age,gender')
 
-    return render_template('showFace.html', emotions=faces[0]["faceAttributes"]["emotion"], img=img_url)
+    user = User.query.filter_by(username=user_id).first()
+    user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
+    represent_emotion = analysis_emotion(api_result[0]["faceAttributes"])
+
+    e = Emotion(user=user, str=user_emotion, res=represent_emotion)
+    db.session.add(e)
+    db.session.commit()
+
+    return_data = json.loads(user_emotion)
+    return_data["represent_emotion"] = represent_emotion
+
+    return return_data
+    # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
 
 
 # octet-stream API REQ Func
@@ -127,14 +139,20 @@ def process_request(json, data, headers, params):
 
 
 def analysis_emotion(emotion_data):
+    user_emotion = None
+
     # lists
     temp = emotion_data['emotion'].items()
     emotion_list = list(temp)
+    emotion_list.sort(key=lambda x: x[1])
 
-    # sorted(emotionList, key=takeSecond)
-    # emotion_list.sort(key=takeSecond)
+    #Emotion 분석 시작
+    if emotion_list[emotion_list.__len__() - 1][0] in 'neutral':
+        user_emotion = emotion_list[emotion_list.__len__() - 2][0]
+    else:
+        user_emotion = emotion_list[emotion_list.__len__() - 1][0]
 
-    return emotion_list
+    return user_emotion
 
 
 def init_database():

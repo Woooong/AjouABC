@@ -1,5 +1,6 @@
 import json
 
+from datetime import date, datetime
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 
@@ -38,11 +39,12 @@ class Emotion(db.Model):
     surprise = db.Column(db.Float)
     result = db.Column(db.String(10))
 
-    def __init__(self, user, str, date):
+    def __init__(self, user, str, res, date=datetime.now().date()):
         self.user_id = user.id
         self.date = date
+        self.result = res
         self._parse(str)
-        self._calculate_result()
+        # self._calculate_result()
 
     def _parse(self, str):
         e = json.loads(str)
