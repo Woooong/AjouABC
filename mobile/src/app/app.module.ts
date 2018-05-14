@@ -10,12 +10,18 @@ import { Camera } from '@ionic-native/camera';
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
 import { LoginPage } from '../pages/login/login';
+import { SelectionPage } from '../pages/selection/selection';
+import { DiaryPage } from '../pages/diary/diary';
+import { TherapyPage } from '../pages/therapy/therapy';
 
 @NgModule({
   declarations: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+      SelectionPage,
+      DiaryPage,
+      TherapyPage
   ],
   imports: [
     BrowserModule,
@@ -25,7 +31,10 @@ import { LoginPage } from '../pages/login/login';
   entryComponents: [
     MyApp,
     HomePage,
-    LoginPage
+    LoginPage,
+      SelectionPage,
+      DiaryPage,
+      TherapyPage
   ],
   providers: [
     StatusBar,
