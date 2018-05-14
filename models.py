@@ -60,6 +60,7 @@ class Emotion(db.Model):
     def _calculate_result(self):
         self.result = ''
 
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     content = db.Column(db.String(1000), nullable=True)

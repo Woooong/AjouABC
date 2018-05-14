@@ -8,12 +8,14 @@ cognitive-face==1.4.1
 Flask==1.0.1
 Flask-SQLAlchemy==2.3.2
 Flask-WTF==0.14.2
+gunicorn==19.8.1
 idna==2.6
 itsdangerous==0.24
 Jinja2==2.10
 MarkupSafe==1.0
 more-itertools==4.1.0
 passlib==1.7.1
+pipenv==2018.5.18
 pluggy==0.6.0
 py==1.5.3
 pycparser==2.18
@@ -22,5 +24,7 @@ requests==2.18.4
 six==1.11.0
 SQLAlchemy==1.2.7
 urllib3==1.22
+virtualenv==15.2.0
+virtualenv-clone==0.3.0
 Werkzeug==0.14.1
 WTForms==2.1
