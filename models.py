@@ -41,10 +41,10 @@ class Emotion(db.Model):
     def __init__(self, user, str, date):
         self.user_id = user.id
         self.date = date
-        self._parse_json(str)
+        self._parse(str)
         self._calculate_result()
 
-    def _parse_json(self, str):
+    def _parse(self, str):
         e = json.loads(str)
         self.anger = e['anger']
         self.contempt = e['contempt']
