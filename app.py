@@ -6,6 +6,7 @@ import requests as requests
 from flask import Flask, request, session, redirect, url_for, render_template, flash
 from models import db, User, Emotion
 from form import LoginForm, RegisterForm
+from bcrypt import checkpw
 
 app = Flask(__name__)
 app.secret_key = 'Secret'
@@ -33,8 +34,9 @@ def login():
     form = LoginForm()
     if request.method == 'POST':
         user = User.query.filter_by(username=form.username.data).first()
-        if user.password == form.password.data:
+        if checkpw(form.password.data.encode('utf-8'), user.password):
             session['current_user'] = form.username.data
+            flash('Success Login')
             return redirect(url_for('index'))
         else:
             flash('Invalid username or password')
@@ -46,10 +48,11 @@ def login():
 def register():
     form = RegisterForm()
     if request.method == 'POST':
-        # u = User(username=form.username.data, password=form.password.data)
-        u = User(username="uram", password="201221029")
+        u = User(username=form.username.data, password=form.password.data)
+        #u = User(username="uram", password="201221029")
         db.session.add(u)
         db.session.commit()
+        flash('Success Register')
         return redirect(url_for('index'))
     return render_template('register.html', form=form)
 
@@ -57,7 +60,7 @@ def register():
 @app.route('/logout')
 def logout():
     del session['current_user']
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 # 감정 조회
