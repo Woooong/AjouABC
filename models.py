@@ -2,7 +2,7 @@ import json
 
 from datetime import date, datetime
 from flask_sqlalchemy import SQLAlchemy
-import bcrypt
+from bcrypt import hashpw
 
 db = SQLAlchemy()
 SALT = b'$2b$12$lkx75uvI9VwWAAIErNb/7.'
@@ -16,7 +16,7 @@ class User(db.Model):
 
     def __init__(self, username, password):
         self.username = username
-        self.password = bcrypt.hashpw(password.encode(), SALT)
+        self.password = hashpw(password.encode('utf-8'), SALT)
 
     def __repr__(self):
         return '<User %r>' % self.username
