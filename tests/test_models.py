@@ -1,9 +1,9 @@
 import json
-
 import bcrypt
-from datetime import date, datetime
-
-from models import User, SALT, Emotion
+import pyexcel as pexcel
+from datetime import datetime
+from models import db, User, SALT, Emotion, Question
+from flask import Flask, session
 
 
 def test_user():
@@ -27,7 +27,7 @@ def test_create_emotion():
           }'''
 
     u = User(username='ryun', password='aloha')
-    e = Emotion(user=u, str=str, date=date.today())
+    e = Emotion(user=u, emotion_json=str, res='', date=datetime.now().strftime("%Y-%m-%d %H:%M"))
 
     parsed = json.loads(str)
     assert parsed['anger'] == e.anger
@@ -39,7 +39,7 @@ def test_create_emotion():
     assert parsed['sadness'] == e.sadness
     assert parsed['surprise'] == e.surprise
 
-    assert date.today() == e.date
+    assert datetime.now().strftime("%Y-%m-%d %H:%M") == e.date
 
 
 def test_user_create_emotion():
@@ -56,12 +56,23 @@ def test_user_create_emotion():
         "surprise": 0.007
       }'''
 
-    e = Emotion(user=u, str=str, date=date.today())
+    e = Emotion(user=u, emotion_json=str, res='', date=datetime.now())
     u.append_emotion(e)
     assert u.emotions[0] == e
 
 
-def test_create_date_type():
-    d = datetime.now().date()
+def test_create_question():
+    question = dict()
 
-    assert str(d) == '2018-05-14'
+    records = pexcel.iget_records(file_name="questions.xls")
+    # records = pexcel.iget_records(file_name="ABC_questions.xlsx")
+    for record in records:
+        question['q_content'] = record['질문']
+        question['q_emotion'] = record['감정분류']
+        question['q_tag1'] = record['태그1']
+        question['q_tag2'] = record['태그2']
+        q = Question(question=json.dumps(question))
+        # db.session.add(q)
+        # db.session.commit()
+
+        print(question)

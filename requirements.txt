@@ -1,3 +1,4 @@
+pyexcel
 attrs==17.4.0
 bcrypt==3.1.4
 certifi==2018.4.16

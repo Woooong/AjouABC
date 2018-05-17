@@ -27,7 +27,7 @@ class User(db.Model):
 
 class Emotion(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    date = db.Column(db.Date, nullable=False)
+    date = db.Column(db.DateTime, nullable=False)
     user_id = db.Column(db.Integer, db.ForeignKey('user.id'), nullable=False)
     anger = db.Column(db.Float)
     contempt = db.Column(db.Float)
@@ -39,15 +39,15 @@ class Emotion(db.Model):
     surprise = db.Column(db.Float)
     result = db.Column(db.String(10))
 
-    def __init__(self, user, str, res, date=datetime.now().date()):
+    def __init__(self, user, emotion_json, res, date=datetime.now().strftime("%Y-%m-%d %H:%M")):
         self.user_id = user.id
         self.date = date
         self.result = res
-        self._parse(str)
+        self._parse(emotion_json)
         # self._calculate_result()
 
-    def _parse(self, str):
-        e = json.loads(str)
+    def _parse(self, emotion_json):
+        e = json.loads(emotion_json)
         self.anger = e['anger']
         self.contempt = e['contempt']
         self.disgust = e['disgust']
@@ -60,6 +60,35 @@ class Emotion(db.Model):
     def _calculate_result(self):
         self.result = ''
 
+
 class Question(db.Model):
     id = db.Column(db.Integer, primary_key=True)
-    content = db.Column(db.String(1000), nullable=True)
+    content = db.Column(db.String(1000), unique=True, nullable=False)
+    emotion = db.Column(db.String(10), nullable=True)
+    tag1 = db.Column(db.String(50), nullable=True)
+    tag2 = db.Column(db.String(50), nullable=True)
+
+    def __init__(self, question, date=datetime.now()):
+        q = json.loads(question)
+        self.content = q['q_content']
+        self.emotion = q['q_emotion']
+        self.tag1 = q['q_tag1']
+        self.tag2 = q['q_tag2']
+
+
+class UserQuestion(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    user_id = db.Column(db.Integer, db.ForeignKey(User.id), nullable=False)
+    question_id = db.Column(db.Integer, db.ForeignKey(Question.id), nullable=False)
+    question_content = db.Column(db.String(1000), db.ForeignKey(Question.content))
+    question_reply = db.Column(db.String(200), nullable=True)
+    created = db.Column(db.DateTime, nullable=False)
+    updated = db.Column(db.DateTime, nullable=False)
+
+    def __init__(self, user, question, reply, date=datetime.now()):
+        self.user_id = user.id
+        self.question_id = question.id
+        self.question_content = question.content
+        self.question_reply = reply
+        self.created = date
+        self.updated = date
