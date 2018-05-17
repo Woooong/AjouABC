@@ -1,0 +1,85 @@
+<!DOCTYPE html>
+<html>
+    <head>
+        <meta charset="utf-8">
+        <meta http-equiv="X-UA-Compatible" content="IE=edge">
+        <meta name="viewport" content="width=device-width, initial-scale=1">
+        <meta name="description" content="">
+        <meta name="author" content="">
+
+        <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+        <link href="static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+        <link rel="stylesheet" type="text/css" href="static/css/styles.css">
+
+        <script src="static/bootstrap/js/bootstrap.js"></script>
+    </head>
+    <body>
+        <nav class="navbar navbar-inverse navbar-fixed-top">
+            <div class="container-fluid">
+                <div class="navbar-header">
+                    <button type="button" class="navbar-toggle collapsed" data-toggle="collapse" data-target="#navbar" aria-expanded="false" aria-controls="navbar">
+                        <span class="sr-only">Toggle navigation</span>
+                        <sapn class="icon-bar"></sapn>
+                        <span class="icon-bar"></span>
+                        <span class="icon-bar"></span>
+                    </button>
+                    <a class="navbar-brand" href="{{ url_for('index') }}">Mirror</a>
+                </div>
+                <div id="navbar" class="navbar-collapse collapse">
+                    <ul class="nav navbar-nav navbar-right">
+                        {% if current_user %}
+                        <li>
+                            <a href="{{ url_for('logout') }}">
+                                <span class="glyphicon glyphicon-log-out"></span>
+                                Logout
+                            </a>
+                        </li>
+                        {% else %}
+                        <li>
+                            <a href="{{ url_for('login') }}">
+                                <span class="glyphicon glyphicon-log-in"></span>
+                                Login
+                            </a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('register') }}">
+                                <span class="glyphicon glyphicon-user"></span>
+                                Register
+                            </a>
+                        </li>
+                        {% endif %}
+                    </ul>
+                </div>
+            </div>
+        </nav>
+
+        <div class="container-fluid">
+            <div class="row">
+                <div class="col-sm-3 col-md-2 sidebar">
+                    <ul class="nav nav-sidebar">
+                        <li class="active"><a href="{{ url_for('index') }}">
+                            Dashboard <span class="sr-only">(current)</span>
+                        </a></li>
+                        <li><a href="{{ url_for('index') }}">Diary</a></li>
+                        <li><a href="{{ url_for('index') }}">Emotion</a></li>
+                    </ul>
+                </div>
+
+                <div class="col-sm-9 col-sm-offset-3 col-md-10 col-md-offset-2 main">
+                    <div class="page-header">
+                        {% with messages = get_flashed_messages() %}
+                            {% if messages %}
+                                <ul>
+                                    {% for message in messages %}
+                                        <li>{{ message }}</li>
+                                    {% endfor %}
+                                </ul>
+                            {% endif %}
+                        {% endwith %}
+                        {% block content %} {% endblock %}
+                    </div>
+                </div>
+            </div>
+        </div>
+    </body>
+</html>
