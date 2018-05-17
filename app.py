@@ -1,23 +1,21 @@
-import json
+import json, os
 
+import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
 
-from flask import Flask, request, session, redirect, url_for, render_template, flash
-from models import db, User, Emotion
+from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
+from models import db, User, Emotion, Question, UserQuestion
 from form import LoginForm, RegisterForm
 from bcrypt import checkpw
 
 app = Flask(__name__)
 app.secret_key = 'Secret'
-app.config['SQLALCHEMY_DATABASE_URI'] = 'sqlite:///test.db'
-KEY = 'b07aafe6c35b45bdb8b19b1a45b410bb'  # Replace with a valid subscription key (keeping the quotes in place).
-BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'  # Replace with your regional Base URL
+app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
+MS_KEY = os.environ['MS_KEY']
 
 
-_url = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0/detect'
-_key = 'b07aafe6c35b45bdb8b19b1a45b410bb'
-_maxNumRetries = 10
 
 
 @app.route("/")
@@ -73,14 +71,14 @@ def get_face_api(user_id, device_id):
                   'returnFaceLandmarks': 'true'}
 
         headers = dict()
-        headers['Ocp-Apim-Subscription-Key'] = _key
+        headers['Ocp-Apim-Subscription-Key'] = MS_KEY
         headers['Content-Type'] = 'application/octet-stream'
 
         api_result = process_request(None, request.data, headers, params)
 
     else:
-        face_api.Key.set(KEY)
-        face_api.BaseUrl.set(BASE_URL)
+        face_api.Key.set(MS_KEY)
+        face_api.BaseUrl.set(MS_BASE_URL)
 
         # You can use this example JPG or replace the URL below with your own URL to a JPEG image.
         img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
@@ -98,8 +96,35 @@ def get_face_api(user_id, device_id):
     return_data = json.loads(user_emotion)
     return_data["represent_emotion"] = represent_emotion
 
-    return return_data
+    return jsonify(return_data)
     # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
+
+
+# 질문 입력
+@app.route("/api/setQuestion/<q_name>")
+def set_question_api(q_name):
+
+    # records = pexcel.iget_records(file_name="questions.xls")
+    records = pexcel.iget_records(file_name="./tests/"+q_name + ".xls")
+
+    for record in records:
+        question = dict()
+        question['q_content'] = record['질문']
+        question['q_emotion'] = record['감정분류']
+        question['q_tag1'] = record['태그1']
+        question['q_tag2'] = record['태그2']
+        q = Question(question=json.dumps(question))
+        db.session.add(q)
+        db.session.commit()
+
+    qs = Question.query().all()
+    return "Questions Count: {c}".format(c=len(qs))
+
+
+# 질문 조회
+@app.route("/api/getQuestion/<user_id>/<device_id>", methods=['GET', 'POST'])
+def get_question_api(user_id, device_id):
+    user = User.query.filter_by(username=user_id).first()
 
 
 # octet-stream API REQ Func
@@ -109,7 +134,7 @@ def process_request(json, data, headers, params):
 
     while True:
 
-        response = requests.request('post', _url, json=json, data=data, headers=headers, params=params)
+        response = requests.request('post', MS_BASE_URL + "/detect", json=json, data=data, headers=headers, params=params)
 
         if response.status_code == 429:
 
