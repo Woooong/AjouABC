@@ -1,6 +1,9 @@
+<script>
+    console.log(123);
+</script>
 <ion-content>
   <ion-card>
-      <img *ngIf="image"
-           [src]="domSanitizer.bypassSecurityTrustUrl(image)" />
+      <img *ngIf="img"
+           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />
   </ion-card>
 </ion-content>
