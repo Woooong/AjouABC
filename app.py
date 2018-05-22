@@ -13,6 +13,7 @@ app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
+MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 
 
 
@@ -86,7 +87,7 @@ def get_face_api(user_id, device_id):
     user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
     represent_emotion = analysis_emotion(api_result[0]["faceAttributes"])
 
-    e = Emotion(user=user, str=user_emotion, res=represent_emotion)
+    e = Emotion(user=user, emotion_json=user_emotion, res=represent_emotion)
     db.session.add(e)
     db.session.commit()
 
@@ -188,4 +189,4 @@ def init_database():
 
 if __name__ == '__main__':
     init_database()
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
