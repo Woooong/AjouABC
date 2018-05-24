@@ -1,6 +1,6 @@
 import json
 
-from datetime import date, datetime
+from datetime import datetime
 from flask_sqlalchemy import SQLAlchemy
 import bcrypt
 

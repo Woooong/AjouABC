@@ -4,10 +4,12 @@ import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
 
+
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
 from models import db, User, Emotion, Question, UserQuestion
 from sqlalchemy.exc import IntegrityError, DataError
 from form import LoginForm, RegisterForm
+from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
@@ -24,7 +26,21 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
-        return render_template('index.html', current_user=current_user)
+        end_date = datetime.now().strftime("%Y-%m-31")
+
+        user = User.query.filter_by(username=current_user).first()
+        emotions = Emotion.query.filter_by(user_id=user.id).all()
+        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+
+        data = dict()
+        data['emotions'] = len(emotions)
+        data['emotions_month'] = len(emotions_month)
+        data['userQuestions'] = len(user_questions)
+        data['userQuestions_month'] = len(user_questions_month)
+
+        return render_template('index.html', current_user=user, data=data)
     else:
         return redirect(url_for('login'))
 
