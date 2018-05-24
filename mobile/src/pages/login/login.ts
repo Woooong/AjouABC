@@ -36,7 +36,7 @@ export class LoginPage {
   }
 
   user_login() {
-      this.http.post('https://sheltered-caverns-21060.herokuapp.com/login',
+      this.http.post('/login',
           {'username' : this.username, 'password' : this.password, 'rtype' : 'json'},
           {})
           .then(data => {

@@ -34,8 +34,8 @@ export class HomePage implements AfterViewInit {
 
   CameraOn(){
         const options: CameraOptions = {
-            targetWidth: 100,
-            targetHeight: 100,
+            targetWidth: 640,
+            targetHeight: 640,
             quality: 100,
             destinationType: this.camera.DestinationType.DATA_URL,
             saveToPhotoAlbum: false,
@@ -85,7 +85,7 @@ export class HomePage implements AfterViewInit {
           {
               document.getElementsByTagName('button')[2].click()
           },
-          5000);
+          2000);
     }
 
   displayErrorAlert(err){
