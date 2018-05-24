@@ -6,8 +6,8 @@ import requests as requests
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
 from models import db, User, Emotion, Question, UserQuestion
-from sqlalchemy.exc import IntegrityError, DataError
-from form import LoginForm, RegisterForm
+from sqlalchemy.exc import IntegrityError
+from form import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
 import bcrypt
 
 app = Flask(__name__)
@@ -83,7 +83,7 @@ def register():
         if hasattr(form, 'rtype'):
             rtype = form.rtype.data
 
-        u = User(username=form.username.data, password_text=form.password.data)
+        u = User(username=form.username.data, email=form.email.data, password_text=form.password.data)
         # u = User(username="taewoo", password="201221002")
         db.session.add(u)
         try:
@@ -105,11 +105,7 @@ def register():
                 flash('Already exist username.')
             else:
                 return jsonify(json_result)
-
-        # except DataError:
-        #     flash('DataError')
     return render_template('register.html', form=form)
-
 
 # 로그아웃
 @app.route("/logout")
@@ -117,6 +113,51 @@ def logout():
     del session['current_user']
     return redirect(url_for('login'))
 
+# Forgot Password
+@app.route("/forgot", methods=['GET', 'POST'])
+def forgot_password():
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        check_result = check_email_username(form.email.data, form.username.data)
+
+        if check_result is not None:
+            session['forgot_user'] = check_result
+            return redirect(url_for('reset_password'))
+        else:
+            flash('Invalid email or username')
+            return redirect(url_for('forgot_password'))
+    return render_template('forgot.html', form=form)
+
+# Check Email and Username
+def check_email_username(email, username):
+    user_email = User.query.filter_by(email=email).first()
+    user_name = User.query.filter_by(username=username).first()
+    if user_email is not None:
+        if user_email.username == username:
+            return user_email.email
+        else:
+            return False
+    elif user_name is not None:
+        if user_name.email == email:
+            return user_name.email
+        else:
+            return False
+    else:
+        return False
+
+# Reset Password
+@app.route("/reset", methods=['GET', 'POST'])
+def reset_password():
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        email = session['forgot_user']
+        user = User.query.filter_by(email=email).first()
+        password = user.reset_password(password_text=form.password1.data)
+        user.password = password
+        db.session.commit()
+        del session['forgot_user']
+        return redirect(url_for('login'))
+    return render_template('reset.html', form=form)
 
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])

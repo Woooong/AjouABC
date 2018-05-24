@@ -10,14 +10,20 @@ SALT = b'$2b$12$lkx75uvI9VwWAAIErNb/7.'
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
+    email = db.Column(db.String(80), unique=True, nullable=False)
     password = db.Column(db.String(120), nullable=False)
     emotions = db.relationship('Emotion', backref='user', lazy=True)
 
-    def __init__(self, username, password_text):
+    def __init__(self, username, email, password_text):
         self.username = username
+        self.email = email
         self.password = self.set_password(password_text)
 
     def set_password(self, password_text):
+        password = bcrypt.hashpw(password_text.encode('utf-8'), SALT)
+        return password.decode('utf-8')
+
+    def reset_password(self, password_text):
         password = bcrypt.hashpw(password_text.encode('utf-8'), SALT)
         return password.decode('utf-8')
 

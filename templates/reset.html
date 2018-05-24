@@ -39,46 +39,28 @@
             <div class="col-md-4 col-md-offset-4">
                 <div class="login-panel panel panel-default">
                     <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
+                        <h3 class="panel-title">Reset Password!</h3>
                     </div>
                     <div class="panel-body">
                         <form action="" method="post">
                             {{ form.hidden_tag() }}
                                 <div class="form-group">
-                                    {{ form.username(class="form-control", placeholder="Username", id="username", autofocus="") }}
-                                    {% for error in form.username.errors %}
+                                    {{ form.password1(class="form-control", placeholder="Password", id="password1", autofocus="") }}
+                                    {% for error in form.password1.errors %}
                                         <span style="color : red;">[{{ error }}]</span>
                                     {% endfor %}
                                 </div>
 
                                 <div class="form-group">
-                                    {{ form.password(class="form-control", placeholder="Password", id="password") }}
-                                    {% for error in form.password.errors %}
+                                    {{ form.password2(class="form-control", placeholder="Repeat Password", id="password2") }}
+                                    {% for error in form.password2.errors %}
                                         <span style="color : red;">[{{ error }}]</span>
                                     {% endfor %}
                                 </div>
 
-                                <div class="checkbox">
-                                    <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
-                                    </label>
-                                </div>
                                 <!-- Change this to a button or input when using this as a form -->
                                 {{ form.submit(class="btn btn-lg btn-success btn-block") }}
                         </form>
-
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                <div class="alert alert-warning">
-                                    {% for message in messages %}
-                                    {{ message }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        {% endwith %}
-
-                        <a href="{{ url_for('register') }}">Sign up Here!</a><br>
-                        <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
                     </div>
                 </div>
             </div>
