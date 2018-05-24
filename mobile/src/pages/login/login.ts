@@ -6,6 +6,7 @@ import { HTTP } from '@ionic-native/http';
 
 
 import { HomePage } from '../home/home';
+import { DiaryPage } from "../diary/diary";
 
 /**
  * Generated class for the LoginPage page.

@@ -47,23 +47,20 @@ export class HomePage implements AfterViewInit {
         // http 통신 후
         this.camera.getPicture(options).then((imageData) => {
             this.img = 'data:image/jpeg;base64,' + imageData;
-            console.log(imageData)
             // image file 저장 아니면 어쩔지 정해야함
             // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
-            this.http.post('/api/getEmotion/uram/1',
+            this.http.post('/api/getEmotion/uram/123',
                 {'image' : this.img},
                 {})
                 .then(data => {
-                    console.log(data.status);
-                    console.log(data.data); // data received by server
-                    console.log(data.headers);
+                    console.log(data);
                     let toast = this.toastCtrl.create({
-                        message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
+                        message: JSON.parse(data.data)['represent_emotion'],
                         duration: 2000
                     });
 
                     toast.present(toast);
-                    // this.navCtrl.push(SelectionPage, {'emotion' : '이러함'});
+                    this.navCtrl.push(SelectionPage, {'emotion' : JSON.parse(data.data)['represent_emotion']});
                 })
                 .catch(error => {
                     let toast = this.toastCtrl.create({
@@ -71,7 +68,7 @@ export class HomePage implements AfterViewInit {
                         duration: 2000
                     });
                     toast.present(toast);
-                    // this.navCtrl.push(SelectionPage, {'emotion' : '이러함'});
+                    this.navCtrl.push(SelectionPage, {'emotion' : '이러함'});
                     console.log(error.status);
                     console.log(error.error); // error message as string
                     console.log(error.headers);
