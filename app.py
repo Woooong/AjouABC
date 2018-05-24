@@ -4,6 +4,7 @@ import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
 
+from datetime import datetime
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
 from models import db, User, Emotion, Question, UserQuestion
 from form import LoginForm, RegisterForm
@@ -72,7 +73,8 @@ def get_face_api(user_id, device_id):
         headers['Ocp-Apim-Subscription-Key'] = MS_KEY
         headers['Content-Type'] = 'application/octet-stream'
 
-        api_result = process_request(None, request.data, headers, params)
+        api_result = faceapi_request_process(None, request.data, headers, params)
+        # api_result = process_request(None, str.encode(request.form['data']), headers, params)
 
     else:
         face_api.Key.set(MS_KEY)
@@ -84,15 +86,27 @@ def get_face_api(user_id, device_id):
         api_result = face_api.face.detect(img_url, True, False, 'emotion,age,gender')
 
     user = User.query.filter_by(username=user_id).first()
-    user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
-    represent_emotion = analysis_emotion(api_result[0]["faceAttributes"])
+    return_data = dict()
 
-    e = Emotion(user=user, emotion_json=user_emotion, res=represent_emotion)
-    db.session.add(e)
-    db.session.commit()
+    if len(api_result) > 0:
+        user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
+        represent_emotion = analysis_emotion_process(api_result[0]["faceAttributes"])
 
-    return_data = json.loads(user_emotion)
-    return_data["represent_emotion"] = represent_emotion
+        e = Emotion(user=user, emotion_json=user_emotion, res=represent_emotion)
+        db.session.add(e)
+        db.session.commit()
+
+        return_data["code"] = 200
+        return_data = json.loads(user_emotion)
+        return_data["represent_emotion"] = represent_emotion
+
+    elif len(api_result) == 0:
+        return_data["code"] = 203
+        return_data["msg"] = "No Match Face"
+
+    else:
+        return_data["code"] = 404
+        return_data["msg"] = "Other Error!"
 
     return jsonify(return_data)
     # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
@@ -122,11 +136,29 @@ def set_question_api(q_name):
 # 질문 조회
 @app.route("/api/getQuestion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def get_question_api(user_id, device_id):
+    return_data = dict()
+    today = datetime.now().strftime("%m/%d")
+
     user = User.query.filter_by(username=user_id).first()
 
+    if user is None:
+        return_data["code"] = 203
+        return_data["msg"] = "No Match User"
 
+    else:
+        today_emotion = Emotion.query.filter_by(user_id=user.id).first()
+
+        selected_question = select_question_process(today, today_emotion.result)
+
+        return_data["code"] = 200
+        return_data["data"] = {'q_id': selected_question.id, 'q_text': str.encode(selected_question.content)}
+
+    return jsonify(return_data)
+
+
+# faceapi 전송 함수
 # octet-stream API REQ Func
-def process_request(json, data, headers, params):
+def faceapi_request_process(json, data, headers, params):
     retries = 0
     result = None
 
@@ -164,7 +196,8 @@ def process_request(json, data, headers, params):
     return result
 
 
-def analysis_emotion(emotion_data):
+# 감정정보 분석 함수
+def analysis_emotion_process(emotion_data):
     user_emotion = None
 
     # lists
@@ -179,6 +212,20 @@ def analysis_emotion(emotion_data):
         user_emotion = emotion_list[emotion_list.__len__() - 1][0]
 
     return user_emotion
+
+
+# 질문 선택 함수
+def select_question_process(today, today_emotion):
+
+    selected_question = Question.query.filter_by(tag1=today).first()
+
+    if selected_question is None:
+        if today_emotion is not None:
+            selected_question = Question.query.filter_by(emotion=today_emotion).first()
+        else:
+            selected_question = Question.order_by()
+
+    return selected_question
 
 
 def init_database():
