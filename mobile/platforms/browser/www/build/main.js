@@ -8,7 +8,7 @@ webpackJsonp([4],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__diary_diary__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(157);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -53,7 +53,7 @@ var LoginPage = /** @class */ (function () {
                 duration: 2000
             });
             toast.present(toast);
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__diary_diary__["a" /* DiaryPage */]);
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
         })
             .catch(function (error) {
             var toast = _this.toastCtrl.create({
@@ -61,7 +61,7 @@ var LoginPage = /** @class */ (function () {
                 duration: 2000
             });
             toast.present(toast);
-            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__diary_diary__["a" /* DiaryPage */]);
+            _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
             console.log(error.status);
             console.log(error.error); // error message as string
             console.log(error.headers);
@@ -98,7 +98,7 @@ var LoginPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectionPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diary_diary__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diary_diary__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__therapy_therapy__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -163,7 +163,7 @@ var SelectionPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TherapyPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diary_diary__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__diary_diary__ = __webpack_require__(51);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -269,13 +269,125 @@ module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 199:
+/***/ 157:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(26);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(79);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+
+
+var HomePage = /** @class */ (function () {
+    function HomePage(navCtrl, camera, alertCtrl, toastCtrl, domSanitizer, http) {
+        // this.CameraOn()
+        this.navCtrl = navCtrl;
+        this.camera = camera;
+        this.alertCtrl = alertCtrl;
+        this.toastCtrl = toastCtrl;
+        this.domSanitizer = domSanitizer;
+        this.http = http;
+    }
+    HomePage.prototype.ngAfterViewInit = function () {
+        this.CameraOn();
+    };
+    HomePage.prototype.CameraOn = function () {
+        var _this = this;
+        var options = {
+            targetWidth: 640,
+            targetHeight: 640,
+            quality: 100,
+            destinationType: this.camera.DestinationType.DATA_URL,
+            saveToPhotoAlbum: false,
+            mediaType: this.camera.MediaType.PICTURE,
+            cameraDirection: 1,
+            allowEdit: false
+        };
+        // http 통신 후
+        this.camera.getPicture(options).then(function (imageData) {
+            _this.img = 'data:image/jpeg;base64,' + imageData;
+            // image file 저장 아니면 어쩔지 정해야함
+            // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
+            _this.http.post('/api/getEmotion/uram/123', { 'image': _this.img }, {})
+                .then(function (data) {
+                console.log(data);
+                var toast = _this.toastCtrl.create({
+                    message: JSON.parse(data.data)['represent_emotion'],
+                    duration: 2000
+                });
+                toast.present(toast);
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__selection_selection__["a" /* SelectionPage */], { 'emotion': JSON.parse(data.data)['represent_emotion'] });
+            })
+                .catch(function (error) {
+                var toast = _this.toastCtrl.create({
+                    message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
+                    duration: 2000
+                });
+                toast.present(toast);
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__selection_selection__["a" /* SelectionPage */], { 'emotion': '이러함' });
+                console.log(error.status);
+                console.log(error.error); // error message as string
+                console.log(error.headers);
+            });
+        }, function (err) {
+            _this.displayErrorAlert(err);
+        });
+        setTimeout(function () {
+            document.getElementsByTagName('button')[2].click();
+        }, 2000);
+    };
+    HomePage.prototype.displayErrorAlert = function (err) {
+        console.log(err);
+        var alert = this.alertCtrl.create({
+            title: 'Error',
+            subTitle: 'Error while trying to capture picture',
+            buttons: ['OK']
+        });
+        alert.present();
+    };
+    HomePage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-home',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/'<script>\n    console.log(123);\n</script>\n<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__["a" /* Camera */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */],
+            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */],
+            __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__["a" /* HTTP */]])
+    ], HomePage);
+    return HomePage;
+}());
+
+//# sourceMappingURL=home.js.map
+
+/***/ }),
+
+/***/ 200:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 Object.defineProperty(__webpack_exports__, "__esModule", { value: true });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(200);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(222);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__ = __webpack_require__(201);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__app_module__ = __webpack_require__(223);
 
 
 Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* platformBrowserDynamic */])().bootstrapModule(__WEBPACK_IMPORTED_MODULE_1__app_module__["a" /* AppModule */]);
@@ -283,7 +395,7 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 
 /***/ }),
 
-/***/ 222:
+/***/ 223:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -291,16 +403,16 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(199);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(79);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera_preview__ = __webpack_require__(273);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(274);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__ = __webpack_require__(158);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera_preview__ = __webpack_require__(274);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(275);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(157);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(102);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(41);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(51);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_therapy_therapy__ = __webpack_require__(104);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -372,15 +484,15 @@ var AppModule = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 274:
+/***/ 275:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(199);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(102);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -418,119 +530,7 @@ var MyApp = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 275:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(26);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(103);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(79);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-
-
-var HomePage = /** @class */ (function () {
-    function HomePage(navCtrl, camera, alertCtrl, toastCtrl, domSanitizer, http) {
-        // this.CameraOn()
-        this.navCtrl = navCtrl;
-        this.camera = camera;
-        this.alertCtrl = alertCtrl;
-        this.toastCtrl = toastCtrl;
-        this.domSanitizer = domSanitizer;
-        this.http = http;
-    }
-    HomePage.prototype.ngAfterViewInit = function () {
-        this.CameraOn();
-    };
-    HomePage.prototype.CameraOn = function () {
-        var _this = this;
-        var options = {
-            targetWidth: 640,
-            targetHeight: 640,
-            quality: 100,
-            destinationType: this.camera.DestinationType.DATA_URL,
-            saveToPhotoAlbum: false,
-            mediaType: this.camera.MediaType.PICTURE,
-            cameraDirection: 1,
-            allowEdit: false
-        };
-        // http 통신 후
-        this.camera.getPicture(options).then(function (imageData) {
-            _this.img = 'data:image/jpeg;base64,' + imageData;
-            // image file 저장 아니면 어쩔지 정해야함
-            // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
-            _this.http.post('http://127.0.0.1:5000/api/getEmotion/uram/1', { 'image': _this.img }, {})
-                .then(function (data) {
-                console.log(data);
-                var toast = _this.toastCtrl.create({
-                    message: JSON.parse(data.data)['represent_emotion'],
-                    duration: 2000
-                });
-                toast.present(toast);
-                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__selection_selection__["a" /* SelectionPage */], { 'emotion': JSON.parse(data.data)['represent_emotion'] });
-            })
-                .catch(function (error) {
-                var toast = _this.toastCtrl.create({
-                    message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
-                    duration: 2000
-                });
-                toast.present(toast);
-                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_4__selection_selection__["a" /* SelectionPage */], { 'emotion': '이러함' });
-                console.log(error.status);
-                console.log(error.error); // error message as string
-                console.log(error.headers);
-            });
-        }, function (err) {
-            _this.displayErrorAlert(err);
-        });
-        setTimeout(function () {
-            document.getElementsByTagName('button')[2].click();
-        }, 2000);
-    };
-    HomePage.prototype.displayErrorAlert = function (err) {
-        console.log(err);
-        var alert = this.alertCtrl.create({
-            title: 'Error',
-            subTitle: 'Error while trying to capture picture',
-            buttons: ['OK']
-        });
-        alert.present();
-    };
-    HomePage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/'<script>\n    console.log(123);\n</script>\n<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__["a" /* Camera */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["a" /* AlertController */],
-            __WEBPACK_IMPORTED_MODULE_3_ionic_angular__["i" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__["c" /* DomSanitizer */],
-            __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__["a" /* HTTP */]])
-    ], HomePage);
-    return HomePage;
-}());
-
-//# sourceMappingURL=home.js.map
-
-/***/ }),
-
-/***/ 41:
+/***/ 51:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -587,5 +587,5 @@ var DiaryPage = /** @class */ (function () {
 
 /***/ })
 
-},[199]);
+},[200]);
 //# sourceMappingURL=main.js.map
