@@ -7,7 +7,9 @@ import requests as requests
 from datetime import datetime
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
 from models import db, User, Emotion, Question, UserQuestion
+from sqlalchemy.exc import IntegrityError, DataError
 from form import LoginForm, RegisterForm
+import bcrypt
 
 app = Flask(__name__)
 app.secret_key = 'Secret'
@@ -17,47 +19,105 @@ MS_KEY = os.environ['MS_KEY']
 MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 
 
-
-
+# Index Page
 @app.route("/")
 @app.route('/index')
 def index():
+    # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
         return render_template('index.html', current_user=current_user)
-    return render_template('index.html')
+    else:
+        return redirect(url_for('login'))
 
 
-@app.route('/login', methods=['GET', 'POST'])
+# 로그인
+@app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    if request.method == 'POST':
+    # If request = POST
+    if form.validate_on_submit():
+
+        rtype = 'html'
+        if hasattr(form, 'rtype'):
+            rtype = form.rtype.data
+
         user = User.query.filter_by(username=form.username.data).first()
-        if user.password == form.password.data:
-            session['current_user'] = form.username.data
-            return redirect(url_for('index'))
+
+        # ID가 있을 시
+        if user is not None:
+
+            # Check Password
+            if bcrypt.checkpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')):
+            # if user.password == form.password.data:
+                json_result = {'status_code': '200', 'username': '<%s>' % user.username}
+                if rtype == 'html':
+                    session['current_user'] = form.username.data
+                    return redirect(url_for('index'))
+                else:
+                    return jsonify(json_result)
+
+            else:
+                json_result = {'status_code': '222', 'error': 'Invalid username or password'}
+                if rtype == 'html':
+                    flash('Invalid username or password')
+                    return redirect(url_for('login'))
+                else:
+                    return jsonify(json_result)
+
+        # ID가 없을 시
         else:
-            flash('Invalid username or password')
-            return redirect((url_for('login')))
+            json_result = {'status_code': '224', 'error': 'Not exist username'}
+            if rtype == 'html':
+                flash('Not exist username')
+                return redirect(url_for('login'))
+            else:
+                return jsonify(json_result)
     return render_template('login.html', form=form)
 
 
-@app.route('/register', methods=['GET', 'POST'])
+# 회원가입
+@app.route("/register", methods=['GET', 'POST'])
 def register():
-    form = RegisterForm()
-    if request.method == 'POST':
-        # u = User(username=form.username.data, password=form.password.data)
-        u = User(username="uram", password="201221029")
+    form = RegisterForm(request.form)
+    if form.validate_on_submit():
+        rtype = 'html'
+        if hasattr(form, 'rtype'):
+            rtype = form.rtype.data
+
+        u = User(username=form.username.data, password_text=form.password.data)
+        # u = User(username="taewoo", password="201221002")
         db.session.add(u)
-        db.session.commit()
-        return redirect(url_for('index'))
+        try:
+            json_result = {'status code': '200', 'msg': 'Success Register', 'username:':
+                           '<%s>' % u.username}
+
+            if rtype == 'html':
+                db.session.commit()
+                flash('Success Register')
+                return redirect(url_for('login'))
+            else:
+                return jsonify(json_result)
+
+        # Error : 223 (Already exist username)
+        except IntegrityError:
+            json_result = {'status code': '223', 'error': 'Already exist username.'}
+
+            if rtype == 'html':
+                flash('Already exist username.')
+            else:
+                return jsonify(json_result)
+
+        # except DataError:
+        #     flash('DataError')
     return render_template('register.html', form=form)
 
 
-@app.route('/logout')
+# 로그아웃
+@app.route("/logout")
 def logout():
     del session['current_user']
-    return redirect(url_for('index'))
+    return redirect(url_for('login'))
 
 
 # 감정 조회

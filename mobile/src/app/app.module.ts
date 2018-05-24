@@ -6,6 +6,8 @@ import { StatusBar } from '@ionic-native/status-bar';
 
 import { HTTP } from '@ionic-native/http';
 import { Camera } from '@ionic-native/camera';
+import { CameraPreview } from '@ionic-native/camera-preview';
+
 
 import { MyApp } from './app.component';
 import { HomePage } from '../pages/home/home';
@@ -41,6 +43,7 @@ import { TherapyPage } from '../pages/therapy/therapy';
     SplashScreen,
     {provide: ErrorHandler, useClass: IonicErrorHandler},
     Camera,
+      CameraPreview,
     HTTP
   ]
 })

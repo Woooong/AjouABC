@@ -5,9 +5,9 @@ from wtforms.validators import DataRequired
 class LoginForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
-    submit = SubmitField('submit')
+    submit = SubmitField('로그인')
 
 class RegisterForm(FlaskForm):
     username = StringField('username', validators=[DataRequired()])
     password = PasswordField('password', validators=[DataRequired()])
-    submit = SubmitField('Submit')
+    submit = SubmitField('회원가입')
