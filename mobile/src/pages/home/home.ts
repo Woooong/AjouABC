@@ -50,7 +50,7 @@ export class HomePage implements AfterViewInit {
             console.log(imageData)
             // image file 저장 아니면 어쩔지 정해야함
             // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
-            this.http.post('http://127.0.0.1:5000/api/getEmotion/uram/1',
+            this.http.post('/api/getEmotion/uram/1',
                 {'image' : this.img},
                 {})
                 .then(data => {
