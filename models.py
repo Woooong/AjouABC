@@ -2,11 +2,10 @@ import json
 
 from datetime import date, datetime
 from flask_sqlalchemy import SQLAlchemy
-from bcrypt import hashpw
+import bcrypt
 
 db = SQLAlchemy()
 SALT = b'$2b$12$lkx75uvI9VwWAAIErNb/7.'
-
 
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
@@ -14,9 +13,13 @@ class User(db.Model):
     password = db.Column(db.String(120), nullable=False)
     emotions = db.relationship('Emotion', backref='user', lazy=True)
 
-    def __init__(self, username, password):
+    def __init__(self, username, password_text):
         self.username = username
-        self.password = hashpw(password.encode('utf-8'), SALT)
+        self.password = self.set_password(password_text)
+
+    def set_password(self, password_text):
+        password = bcrypt.hashpw(password_text.encode('utf-8'), SALT)
+        return password.decode('utf-8')
 
     def __repr__(self):
         return '<User %r>' % self.username
