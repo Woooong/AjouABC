@@ -8,7 +8,6 @@ import { NavController, AlertController } from 'ionic-angular';
 import { SelectionPage} from '../selection/selection';
 
 import { HTTP } from '@ionic-native/http';
-import {delay} from 'rxjs/operator/delay';
 
 @Component({
   selector: 'page-home',
@@ -31,14 +30,12 @@ export class HomePage implements AfterViewInit {
 
   ngAfterViewInit() {
       this.CameraOn();
-
-
   }
 
   CameraOn(){
         const options: CameraOptions = {
-            targetWidth: 500,
-            targetHeight: 500,
+            targetWidth: 100,
+            targetHeight: 100,
             quality: 100,
             destinationType: this.camera.DestinationType.DATA_URL,
             saveToPhotoAlbum: false,
@@ -50,34 +47,37 @@ export class HomePage implements AfterViewInit {
         // http 통신 후
         this.camera.getPicture(options).then((imageData) => {
             this.img = 'data:image/jpeg;base64,' + imageData;
-            // this.http.post('https://sheltered-caverns-21060.herokuapp.com/camera',
-            //     {'image' : this.img},
-            //     {})
-            //     .then(data => {
-            //         console.log(data.status);
-            //         console.log(data.data); // data received by server
-            //         console.log(data.headers);
-            //         let toast = this.toastCtrl.create({
-            //             message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
-            //             duration: 2000
-            //         });
-            //
-            //         toast.present(toast);
-            //         this.navCtrl.push(SelectionPage);
-            //     })
-            //     .catch(error => {
-            //         let toast = this.toastCtrl.create({
-            //             message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
-            //             duration: 2000
-            //         });
-            //         toast.present(toast);
-            //         this.navCtrl.push(SelectionPage);
-            //         console.log(error.status);
-            //         console.log(error.error); // error message as string
-            //         console.log(error.headers);
-            //     });
+            console.log(imageData)
+            // image file 저장 아니면 어쩔지 정해야함
+            // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
+            this.http.post('http://127.0.0.1:5000/api/getEmotion/uram/1',
+                {'image' : this.img},
+                {})
+                .then(data => {
+                    console.log(data.status);
+                    console.log(data.data); // data received by server
+                    console.log(data.headers);
+                    let toast = this.toastCtrl.create({
+                        message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
+                        duration: 2000
+                    });
 
-            this.CameraOn();
+                    toast.present(toast);
+                    // this.navCtrl.push(SelectionPage, {'emotion' : '이러함'});
+                })
+                .catch(error => {
+                    let toast = this.toastCtrl.create({
+                        message: '너의 기분은 어떻군요~~~~~~~~~~~~~',
+                        duration: 2000
+                    });
+                    toast.present(toast);
+                    // this.navCtrl.push(SelectionPage, {'emotion' : '이러함'});
+                    console.log(error.status);
+                    console.log(error.error); // error message as string
+                    console.log(error.headers);
+                });
+
+
         }, (err) => {
             this.displayErrorAlert(err);
         });

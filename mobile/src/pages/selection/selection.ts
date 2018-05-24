@@ -19,32 +19,27 @@ import { TherapyPage } from '../therapy/therapy';
 })
 export class SelectionPage {
 
+    public emotion;
+
   constructor(public navCtrl: NavController, public navParams: NavParams,
               public toastCtrl: ToastController) {
+      this.emotion = navParams.get("emotion");
+      console.log(this.emotion);
   }
 
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad SelectionPage');
-  }
-
-  goToDiary() {
-      let toast = this.toastCtrl.create({
-          message: '이우람 같군요~~~~~~~~~~~~~~',
-          duration: 2000
-      });
-
-      toast.present(toast);
-      this.navCtrl.push(DiaryPage);
-      // this.navCtrl.push(TherapyPage);
-  }
-
-    goToTherapy() {
+    selectEmotion(emo) {
+      //서버에 전송하여 노래 or 테라피 진행
         let toast = this.toastCtrl.create({
             message: '이우람 같군요~~~~~~~~~~~~~~',
             duration: 2000
         });
 
         toast.present(toast);
-        this.navCtrl.push(TherapyPage);
+        if(emo == 'angry' || emo == 'sad'){
+            this.navCtrl.push(TherapyPage);
+        }else{
+            this.navCtrl.push(DiaryPage);
+        }
+
     }
 }

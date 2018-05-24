@@ -36,43 +36,45 @@ export class LoginPage {
   }
 
   user_login() {
-      // this.http.post('https://sheltered-caverns-21060.herokuapp.com/login',
-      //     {'username' : this.username, 'password' : this.password},
-      //     {})
-      //     .then(data => {
-      //
-      //         console.log(data.status);
-      //         console.log(data.data); // data received by server
-      //         console.log(data.headers);
-      //         let toast = this.toastCtrl.create({
-      //             message: '로그인 되었습니다.',
-      //             duration: 2000
-      //         });
-      //
-      //         toast.present(toast);
-      //         this.navCtrl.push(HomePage);
-      //
-      //     })
-      //     .catch(error => {
-      //         let toast = this.toastCtrl.create({
-      //             message: '로그인 되었습니다.',
-      //             duration: 2000
-      //         });
-      //
-      //         toast.present(toast);
-      //         this.navCtrl.push(HomePage);
-      //         console.log(error.status);
-      //         console.log(error.error); // error message as string
-      //         console.log(error.headers);
-      //
-      //     });
-      let toast = this.toastCtrl.create({
-          message: '로그인 되었습니다.',
-          duration: 2000
-      });
+      this.http.post('https://sheltered-caverns-21060.herokuapp.com/login',
+          {'username' : this.username, 'password' : this.password, 'rtype' : 'json'},
+          {})
+          .then(data => {
 
-      toast.present(toast);
-      this.navCtrl.push(HomePage);
+              console.log(data.status);
+              console.log(data.data); // data received by server
+              console.log(data.headers);
+              let toast = this.toastCtrl.create({
+                  message: '로그인 되었습니다.',
+                  duration: 2000
+              });
+
+              toast.present(toast);
+              this.navCtrl.push(HomePage);
+
+          })
+          .catch(error => {
+              let toast = this.toastCtrl.create({
+                  message: '로그인 되었습니다.',
+                  duration: 2000
+              });
+
+              toast.present(toast);
+              this.navCtrl.push(HomePage);
+              console.log(error.status);
+              console.log(error.error); // error message as string
+              console.log(error.headers);
+              // alert("잠시 후 다시 시도해 주세요.");
+
+          });
+
+      // let toast = this.toastCtrl.create({
+      //     message: '로그인 되었습니다.',
+      //     duration: 2000
+      // });
+      //
+      // toast.present(toast);
+      // this.navCtrl.push(HomePage);
   }
 
 }
