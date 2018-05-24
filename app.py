@@ -5,7 +5,7 @@ import cognitive_face as face_api
 import requests as requests
 
 
-from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
+from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
 from models import db, User, Emotion, Question, UserQuestion
 from sqlalchemy.exc import IntegrityError, DataError
 from form import LoginForm, RegisterForm
