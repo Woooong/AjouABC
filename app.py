@@ -1,3 +1,4 @@
+import base64
 import json, os
 
 import pyexcel as pexcel
@@ -5,7 +6,7 @@ import cognitive_face as face_api
 import requests as requests
 
 from datetime import datetime
-from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
+from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
 from models import db, User, Emotion, Question, UserQuestion
 from sqlalchemy.exc import IntegrityError, DataError
 from form import LoginForm, RegisterForm
@@ -20,7 +21,15 @@ MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 
 
 # Index Page
+
 @app.route("/")
+def main():
+    return send_from_directory('./mobile/platforms/browser/www', 'index.html')
+
+@app.route("/<path:path>")
+def send_js(path):
+    return send_from_directory('./mobile/platforms/browser/www', path)
+
 @app.route('/index')
 def index():
     # If User is authenticated
@@ -133,8 +142,7 @@ def get_face_api(user_id, device_id):
         headers['Ocp-Apim-Subscription-Key'] = MS_KEY
         headers['Content-Type'] = 'application/octet-stream'
 
-        api_result = faceapi_request_process(None, request.data, headers, params)
-        # api_result = process_request(None, str.encode(request.form['data']), headers, params)
+        api_result = faceapi_request_process(None, base64.decodebytes(request.form['image'].split(',')[1].encode('ascii')), headers, params)
 
     else:
         face_api.Key.set(MS_KEY)
