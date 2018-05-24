@@ -5,11 +5,11 @@ import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
 
-from datetime import datetime
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
 from models import db, User, Emotion, Question, UserQuestion
+from form import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
 from sqlalchemy.exc import IntegrityError, DataError
-from form import LoginForm, RegisterForm
+from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
@@ -35,7 +35,21 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
-        return render_template('index.html', current_user=current_user)
+        end_date = datetime.now().strftime("%Y-%m-31")
+
+        user = User.query.filter_by(username=current_user).first()
+        emotions = Emotion.query.filter_by(user_id=user.id).all()
+        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+
+        data = dict()
+        data['emotions'] = len(emotions)
+        data['emotions_month'] = len(emotions_month)
+        data['userQuestions'] = len(user_questions)
+        data['userQuestions_month'] = len(user_questions_month)
+
+        return render_template('index.html', current_user=user, data=data)
     else:
         return redirect(url_for('login'))
 
@@ -94,7 +108,7 @@ def register():
         if hasattr(form, 'rtype'):
             rtype = form.rtype.data
 
-        u = User(username=form.username.data, password_text=form.password.data)
+        u = User(username=form.username.data, email=form.email.data, password_text=form.password.data)
         # u = User(username="taewoo", password="201221002")
         db.session.add(u)
         try:
@@ -116,11 +130,7 @@ def register():
                 flash('Already exist username.')
             else:
                 return jsonify(json_result)
-
-        # except DataError:
-        #     flash('DataError')
     return render_template('register.html', form=form)
-
 
 # 로그아웃
 @app.route("/logout")
@@ -128,6 +138,51 @@ def logout():
     del session['current_user']
     return redirect(url_for('login'))
 
+# Forgot Password
+@app.route("/forgot", methods=['GET', 'POST'])
+def forgot_password():
+    form = ForgotPasswordForm()
+    if form.validate_on_submit():
+        check_result = check_email_username(form.email.data, form.username.data)
+
+        if check_result is not None:
+            session['forgot_user'] = check_result
+            return redirect(url_for('reset_password'))
+        else:
+            flash('Invalid email or username')
+            return redirect(url_for('forgot_password'))
+    return render_template('forgot.html', form=form)
+
+# Check Email and Username
+def check_email_username(email, username):
+    user_email = User.query.filter_by(email=email).first()
+    user_name = User.query.filter_by(username=username).first()
+    if user_email is not None:
+        if user_email.username == username:
+            return user_email.email
+        else:
+            return False
+    elif user_name is not None:
+        if user_name.email == email:
+            return user_name.email
+        else:
+            return False
+    else:
+        return False
+
+# Reset Password
+@app.route("/reset", methods=['GET', 'POST'])
+def reset_password():
+    form = ResetPasswordForm()
+    if form.validate_on_submit():
+        email = session['forgot_user']
+        user = User.query.filter_by(email=email).first()
+        password = user.reset_password(password_text=form.password1.data)
+        user.password = password
+        db.session.commit()
+        del session['forgot_user']
+        return redirect(url_for('login'))
+    return render_template('reset.html', form=form)
 
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
