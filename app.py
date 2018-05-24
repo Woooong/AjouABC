@@ -1,13 +1,15 @@
+import base64
 import json, os
 
 import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
 
-from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify
+from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
 from models import db, User, Emotion, Question, UserQuestion
-from sqlalchemy.exc import IntegrityError
 from form import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
+from sqlalchemy.exc import IntegrityError, DataError
+from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
@@ -15,16 +17,39 @@ app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
+MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 
 
 # Index Page
+
 @app.route("/")
+def main():
+    return send_from_directory('./mobile/platforms/browser/www', 'index.html')
+
+@app.route("/<path:path>")
+def send_js(path):
+    return send_from_directory('./mobile/platforms/browser/www', path)
+
 @app.route('/index')
 def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
-        return render_template('index.html', current_user=current_user)
+        end_date = datetime.now().strftime("%Y-%m-31")
+
+        user = User.query.filter_by(username=current_user).first()
+        emotions = Emotion.query.filter_by(user_id=user.id).all()
+        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+
+        data = dict()
+        data['emotions'] = len(emotions)
+        data['emotions_month'] = len(emotions_month)
+        data['userQuestions'] = len(user_questions)
+        data['userQuestions_month'] = len(user_questions_month)
+
+        return render_template('index.html', current_user=user, data=data)
     else:
         return redirect(url_for('login'))
 
@@ -172,7 +197,7 @@ def get_face_api(user_id, device_id):
         headers['Ocp-Apim-Subscription-Key'] = MS_KEY
         headers['Content-Type'] = 'application/octet-stream'
 
-        api_result = process_request(None, request.data, headers, params)
+        api_result = faceapi_request_process(None, base64.decodebytes(request.form['image'].split(',')[1].encode('ascii')), headers, params)
 
     else:
         face_api.Key.set(MS_KEY)
@@ -184,15 +209,27 @@ def get_face_api(user_id, device_id):
         api_result = face_api.face.detect(img_url, True, False, 'emotion,age,gender')
 
     user = User.query.filter_by(username=user_id).first()
-    user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
-    represent_emotion = analysis_emotion(api_result[0]["faceAttributes"])
+    return_data = dict()
 
-    e = Emotion(user=user, str=user_emotion, res=represent_emotion)
-    db.session.add(e)
-    db.session.commit()
+    if len(api_result) > 0:
+        user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
+        represent_emotion = analysis_emotion_process(api_result[0]["faceAttributes"])
 
-    return_data = json.loads(user_emotion)
-    return_data["represent_emotion"] = represent_emotion
+        e = Emotion(user=user, emotion_json=user_emotion, res=represent_emotion)
+        db.session.add(e)
+        db.session.commit()
+
+        return_data["code"] = 200
+        return_data = json.loads(user_emotion)
+        return_data["represent_emotion"] = represent_emotion
+
+    elif len(api_result) == 0:
+        return_data["code"] = 203
+        return_data["msg"] = "No Match Face"
+
+    else:
+        return_data["code"] = 404
+        return_data["msg"] = "Other Error!"
 
     return jsonify(return_data)
     # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
@@ -222,11 +259,29 @@ def set_question_api(q_name):
 # 질문 조회
 @app.route("/api/getQuestion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def get_question_api(user_id, device_id):
+    return_data = dict()
+    today = datetime.now().strftime("%m/%d")
+
     user = User.query.filter_by(username=user_id).first()
 
+    if user is None:
+        return_data["code"] = 203
+        return_data["msg"] = "No Match User"
 
+    else:
+        today_emotion = Emotion.query.filter_by(user_id=user.id).first()
+
+        selected_question = select_question_process(today, today_emotion.result)
+
+        return_data["code"] = 200
+        return_data["data"] = {'q_id': selected_question.id, 'q_text': str.encode(selected_question.content)}
+
+    return jsonify(return_data)
+
+
+# faceapi 전송 함수
 # octet-stream API REQ Func
-def process_request(json, data, headers, params):
+def faceapi_request_process(json, data, headers, params):
     retries = 0
     result = None
 
@@ -264,7 +319,8 @@ def process_request(json, data, headers, params):
     return result
 
 
-def analysis_emotion(emotion_data):
+# 감정정보 분석 함수
+def analysis_emotion_process(emotion_data):
     user_emotion = None
 
     # lists
@@ -281,6 +337,20 @@ def analysis_emotion(emotion_data):
     return user_emotion
 
 
+# 질문 선택 함수
+def select_question_process(today, today_emotion):
+
+    selected_question = Question.query.filter_by(tag1=today).first()
+
+    if selected_question is None:
+        if today_emotion is not None:
+            selected_question = Question.query.filter_by(emotion=today_emotion).first()
+        else:
+            selected_question = Question.order_by()
+
+    return selected_question
+
+
 def init_database():
     with app.app_context():
         db.init_app(app)
@@ -289,4 +359,4 @@ def init_database():
 
 if __name__ == '__main__':
     init_database()
-    app.run(port=5000)
+    app.run(port=5000, debug=True)
