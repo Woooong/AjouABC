@@ -14,6 +14,7 @@ from datetime import datetime
 import bcrypt
 
 app = Flask(__name__)
+db.init_app(app)
 app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
@@ -363,7 +364,6 @@ def select_question_process(today, today_emotion):
 
 def init_database():
     with app.app_context():
-        db.init_app(app)
         db.create_all()
 
 
