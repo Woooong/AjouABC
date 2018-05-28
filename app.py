@@ -4,6 +4,7 @@ import json, os
 import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
+from PIL import Image
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
 from models import db, User, Emotion, Question, UserQuestion
@@ -15,6 +16,7 @@ import bcrypt
 app = Flask(__name__)
 app.secret_key = 'Secret'
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
 MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
@@ -222,6 +224,8 @@ def get_face_api(user_id, device_id):
         return_data["code"] = 200
         return_data = json.loads(user_emotion)
         return_data["represent_emotion"] = represent_emotion
+        return_data["represent_age"] = api_result[0]["faceAttributes"]["age"]
+        return_data["represent_gender"] = api_result[0]["faceAttributes"]["gender"]
 
     elif len(api_result) == 0:
         return_data["code"] = 203
@@ -230,6 +234,7 @@ def get_face_api(user_id, device_id):
     else:
         return_data["code"] = 404
         return_data["msg"] = "Other Error!"
+        print(api_result)
 
     return jsonify(return_data)
     # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
@@ -319,6 +324,11 @@ def faceapi_request_process(json, data, headers, params):
     return result
 
 
+def transpose_image(bytes):
+    img = Image.open(os.io.BytesIO(bytes))
+    return img.transpose(Image.ROTATE_90).tobytes()
+
+
 # 감정정보 분석 함수
 def analysis_emotion_process(emotion_data):
     user_emotion = None
@@ -360,3 +370,14 @@ def init_database():
 if __name__ == '__main__':
     init_database()
     app.run(port=5000, debug=True)
+
+
+def transpose_image(name):
+    img = Image.open(name)
+    transposed = img.transpose(Image.ROTATE_90)
+    return transposed
+
+
+def transpose_image_bytes(name):
+
+    return None
