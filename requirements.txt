@@ -16,6 +16,7 @@ lml==0.0.1
 MarkupSafe==1.0
 more-itertools==4.1.0
 passlib==1.7.1
+Pillow==5.1.0
 pipenv==2018.5.18
 pluggy==0.6.0
 psycopg2==2.7.4
@@ -23,6 +24,7 @@ py==1.5.3
 pycparser==2.18
 pyexcel==0.5.8
 pyexcel-io==0.5.7
+pyexcel-xls==0.5.7
 pytest==3.5.1
 requests==2.18.4
 six==1.11.0
@@ -33,3 +35,5 @@ virtualenv==15.2.0
 virtualenv-clone==0.3.0
 Werkzeug==0.14.1
 WTForms==2.1
+xlrd==1.1.0
+xlwt==1.3.0
