@@ -33,7 +33,7 @@ export class TherapyPage {
       });
 
       toast.present(toast);
-      this.navCtrl.push(DiaryPage);
+      location.replace('/AudioRecorder/index.html')
       // this.navCtrl.push(TherapyPage);
   }
 

@@ -1,0 +1,60 @@
+{
+    "logs": [
+        {
+            "outputFile": "/Users/woong/Documents/WCD2018/AjouABC/mobile/platforms/android/app/build/intermediates/res/merged/debug/values_values.arsc.flat",
+            "map": [
+                {
+                    "source": "/Users/woong/Documents/WCD2018/AjouABC/mobile/platforms/android/app/src/main/res/values/strings.xml",
+                    "from": {
+                        "startLines": "-1,-1,-1",
+                        "startColumns": "-1,-1,-1",
+                        "startOffsets": "-1,-1,-1"
+                    },
+                    "to": {
+                        "startLines": "3,4,5",
+                        "startColumns": "4,4,4",
+                        "startOffsets": "101,165,208",
+                        "endColumns": "63,42,58",
+                        "endOffsets": "160,203,262"
+                    }
+                },
+                {
+                    "source": "/Users/woong/Documents/WCD2018/AjouABC/mobile/platforms/android/app/src/main/res/values/camera_theme.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "2",
+                        "startOffsets": "53",
+                        "endLines": "7",
+                        "endColumns": "10",
+                        "endOffsets": "374"
+                    },
+                    "to": {
+                        "startLines": "6",
+                        "startColumns": "4",
+                        "startOffsets": "267",
+                        "endLines": "11",
+                        "endColumns": "10",
+                        "endOffsets": "588"
+                    }
+                },
+                {
+                    "source": "/Users/woong/Documents/WCD2018/AjouABC/mobile/platforms/android/app/src/main/res/values/camera_ids.xml",
+                    "from": {
+                        "startLines": "2",
+                        "startColumns": "2",
+                        "startOffsets": "53",
+                        "endColumns": "44",
+                        "endOffsets": "95"
+                    },
+                    "to": {
+                        "startLines": "2",
+                        "startColumns": "4",
+                        "startOffsets": "55",
+                        "endColumns": "45",
+                        "endOffsets": "96"
+                    }
+                }
+            ]
+        }
+    ]
+}
