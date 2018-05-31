@@ -61,14 +61,18 @@ def index():
 @app.route("/login", methods=['GET', 'POST'])
 def login():
     form = LoginForm()
-    # If request = POST
-    if form.validate_on_submit():
 
-        rtype = 'html'
-        if hasattr(form, 'rtype'):
-            rtype = form.rtype.data
+    # If request = POST
+    if form.validate_on_submit() or request.method == 'POST':
 
         user = User.query.filter_by(username=form.username.data).first()
+
+        rtype = 'html'
+        # if hasattr(form, 'rtype'):
+        #     rtype = form.rtype.data
+        api_data = request.form['rtype']
+        if api_data == 'json':
+            rtype = api_data
 
         # ID가 있을 시
         if user is not None:
@@ -76,7 +80,8 @@ def login():
             # Check Password
             if bcrypt.checkpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')):
             # if user.password == form.password.data:
-                json_result = {'status_code': '200', 'username': '<%s>' % user.username}
+                json_result = {'status_code': 200, 'msg': 'success login', 'user': '<%s>' % user.username}
+
                 if rtype == 'html':
                     session['current_user'] = form.username.data
                     return redirect(url_for('index'))
