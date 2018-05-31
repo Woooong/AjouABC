@@ -20,7 +20,7 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
-MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
+MS_KEY = '33c24d8bf94f4daa9fad6b0cfc69e9bd'     # 테스트용 KEY
 
 
 # Index Page
@@ -29,9 +29,11 @@ MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 def main():
     return send_from_directory('./mobile/platforms/browser/www', 'index.html')
 
+
 @app.route("/<path:path>")
 def send_js(path):
     return send_from_directory('./mobile/platforms/browser/www', path)
+
 
 @app.route('/index')
 def index():
@@ -135,11 +137,13 @@ def register():
                 return jsonify(json_result)
     return render_template('register.html', form=form)
 
+
 # 로그아웃
 @app.route("/logout")
 def logout():
     del session['current_user']
     return redirect(url_for('login'))
+
 
 # Forgot Password
 @app.route("/forgot", methods=['GET', 'POST'])
@@ -155,6 +159,7 @@ def forgot_password():
             flash('Invalid email or username')
             return redirect(url_for('forgot_password'))
     return render_template('forgot.html', form=form)
+
 
 # Check Email and Username
 def check_email_username(email, username):
@@ -173,6 +178,7 @@ def check_email_username(email, username):
     else:
         return False
 
+
 # Reset Password
 @app.route("/reset", methods=['GET', 'POST'])
 def reset_password():
@@ -186,6 +192,7 @@ def reset_password():
         del session['forgot_user']
         return redirect(url_for('login'))
     return render_template('reset.html', form=form)
+
 
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
