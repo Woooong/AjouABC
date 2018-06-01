@@ -20,7 +20,11 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
-MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
+MS_KEY = '33c24d8bf94f4daa9fad6b0cfc69e9bd'     # 테스트용 KEY
+
+face_api.Key.set(MS_KEY)
+face_api.BaseUrl.set(MS_BASE_URL)
+img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
 
 
 # Index Page
@@ -29,9 +33,11 @@ MS_KEY = '3f3711313ec74648ad53e3d067209748'     # 테스트용 KEY
 def main():
     return send_from_directory('./mobile/platforms/browser/www', 'index.html')
 
+
 @app.route("/<path:path>")
 def send_js(path):
     return send_from_directory('./mobile/platforms/browser/www', path)
+
 
 @app.route('/index')
 def index():
@@ -140,11 +146,13 @@ def register():
                 return jsonify(json_result)
     return render_template('register.html', form=form)
 
+
 # 로그아웃
 @app.route("/logout")
 def logout():
     del session['current_user']
     return redirect(url_for('login'))
+
 
 # Forgot Password
 @app.route("/forgot", methods=['GET', 'POST'])
@@ -160,6 +168,7 @@ def forgot_password():
             flash('Invalid email or username')
             return redirect(url_for('forgot_password'))
     return render_template('forgot.html', form=form)
+
 
 # Check Email and Username
 def check_email_username(email, username):
@@ -178,6 +187,7 @@ def check_email_username(email, username):
     else:
         return False
 
+
 # Reset Password
 @app.route("/reset", methods=['GET', 'POST'])
 def reset_password():
@@ -192,33 +202,37 @@ def reset_password():
         return redirect(url_for('login'))
     return render_template('reset.html', form=form)
 
+
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def get_face_api(user_id, device_id):
 
     if request.method == 'POST':
-        # Face detection parameters
-        params = {'returnFaceAttributes': 'emotion,age,gender',
-                  'returnFaceLandmarks': 'true'}
-
-        headers = dict()
-        headers['Ocp-Apim-Subscription-Key'] = MS_KEY
-        headers['Content-Type'] = 'application/octet-stream'
-
-        api_result = faceapi_request_process(None, base64.decodebytes(request.form['image'].split(',')[1].encode('ascii')), headers, params)
+        headers, params = make_params()
+        received_bytes = base64.decodebytes(request.form['image'].split(',')[1].encode('ascii'))
+        api_result = faceapi_request_process(None, transpose_image(received_bytes), headers, params)
 
     else:
-        face_api.Key.set(MS_KEY)
-        face_api.BaseUrl.set(MS_BASE_URL)
-
-        # You can use this example JPG or replace the URL below with your own URL to a JPEG image.
-        img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-
         api_result = face_api.face.detect(img_url, True, False, 'emotion,age,gender')
 
     user = User.query.filter_by(username=user_id).first()
-    return_data = dict()
+    return_data = make_return_data(api_result, user)
 
+    return jsonify(return_data)
+
+
+def make_params():
+    # Face detection parameters
+    params = {'returnFaceAttributes': 'emotion,age,gender',
+              'returnFaceLandmarks': 'true'}
+    headers = dict()
+    headers['Ocp-Apim-Subscription-Key'] = MS_KEY
+    headers['Content-Type'] = 'application/octet-stream'
+    return headers, params
+
+
+def make_return_data(api_result, user):
+    return_data = dict()
     if len(api_result) > 0:
         user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
         represent_emotion = analysis_emotion_process(api_result[0]["faceAttributes"])
@@ -240,10 +254,7 @@ def get_face_api(user_id, device_id):
     else:
         return_data["code"] = 404
         return_data["msg"] = "Other Error!"
-        print(api_result)
-
-    return jsonify(return_data)
-    # return render_template('showFace.html', emotions=api_result[0]["faceAttributes"]["emotion"], img=img_url)
+    return return_data
 
 
 # 질문 입력
@@ -293,7 +304,6 @@ def get_question_api(user_id, device_id):
 # faceapi 전송 함수
 # octet-stream API REQ Func
 def faceapi_request_process(json, data, headers, params):
-    retries = 0
     result = None
 
     while True:
@@ -303,14 +313,6 @@ def faceapi_request_process(json, data, headers, params):
         if response.status_code == 429:
 
             print("Message: %s" % (response.json()['error']['message']))
-
-            # if retries <= _maxNumRetries:
-            #     time.sleep(1)
-            #     retries += 1
-            #     continue
-            # else:
-            #     print('Error: failed after retrying!')
-            #     break
 
         elif response.status_code == 200 or response.status_code == 201:
 
