@@ -62,6 +62,8 @@ export class SelectionPage {
   }
 
     selectEmotion(emo) {
+        location.replace('/AudioRecorder/index.html');
+        // this.navCtrl.push(DiaryPage);
       //서버에 전송하여 노래 or 테라피 진행
       //   let toast = this.toastCtrl.create({
       //       message: '제가 분석한 당신은 '+this.emotion+' 기분입니다. 맞습니까?',

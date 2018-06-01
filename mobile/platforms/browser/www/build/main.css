@@ -25691,6 +25691,97 @@ page-diary ion-content {
   color: #FFF !important;
 }
 
+page-diary canvas {
+  display: inline-block;
+  width: 95%;
+}
+
+page-diary #controls {
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: horizontal;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: row;
+  -ms-flex-direction: row;
+  flex-direction: row;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  height: 20%;
+  width: 100%;
+}
+
+page-diary #record {
+  height: 15vh;
+}
+
+page-diary #record.recording {
+  background: red;
+  background: radial-gradient(center, ellipse cover, #ff0000 0%, black 75%, black 100%, #7db9e8 100%);
+}
+
+page-diary #save, page-diary #save img {
+  height: 10vh;
+}
+
+page-diary #save {
+  opacity: 0.25;
+}
+
+page-diary #save[download] {
+  opacity: 1;
+}
+
+page-diary #viz {
+  height: 20%;
+  width: 100%;
+  display: -webkit-box;
+  display: -webkit-flex;
+  display: -ms-flexbox;
+  display: flex;
+  -webkit-box-orient: vertical;
+  -webkit-box-direction: normal;
+  -webkit-flex-direction: column;
+  -ms-flex-direction: column;
+  flex-direction: column;
+  -webkit-justify-content: space-around;
+  -ms-flex-pack: distribute;
+  justify-content: space-around;
+  -webkit-box-align: center;
+  -webkit-align-items: center;
+  -ms-flex-align: center;
+  align-items: center;
+}
+
+@media (orientation: landscape) {
+  page-diary body {
+    -webkit-box-orient: horizontal;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: row;
+    -ms-flex-direction: row;
+    flex-direction: row;
+  }
+  page-diary #controls {
+    -webkit-box-orient: vertical;
+    -webkit-box-direction: normal;
+    -webkit-flex-direction: column;
+    -ms-flex-direction: column;
+    flex-direction: column;
+    height: 100%;
+    width: 10%;
+  }
+  page-diary #viz {
+    height: 100%;
+    width: 90%;
+  }
+}
+
 page-home ion-content {
   background: #000 !important;
   color: #FFF !important;

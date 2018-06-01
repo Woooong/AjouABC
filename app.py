@@ -1,6 +1,9 @@
 import base64
+import io
 import json, os
+import re
 
+import boto3 as boto3
 import pyexcel as pexcel
 import cognitive_face as face_api
 import requests as requests
@@ -13,6 +16,8 @@ from sqlalchemy.exc import IntegrityError, DataError
 from datetime import datetime
 import bcrypt
 
+
+
 app = Flask(__name__)
 db.init_app(app)
 app.secret_key = 'Secret'
@@ -20,12 +25,12 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
-MS_KEY = '33c24d8bf94f4daa9fad6b0cfc69e9bd'     # 테스트용 KEY
+# MS_KEY = '33c24d8bf94f4daa9fad6b0cfc69e9bd'     # 테스트용 KEY
 
 face_api.Key.set(MS_KEY)
 face_api.BaseUrl.set(MS_BASE_URL)
 img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
-
+s3_client = boto3.client("s3", aws_access_key_id=os.environ['AWS_ACCESS'], aws_secret_access_key=os.environ['AWS_SECRET'])
 
 # Index Page
 
@@ -203,14 +208,23 @@ def reset_password():
     return render_template('reset.html', form=form)
 
 
+@app.route("/api/record", methods=['POST'])
+def get_record_file():
+    print(request.form['data'])
+    key_name = str(datetime.now().timestamp()) + '.mp3'
+    s3_client.put_object(ACL='public-read', Body=base64.b64decode(request.form['data'].split(',')[1]), Key=key_name,
+                         Metadata={'Content-Type': 'audio/mpeg'}, Bucket='ryun.capstone')
+
+    return jsonify({'url': 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/' + key_name})
+
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def get_face_api(user_id, device_id):
 
     if request.method == 'POST':
         headers, params = make_params()
-        received_bytes = base64.decodebytes(request.form['image'].split(',')[1].encode('ascii'))
-        api_result = faceapi_request_process(None, transpose_image(received_bytes), headers, params)
+        img_str = prepare_img()
+        api_result = faceapi_request_process(None, base64.decodebytes(img_str), headers, params)
 
     else:
         api_result = face_api.face.detect(img_url, True, False, 'emotion,age,gender')
@@ -219,6 +233,16 @@ def get_face_api(user_id, device_id):
     return_data = make_return_data(api_result, user)
 
     return jsonify(return_data)
+
+
+def prepare_img(rotate=None):
+    image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
+    im = Image.open(io.BytesIO(base64.b64decode(image_data)))
+    buffered = io.BytesIO()
+    if rotate: im = im.transpose(rotate)
+    im.save(buffered, format="PNG")
+    img_str = base64.b64encode(buffered.getvalue())
+    return img_str
 
 
 def make_params():
@@ -330,12 +354,6 @@ def faceapi_request_process(json, data, headers, params):
         break
 
     return result
-
-
-def transpose_image(bytes):
-    img = Image.open(os.io.BytesIO(bytes))
-    return img.transpose(Image.ROTATE_90).tobytes()
-
 
 # 감정정보 분석 함수
 def analysis_emotion_process(emotion_data):

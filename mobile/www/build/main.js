@@ -8,7 +8,7 @@ webpackJsonp([4],{
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(155);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -77,7 +77,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed>Username</ion-label>\n      <ion-input type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed>Password</ion-label>\n      <ion-input type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed>Username</ion-label>\n      <ion-input type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed>Password</ion-label>\n      <ion-input type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
@@ -98,7 +98,6 @@ var LoginPage = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectionPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__therapy_therapy__ = __webpack_require__(103);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -108,7 +107,6 @@ var __decorate = (this && this.__decorate) || function (decorators, target, key,
 var __metadata = (this && this.__metadata) || function (k, v) {
     if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
 };
-
 
 
 
@@ -159,6 +157,8 @@ var SelectionPage = /** @class */ (function () {
         this.age = parseInt(this.emotion_data['represent_age']);
     }
     SelectionPage.prototype.selectEmotion = function (emo) {
+        location.replace('/AudioRecorder/index.html');
+        // this.navCtrl.push(DiaryPage);
         //서버에 전송하여 노래 or 테라피 진행
         //   let toast = this.toastCtrl.create({
         //       message: '제가 분석한 당신은 '+this.emotion+' 기분입니다. 맞습니까?',
@@ -166,12 +166,11 @@ var SelectionPage = /** @class */ (function () {
         //   });
         //
         //   toast.present(toast);
-        if (emo == 'angry' || emo == 'sad') {
-            this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_2__therapy_therapy__["a" /* TherapyPage */]);
-        }
-        else {
-            location.replace('/AudioRecorder/index.html');
-        }
+        //   if(emo == 'angry' || emo == 'sad'){
+        //       this.navCtrl.push(TherapyPage);
+        //   }else{
+        //       location.replace('/AudioRecorder/index.html')
+        //   }
     };
     SelectionPage.prototype.emotion_cehck = function (chk) {
         if (chk == 'Y') {
@@ -189,7 +188,7 @@ var SelectionPage = /** @class */ (function () {
     };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n\n  <div id="step1">\n    <h1>오늘 당신은 {{age}}세 {{gender}}의\n      {{emotion}}얼굴을 가지고 있군요.</h1>\n  </div>\n\n  <div id="step2" style="display: none;">\n    <h1>당신의 진짜 기분은 무엇입니까?</h1>\n    <div>\n      <img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">\n      <img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">\n      <img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">\n      <img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n\n  <div id="step1">\n    <h1>오늘 당신은 {{age}}세 {{gender}}의\n      {{emotion}}얼굴을 가지고 있군요.</h1>\n  </div>\n\n  <div id="step2" style="display: block;">\n    <h1>당신의 진짜 기분은 무엇입니까?</h1>\n    <div>\n      <img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">\n      <img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">\n      <img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">\n      <img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/selection/selection.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
@@ -201,64 +200,7 @@ var SelectionPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 103:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TherapyPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-/**
- * Generated class for the TherapyPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var TherapyPage = /** @class */ (function () {
-    function TherapyPage(navCtrl, navParams, toastCtrl) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.toastCtrl = toastCtrl;
-    }
-    TherapyPage.prototype.ionViewDidLoad = function () {
-        console.log('ionViewDidLoad TherapyPage');
-    };
-    TherapyPage.prototype.goToDiary = function () {
-        var toast = this.toastCtrl.create({
-            message: '이우람 같군요~~~~~~~~~~~~~~',
-            duration: 2000
-        });
-        toast.present(toast);
-        location.replace('/AudioRecorder/index.html');
-        // this.navCtrl.push(TherapyPage);
-    };
-    TherapyPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-therapy',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/therapy/therapy.html"*/'<!--\n  Generated template for the TherapyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n <div>테라피다 정신병원가자</div>\n <button (click)="goToDiary()">다이어리</button>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/therapy/therapy.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
-    ], TherapyPage);
-    return TherapyPage;
-}());
-
-//# sourceMappingURL=therapy.js.map
-
-/***/ }),
-
-/***/ 113:
+/***/ 112:
 /***/ (function(module, exports) {
 
 function webpackEmptyAsyncContext(req) {
@@ -271,11 +213,11 @@ function webpackEmptyAsyncContext(req) {
 webpackEmptyAsyncContext.keys = function() { return []; };
 webpackEmptyAsyncContext.resolve = webpackEmptyAsyncContext;
 module.exports = webpackEmptyAsyncContext;
-webpackEmptyAsyncContext.id = 113;
+webpackEmptyAsyncContext.id = 112;
 
 /***/ }),
 
-/***/ 154:
+/***/ 153:
 /***/ (function(module, exports, __webpack_require__) {
 
 var map = {
@@ -307,18 +249,18 @@ function webpackAsyncContext(req) {
 webpackAsyncContext.keys = function webpackAsyncContextKeys() {
 	return Object.keys(map);
 };
-webpackAsyncContext.id = 154;
+webpackAsyncContext.id = 153;
 module.exports = webpackAsyncContext;
 
 /***/ }),
 
-/***/ 156:
+/***/ 155:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return HomePage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(102);
@@ -429,7 +371,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/'<script>\n    console.log(123);\n</script>\n<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/home/home.html"*/'<script>\n    console.log(123);\n</script>\n<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__["a" /* Camera */],
@@ -445,7 +387,7 @@ var HomePage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 199:
+/***/ 198:
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
@@ -490,7 +432,7 @@ var DiaryPage = /** @class */ (function () {
     };
     DiaryPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-diary',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/diary/diary.html"*/'<!--\n  Generated template for the DiaryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n  <h1>세월을 정통으로 맞으신 기분을 한마디로 표현하세요.</h1>\n  <button (click)="CloseVoiceRecord()"> 녹음끝~~~ </button>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/diary/diary.html"*/,
+            selector: 'page-diary',template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/diary/diary.html"*/'<!--\n  Generated template for the DiaryPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n\n<script src="js/audiodisplay.js"></script>\n<script src="js/recorderjs/recorder.js"></script>\n<script src="js/recorderjs/lame.min.js"></script>\n<script src="js/main.js"></script>\n  <h1>세월을 정통으로 맞으신 기분을 한마디로 표현하세요1.</h1>\n  <button (click)="CloseVoiceRecord()"> 녹음끝~~~ </button>\n</ion-content>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/diary/diary.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
@@ -499,6 +441,63 @@ var DiaryPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=diary.js.map
+
+/***/ }),
+
+/***/ 199:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return TherapyPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+/**
+ * Generated class for the TherapyPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var TherapyPage = /** @class */ (function () {
+    function TherapyPage(navCtrl, navParams, toastCtrl) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.toastCtrl = toastCtrl;
+    }
+    TherapyPage.prototype.ionViewDidLoad = function () {
+        console.log('ionViewDidLoad TherapyPage');
+    };
+    TherapyPage.prototype.goToDiary = function () {
+        var toast = this.toastCtrl.create({
+            message: '이우람 같군요~~~~~~~~~~~~~~',
+            duration: 2000
+        });
+        toast.present(toast);
+        location.replace('/AudioRecorder/index.html');
+        // this.navCtrl.push(TherapyPage);
+    };
+    TherapyPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-therapy',template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/therapy/therapy.html"*/'<!--\n  Generated template for the TherapyPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n <div>테라피다 정신병원가자</div>\n <button (click)="goToDiary()">다이어리</button>\n</ion-content>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/pages/therapy/therapy.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */]])
+    ], TherapyPage);
+    return TherapyPage;
+}());
+
+//# sourceMappingURL=therapy.js.map
 
 /***/ }),
 
@@ -524,17 +523,17 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(197);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__ionic_native_status_bar__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(78);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__ = __webpack_require__(157);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_6__ionic_native_camera__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera_preview__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(275);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(156);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(155);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(102);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(199);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_therapy_therapy__ = __webpack_require__(103);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(198);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_therapy_therapy__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
@@ -612,8 +611,8 @@ var AppModule = /** @class */ (function () {
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return MyApp; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(198);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(197);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(101);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -640,7 +639,7 @@ var MyApp = /** @class */ (function () {
         });
     }
     MyApp = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/app/app.html"*/
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({template:/*ion-inline-start:"/Users/ryun/Develop/school/AjouABC/mobile/src/app/app.html"*/'<ion-nav [root]="rootPage"></ion-nav>\n'/*ion-inline-end:"/Users/ryun/Develop/school/AjouABC/mobile/src/app/app.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["h" /* Platform */], __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__["a" /* StatusBar */], __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__["a" /* SplashScreen */]])
     ], MyApp);
