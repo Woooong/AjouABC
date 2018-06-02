@@ -1,0 +1,27 @@
+{% extends "layout.html" %}
+
+{% block content %}
+<div id="page-wrapper">
+    <div class="row">
+        <div class="col-lg-12">
+            <h1 class="page-header">{{ current_user.username }}님의 누적 감정 기록 {{ data.emotions }}</h1>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    Anger
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ data.anger }}" aria-valuemin="0" aria-valuemax="1" style="width: 40%">
+                            <span class="sr-only">{{ data.anger }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+{% endblock %}
