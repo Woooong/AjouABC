@@ -7,6 +7,7 @@ import bcrypt
 db = SQLAlchemy()
 SALT = b'$2b$12$lkx75uvI9VwWAAIErNb/7.'
 
+
 class User(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     username = db.Column(db.String(80), unique=True, nullable=False)
@@ -77,7 +78,7 @@ class Question(db.Model):
     tag1 = db.Column(db.String(50), nullable=True)
     tag2 = db.Column(db.String(50), nullable=True)
 
-    def __init__(self, question, date=datetime.now()):
+    def __init__(self, question):
         q = json.loads(question)
         self.content = q['q_content']
         self.emotion = q['q_emotion']
@@ -101,3 +102,18 @@ class UserQuestion(db.Model):
         self.question_reply = reply
         self.created = date
         self.updated = date
+
+
+class ReplyMent(db.Model):
+    id = db.Column(db.Integer, primary_key=True)
+    reply_ment = db.Column(db.String(1000), unique=True, nullable=False)
+    emotion = db.Column(db.String(10), nullable=True)
+    tag1 = db.Column(db.String(50), nullable=True)
+    tag2 = db.Column(db.String(50), nullable=True)
+
+    def __init__(self, ment):
+        m = json.loads(ment)
+        self.reply_ment = m['m_content']
+        self.emotion =m['m_emotion']
+        self.tag1 = m['m_tag1']
+        self.tag2 = m['m_tag2']

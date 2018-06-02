@@ -21,9 +21,9 @@ import { TherapyPage } from '../pages/therapy/therapy';
     MyApp,
     HomePage,
     LoginPage,
-      SelectionPage,
-      DiaryPage,
-      TherapyPage
+    SelectionPage,
+    DiaryPage,
+    TherapyPage
   ],
   imports: [
     BrowserModule,
@@ -34,9 +34,9 @@ import { TherapyPage } from '../pages/therapy/therapy';
     MyApp,
     HomePage,
     LoginPage,
-      SelectionPage,
-      DiaryPage,
-      TherapyPage
+    SelectionPage,
+    DiaryPage,
+    TherapyPage
   ],
   providers: [
     StatusBar,

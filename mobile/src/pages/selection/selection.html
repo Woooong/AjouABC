@@ -6,18 +6,18 @@
 -->
 <ion-content padding>
 
-  <div>
-    <h1>당신의 기분은 {{emotion}}합니다. 맞습니까?</h1>
-    <ion-buttons>예스!</ion-buttons>
-    <ion-buttons>노!</ion-buttons>
+  <div id="step1">
+    <h1>오늘 당신은 {{age}}세 {{gender}}의
+      {{emotion}}얼굴을 가지고 있군요.</h1>
   </div>
-  <h1>진짜 너의 기분은 무엇이냐?</h1>
-  <div>
-    <ion-img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion('angry')"></ion-img>
-    <ion-img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion('happy')"></ion-img>
-    <ion-img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion('sad')"></ion-img>
-    <ion-img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion('tired')"></ion-img>
+
+  <div id="step2" style="display: block;">
+    <h1>당신의 진짜 기분은 무엇입니까?</h1>
+    <div>
+      <img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion('angry')">
+      <img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion('happy')">
+      <img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion('sad')">
+      <img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion('tired')">
+    </div>
   </div>
-  <!--<button (click)="goToDiary()">다이어리</button>-->
-  <!--<button (click)="goToTherapy()">테라피</button>-->
 </ion-content>
