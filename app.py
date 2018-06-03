@@ -256,9 +256,18 @@ def get_voice():
     rescode = response.getcode()
     if (rescode == 200):
         response_body = response.read()
-        return response_body, 200, {'content-type': 'audio/mpeg;charset=utf-8'}
+        return json.dumps({'url': get_record_file(response_body)})
+
+
     else:
         return jsonify({'result': False})
+
+def get_record_file(record_data):
+    key_name = 'reply_ment.'+str(datetime.now().timestamp()) + '.mp3'
+    s3_client.put_object(ACL='public-read', Body=record_data, Key=key_name,
+                         Metadata={'Content-Type': 'audio/mpeg'}, Bucket='ryun.capstone')
+
+    return 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/' + key_name
 
 def prepare_img(rotate=None):
     image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
