@@ -273,14 +273,14 @@ def get_voice():
     rescode = response.getcode()
     if (rescode == 200):
         response_body = response.read()
-        return json.dumps({'url': get_record_file(response_body)})
+        return json.dumps({'url': get_voice_ment(response_body)})
 
 
     else:
         return jsonify({'result': False})
 
 
-def get_record_file(record_data):
+def get_voice_ment(record_data):
     key_name = 'reply_ment.'+str(datetime.now().timestamp()) + '.mp3'
     s3_client.put_object(ACL='public-read', Body=record_data, Key=key_name,
                          Metadata={'Content-Type': 'audio/mpeg'}, Bucket='ryun.capstone')
