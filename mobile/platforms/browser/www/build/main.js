@@ -123,7 +123,6 @@ var __metadata = (this && this.__metadata) || function (k, v) {
  */
 var SelectionPage = /** @class */ (function () {
     function SelectionPage(navCtrl, navParams, toastCtrl, http) {
-        var _this = this;
         this.navCtrl = navCtrl;
         this.navParams = navParams;
         this.toastCtrl = toastCtrl;
@@ -163,11 +162,15 @@ var SelectionPage = /** @class */ (function () {
             this.gender = '여자';
         }
         this.age = parseInt(this.emotion_data['represent_age']);
+    }
+    SelectionPage.prototype.ngOnInit = function () {
+        var _this = this;
         this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
         this.comment_list.push("오늘 무슨일이 있으셨나요?");
         this.comment_list.push("별일이 없으셨군요. 오늘도 다이어리를 입력해 봅시다.");
         console.log(this.comment_list);
-        var count = 0;
+        document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
+        var count = 1;
         setInterval(function () {
             if (!_this.comment_list[count]) {
                 _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
@@ -191,10 +194,10 @@ var SelectionPage = /** @class */ (function () {
                 count++;
             }
         }, 5000);
-    }
+    };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content padding>\n\n  <div id="comment">\n\n  </div>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],

@@ -1,4 +1,4 @@
-import { Component } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ToastController } from 'ionic-angular';
@@ -17,7 +17,7 @@ import { TherapyPage } from '../therapy/therapy';
   selector: 'page-selection',
   templateUrl: 'selection.html',
 })
-export class SelectionPage {
+export class SelectionPage implements OnInit{
 
     private emotion_data;
     private emotion_code;
@@ -64,11 +64,16 @@ export class SelectionPage {
       }
 
       this.age = parseInt(this.emotion_data['represent_age'])
-      this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
+
+  }
+
+  ngOnInit() {
+    this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
       this.comment_list.push("오늘 무슨일이 있으셨나요?");
       this.comment_list.push("별일이 없으셨군요. 오늘도 다이어리를 입력해 봅시다.");
       console.log(this.comment_list);
-      let count = 0;
+      document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
+      let count = 1;
       setInterval(()=> {
           if(!this.comment_list[count]){
               this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
