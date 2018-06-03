@@ -33,6 +33,9 @@
     <!-- Main CSS-->
     <link href="static/css/theme.css" rel="stylesheet" media="all">
 
+    <!-- Jquery JS-->
+    <script src="static/vendor/jquery-3.2.1.min.js"></script>
+
 </head>
 
 <body class="animsition">
@@ -77,9 +80,8 @@
         <!-- MENU SIDEBAR-->
         <aside class="menu-sidebar d-none d-lg-block">
             <div class="logo">
-                <a href="{{ url_for('index') }}">
-                    <img src="static/images/icon/web_logo.png" alt="Cool Admin" />
-                </a>
+                <a href="{{ url_for('index') }}"><img src="static/images/icon/web_logo.png" alt="Cool Admin" /></a>
+                <span class="logo-txt">당신의 감정을 기록하는,<br>오늘의 거울</span>
             </div>
             <div class="menu-sidebar__content js-scrollbar1">
                 <nav class="navbar-sidebar">
@@ -209,8 +211,7 @@
         </div>
     </div>
 
-    <!-- Jquery JS-->
-    <script src="static/vendor/jquery-3.2.1.min.js"></script>
+
     <!-- Bootstrap JS-->
     <script src="static/vendor/bootstrap-4.1/popper.min.js"></script>
     <script src="static/vendor/bootstrap-4.1/bootstrap.min.js"></script>

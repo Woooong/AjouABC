@@ -200,8 +200,16 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    data = Emotion.query.filter_by(user_id=user.id).first()
-    return render_template('emotion.html', current_user=current_user, data=data)
+    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
+    return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
+
+
+@app.route("/getGraph", methods=['POST'])
+def get_graph_data():
+
+    emotion = Emotion.query.filter_by(id=request.json['emotion_id']).first()
+
+    return jsonify(emotion)
 
 
 # 다이어리 저장
@@ -243,6 +251,7 @@ def get_face_api(user_id, device_id):
 
     return jsonify(return_data)
 
+
 @app.route("/api/getVoice", methods=['POST'])
 def get_voice():
 
@@ -260,6 +269,7 @@ def get_voice():
         return response_body, 200, {'content-type': 'audio/mpeg;charset=utf-8'}
     else:
         return jsonify({'result': False})
+
 
 def prepare_img(rotate=None):
     image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
@@ -420,16 +430,17 @@ def analysis_emotion_process(emotion_data):
 
 # 질문 선택 함수
 def select_question_process(today, today_emotion):
-
+    rand = divmod(datetime.now().microsecond, Question.query.count())[1]
     selected_question = Question.query.filter_by(tag1=today).first()
 
     if selected_question is None:
         selected_question = Question.query.filter_by(emotion=today_emotion).first()
 
     if selected_question is None:
-        rand = random.randrange(0, Question.query.count())
+        rand = divmod(datetime.now().microsecond, Question.query.count())[1]
         selected_question = Question.query[rand]
 
+    selected_question = Question.query[rand]
     return selected_question
 
 
