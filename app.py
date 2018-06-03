@@ -227,7 +227,7 @@ def get_face_api(user_id, device_id):
 
     if request.method == 'POST':
         headers, params = make_params()
-        img_str = prepare_img(Image.ROTATE_90)
+        img_str = prepare_img(Image.ROTATE_270)
         api_result = faceapi_request_process(None, base64.decodebytes(img_str), headers, params)
 
     else:
@@ -339,7 +339,7 @@ def get_question_api(user_id, device_id):
         selected_question = select_question_process(today, today_emotion.result)
 
         return_data["code"] = 200
-        return_data["data"] = {'q_id': selected_question.id, 'q_text': str.encode(selected_question.content)}
+        return_data["data"] = {'q_id': selected_question.id, 'q_text': selected_question.content}
 
     return jsonify(return_data)
 
