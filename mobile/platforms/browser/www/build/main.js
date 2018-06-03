@@ -43,6 +43,7 @@ var LoginPage = /** @class */ (function () {
     }
     LoginPage.prototype.user_login = function () {
         var _this = this;
+        document.getElementById('login_btn').setAttribute('disabled', 'disabled');
         this.http.post('/login', { 'username': this.username, 'password': this.password, 'rtype': 'json' }, {})
             .then(function (data) {
             // console.log(data.status);
@@ -63,10 +64,12 @@ var LoginPage = /** @class */ (function () {
                     message: '아이디 또는 비밀번호가 잘못 되었습니다.',
                     duration: 2000
                 });
+                document.getElementById('login_btn').removeAttribute('disabled');
                 toast.present(toast);
             }
         })
             .catch(function (error) {
+            document.getElementById('login_btn').removeAttribute('disabled');
             var toast = _this.toastCtrl.create({
                 message: '아이디 또는 비밀번호가 잘못 되었습니다.',
                 duration: 2000
@@ -80,7 +83,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed>Username</ion-label>\n      <ion-input type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed>Password</ion-label>\n      <ion-input type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed>Username</ion-label>\n      <ion-input type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed>Password</ion-label>\n      <ion-input type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
@@ -156,6 +159,9 @@ var SelectionPage = /** @class */ (function () {
         else if (this.emotion_code == "surprise") {
             this.emotion = "놀란";
         }
+        else if (this.emotion_code == "neutral") {
+            this.emotion = "무표정한";
+        }
         if (this.emotion_data['represent_gender'] == 'male') {
             this.gender = '남자';
         }
@@ -169,7 +175,7 @@ var SelectionPage = /** @class */ (function () {
         var _this = this;
         this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
         this.comment_list.push(this.ment);
-        this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
+        this.comment_list.push("오늘도 다이어리를 작성해 볼까요?");
         document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
         this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment_list.join(', ') }, {})
             .then(function (data) {
@@ -358,6 +364,9 @@ var HomePage = /** @class */ (function () {
                 }
                 else if (_this.emotion_code == "surprise") {
                     _this.emotion = "놀란";
+                }
+                else if (_this.emotion_code == "neutral") {
+                    _this.emotion = "무표정한";
                 }
                 if (_this.emotion == null) {
                     _this.CameraOn();

@@ -68,6 +68,7 @@ function capture (success, errorCallback, opts) {
 
     video.width = targetWidth;
     video.height = targetHeight;
+    video.muted = true;
     button.innerHTML = 'Capture!';
 
     button.onclick = function () {

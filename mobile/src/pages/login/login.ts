@@ -38,6 +38,7 @@ export class LoginPage {
   }
 
   user_login() {
+      document.getElementById('login_btn').setAttribute('disabled','disabled');
       this.http.post('/login',
           {'username' : this.username, 'password' : this.password, 'rtype' : 'json'},
           {})
@@ -61,10 +62,12 @@ export class LoginPage {
                       message: '아이디 또는 비밀번호가 잘못 되었습니다.',
                       duration: 2000
                   });
+                  document.getElementById('login_btn').removeAttribute('disabled');
                   toast.present(toast);
               }
           })
           .catch(error => {
+              document.getElementById('login_btn').removeAttribute('disabled');
               let toast = this.toastCtrl.create({
                   message: '아이디 또는 비밀번호가 잘못 되었습니다.',
                   duration: 2000
