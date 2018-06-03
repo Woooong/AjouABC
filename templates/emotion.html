@@ -4,19 +4,130 @@
 <div id="page-wrapper">
     <div class="row">
         <div class="col-lg-12">
-            <h1 class="page-header">{{ current_user.username }}님의 누적 감정 기록 {{ data.emotions }}</h1>
+            <h1 class="page-header">{{ current_user }}님의 누적 감정 기록</h1>
         </div>
     </div>
     <div class="row">
         <div class="col-md-6">
             <div class="panel panel-default">
                 <div class="panel-heading">
-                    Anger
+                    <p>
+                        <strong>Anger</strong>
+                        <span class="pull-right text-muted">{{ (data.anger*100)|int }}%</span>
+                    </p>
                 </div>
                 <div class="panel-body">
                     <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ data.anger }}" aria-valuemin="0" aria-valuemax="1" style="width: 40%">
-                            <span class="sr-only">{{ data.anger }}%</span>
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.anger*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.anger*100)|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Contempt</strong>
+                        <span class="pull-right text-muted">{{ (data.contempt*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.contempt*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.contempt*100)|int }}% Complete</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Disgust</strong>
+                        <span class="pull-right text-muted">{{ (data.disgust*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.disgust*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.disgust*100)|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Fear</strong>
+                        <span class="pull-right text-muted">{{ (data.fear*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.fear*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.fear*100)|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Happiness</strong>
+                        <span class="pull-right text-muted">{{ (data.happiness*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.happiness*100)|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Sadness</strong>
+                        <span class="pull-right text-muted">{{ (data.sadness*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.sadness*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.sadness*100)|int }}%</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    <div class="row">
+        <div class="col-md-6">
+            <div class="panel panel-default">
+                <div class="panel-heading">
+                    <p>
+                        <strong>Surprise</strong>
+                        <span class="pull-right text-muted">{{ (data.surprise*100)|int }}%</span>
+                    </p>
+                </div>
+                <div class="panel-body">
+                    <div class="progress progress-striped active">
+                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.surprise*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
+                            <span class="sr-only">{{ (data.surprise*100)|int }}%</span>
                         </div>
                     </div>
                 </div>

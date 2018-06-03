@@ -49,7 +49,7 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
-        end_date = datetime.now().strftime("%Y-%m-31")
+        end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).all()
@@ -79,18 +79,14 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         rtype = 'html'
-        # if hasattr(form, 'rtype'):
-        #     rtype = form.rtype.data
         if 'rtype' in request.form:
-            if request.form['rtype'] == 'json':
-                rtype = request.form['rtype']
+            rtype = request.form['rtype']
 
         # ID가 있을 시
         if user is not None:
 
             # Check Password
             if bcrypt.checkpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')):
-            # if user.password == form.password.data:
                 json_result = {'status_code': '200', 'msg': 'success login', 'user': '%s' % user.username}
 
                 if rtype == 'html':
@@ -115,6 +111,7 @@ def login():
                 return redirect(url_for('login'))
             else:
                 return jsonify(json_result)
+
     return render_template('login.html', form=form)
 
 
@@ -198,11 +195,7 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    emotions = Emotion.query.filter_by(user_id=user.id).first()
-
-    data = dict()
-    data['emotions'] = len(emotions)
-    data = emotions
+    data = Emotion.query.filter_by(user_id=user.id).first()
     return render_template('emotion.html', current_user=current_user, data=data)
 
 @app.route("/api/record", methods=['POST'])

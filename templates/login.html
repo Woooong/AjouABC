@@ -1,90 +1,120 @@
+
 <!DOCTYPE html>
 <html lang="en">
 
 <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
+    <!-- Title Page-->
+    <title>Login</title>
 
-    <title>Mirror</title>
+    <!-- Fontfaces CSS-->
+    <link href="static/css/font-face.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
-    <!-- Bootstrap Core CSS -->
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS-->
+    <link href="static/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
-    <!-- MetisMenu CSS -->
-    <link href="static/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Vendor CSS-->
+    <link href="static/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="static/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-    <!-- Custom CSS -->
-    <link href="static/css/sb-admin-2.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- Main CSS-->
+    <link href="static/css/theme.css" rel="stylesheet" media="all">
 
 </head>
 
-<body>
-
-    <div class="container">
-        <div class="row">
-            <div class="col-md-4 col-md-offset-4">
-                <div class="login-panel panel panel-default">
-                    <div class="panel-heading">
-                        <h3 class="panel-title">Please Sign In</h3>
-                    </div>
-                    <div class="panel-body">
-                        <form action="" method="post">
-                            {{ form.hidden_tag() }}
+<body class="animsition">
+    <div class="page-wrapper">
+        <div class="page-content--bge5">
+            <div class="container">
+                <div class="login-wrap">
+                    <div class="login-content">
+                        <div class="login-logo">
+                            <a href="#">
+                                <img src="static/images/icon/web_logo2.png" alt="Mirror">
+                            </a>
+                        </div>
+                        <div class="login-form">
+                            <form action="" method="post">
+                                {{ form.hidden_tag() }}
                                 <div class="form-group">
-                                    {{ form.username(class="form-control", placeholder="Username", id="username", autofocus="") }}
+                                    {{ form.username(class="au-input au-input--full", placeholder="Username", id="username", autofocus="") }}
                                     {% for error in form.username.errors %}
                                         <span style="color : red;">[{{ error }}]</span>
                                     {% endfor %}
                                 </div>
 
                                 <div class="form-group">
-                                    {{ form.password(class="form-control", placeholder="Password", id="password") }}
+                                    {{ form.password(class="au-input au-input--full", placeholder="Password", id="password") }}
                                     {% for error in form.password.errors %}
                                         <span style="color : red;">[{{ error }}]</span>
                                     {% endfor %}
                                 </div>
 
-                                <div class="checkbox">
+                                <div class="login-checkbox">
                                     <label>
-                                        <input name="remember" type="checkbox" value="Remember Me">Remember Me
+                                        <input type="checkbox" name="remember">Remember Me
+                                    </label>
+                                    <label>
+                                        <a href="{{ url_for('forgot_password') }}">Forgotten Password?</a>
                                     </label>
                                 </div>
-                                <!-- Change this to a button or input when using this as a form -->
-                                {{ form.submit(class="btn btn-lg btn-success btn-block") }}
-                        </form>
 
-                        {% with messages = get_flashed_messages() %}
-                            {% if messages %}
-                                <div class="alert alert-warning">
-                                    {% for message in messages %}
-                                    {{ message }}
-                                    {% endfor %}
-                                </div>
-                            {% endif %}
-                        {% endwith %}
+                                {{ form.submit(class="au-btn au-btn--block au-btn--green m-b-20") }}
+                            </form>
 
-                        <a href="{{ url_for('register') }}">Sign up Here!</a><br>
-                        <a href="{{ url_for('forgot_password') }}">Forgot Password?</a>
+                            <div class="register-link">
+                                <p>
+                                    Don't you have account?
+                                    <a href="{{ url_for('register') }}">Sign Up Here</a>
+                                </p>
+                            </div>
+                        </div>
                     </div>
                 </div>
             </div>
         </div>
+
     </div>
+
+    <!-- Jquery JS-->
+    <script src="static/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="static/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="static/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="static/vendor/slick/slick.min.js">
+    </script>
+    <script src="static/vendor/wow/wow.min.js"></script>
+    <script src="static/vendor/animsition/animsition.min.js"></script>
+    <script src="static/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="static/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="static/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="static/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="static/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="static/vendor/select2/select2.min.js">
+    </script>
+
+    <!-- Main JS-->
+    <script src="static/js/main.js"></script>
 
 </body>
 
 </html>
+<!-- end document-->
