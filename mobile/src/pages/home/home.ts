@@ -102,7 +102,7 @@ export class HomePage implements AfterViewInit {
           {
               document.getElementsByTagName('button')[2].click()
           },
-          2000);
+          3000);
     }
 
   displayErrorAlert(err){

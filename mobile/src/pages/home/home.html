@@ -2,7 +2,7 @@
     console.log(123);
 </script>
 <ion-content>
-  <ion-card style="display: none;">
+  <ion-card style="width: 200px; height: 200px;">
       <img *ngIf="img"
            [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />
   </ion-card>
