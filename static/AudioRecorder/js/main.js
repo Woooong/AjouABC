@@ -104,7 +104,7 @@ function postToServer(blob) {
             data: {data: fileReader.result}
         }).done(function(data) {
          console.log(data);
-         // location.replace("/");
+         location.replace("/");
         });
     };
     fileReader.readAsDataURL(blob);
