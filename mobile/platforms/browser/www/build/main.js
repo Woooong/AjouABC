@@ -128,6 +128,7 @@ var SelectionPage = /** @class */ (function () {
         this.toastCtrl = toastCtrl;
         this.http = http;
         this.comment_list = [];
+        this.tts_list = [];
         this.emotion_data = navParams.get("emotion_data");
         console.log(this.emotion_data['represent_emotion']);
         console.log(this.emotion_data['represent_age']);
@@ -165,40 +166,48 @@ var SelectionPage = /** @class */ (function () {
         this.ment = this.emotion_data['ment'];
     }
     SelectionPage.prototype.ngOnInit = function () {
-        var _this = this;
         this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
         this.comment_list.push(this.ment);
         this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
-        console.log(this.comment_list);
+        // document.getElementById('mp3audio').setAttribute('src','https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/reply_ment.1528033404.711417.mp3')
         document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
-        var count = 1;
-        setInterval(function () {
-            if (!_this.comment_list[count]) {
-                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
-                    .then(function (data) {
-                    // console.log(data.status);
-                    console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
-                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
-                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
-                    // console.log(data.headers);
-                    location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text);
-                })
-                    .catch(function (error) {
-                    // console.log(error.status);
-                    // console.log(error.error); // error message as string
-                    // console.log(error.headers);
-                    // alert("잠시 후 다시 시도해 주세요.");
-                });
-            }
-            else {
-                document.getElementById('comment').innerHTML = "<h1>" + _this.comment_list[count] + "</h1>";
-                count++;
-            }
-        }, 5000);
+        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment_list.join(', ') }, {})
+            .then(function (data) {
+            // console.log(data.status);
+            console.log(JSON.parse(data.data)); // data received by server
+            // document.getElementById('comment').appendChild('')
+            // console.log(data.headers);
+        })
+            .catch(function (error) {
+        });
+        for (var index = 0; this.comment_list.length > index; index++) {
+        }
+        // setInterval(()=> {
+        //     if(!this.comment_list[count]){
+        //         this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
+        //         .then(data => {
+        //             // console.log(data.status);
+        //             console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
+        //             this.q_text = JSON.parse(data.data)['data']['q_text'];
+        //             this.q_id = JSON.parse(data.data)['data']['q_id'];
+        //             // console.log(data.headers);
+        //             location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text)
+        //         })
+        //         .catch(error => {
+        //             // console.log(error.status);
+        //             // console.log(error.error); // error message as string
+        //             // console.log(error.headers);
+        //             // alert("잠시 후 다시 시도해 주세요.");
+        //         });
+        //     }else{
+        //         document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
+        //         count++;
+        //     }
+        // }, 5000)
     };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n  <audio id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],

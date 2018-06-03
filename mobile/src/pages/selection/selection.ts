@@ -71,23 +71,23 @@ export class SelectionPage implements OnInit{
   }
 
   ngOnInit() {
-    this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
+      this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
       this.comment_list.push(this.ment);
       this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
-
+      // document.getElementById('mp3audio').setAttribute('src','https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/reply_ment.1528033404.711417.mp3')
       document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
-      for(let index=0; this.comment_list.length>index; index++){
-          this.http.post('/api/getVoice', {"text": this.comment_list[index]}, {})
-              .then(data => {
-                  // console.log(data.status);
-                  console.log(JSON.parse(data.data)); // data received by server
-                  const tts_data = JSON.parse(data.data);
-                  this.tts_list.push(tts_data['tts']);
-                  // console.log(data.headers);
-              })
-              .catch(error => {
+      this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment_list.join(', ')}, {})
+      .then(data => {
+          // console.log(data.status);
+          console.log(JSON.parse(data.data)); // data received by server
+          // document.getElementById('comment').appendChild('')
+          // console.log(data.headers);
+      })
+      .catch(error => {
 
-              });
+      });
+      for(let index=0; this.comment_list.length>index; index++){
+
       }
 
       // setInterval(()=> {
