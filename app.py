@@ -57,7 +57,7 @@ def index():
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
         emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
-        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
         user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
 
         data = dict()
@@ -66,7 +66,7 @@ def index():
         data['userQuestions'] = len(user_questions)
         data['userQuestions_month'] = len(user_questions_month)
 
-        return render_template('index.html', current_user=current_user, data=data, user=user, emotions=emotions)
+        return render_template('index.html', current_user=current_user, data=data, user=user, emotions=emotions, user_questions=user_questions)
     else:
         return redirect(url_for('login'))
 
@@ -202,8 +202,15 @@ def emotion():
     data = Emotion.query.filter_by(user_id=user.id).first()
     return render_template('emotion.html', current_user=current_user, data=data)
 
+# Diary View Page
+@app.route("/diary")
+def diary():
+    current_user = session['current_user']
+    user = User.query.filter_by(username=current_user).first()
+    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
+    user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
+    return render_template('diary.html', current_user=current_user, emotions=emotions, user_questions=user_questions, user=user)
 
-# 다이어리 저장
 @app.route("/api/record", methods=['POST'])
 def set_record():
     record_url = get_record_file(request.form['data'])

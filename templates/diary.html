@@ -2,4 +2,69 @@
 
 {% block content %}
 
+<div class="main-content">
+    <div class="section__content section__content--p30">
+        <div class="container-fluid">
+            <div class="row m-t-30">
+                <div class="col-md-12">
+                    <!-- DATA TABLE-->
+                    <div class="table-responsive m-b-40">
+                        <table class="table table-borderless table-data3">
+                            <thead>
+                                <tr>
+                                    <th>번호</th>
+                                    <th>질문</th>
+                                    <th>녹음 재생</th>
+                                    <th>날짜</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr>
+                                    <td>1</td>
+                                    <td>{{ user_questions[0].question_content }}</td>
+                                    <td class="process">
+                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[0].question_reply }}');">
+                                            Play
+                                        </button>
+                                    </td>
+                                    <td>{{ user_questions[0].updated }}</td>
+                                </tr>
+                                <tr>
+                                    <td>2</td>
+                                    <td>{{ user_questions[1].question_content }}</td>
+                                    <td class="process">Play</td>
+                                    <td>{{ user_questions[1].updated }}</td>
+                                </tr>
+                                <tr>
+                                    <td>3</td>
+                                    <td>{{ user_questions[2].question_content }}</td>
+                                    <td class="process">Play</td>
+                                    <td>{{ user_questions[2].updated }}</td>
+                                </tr>
+                                <tr>
+                                    <td>4</td>
+                                    <td>{{ user_questions[3].question_content }}</td>
+                                    <td class="process">Play</td>
+                                    <td>{{ user_questions[3].updated }}</td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
+                    <!-- END DATA TABLE-->
+                </div>
+            </div>
+        </div>
+    </div>
+</div>
+
+<script type="text/javascript">
+
+function PlaySound(path) {
+  var audioElement = document.createElement('audio');
+  audioElement.setAttribute('src', path);
+  audioElement.play();
+}
+
+</script>
+
 {% endblock %}
