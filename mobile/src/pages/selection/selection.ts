@@ -71,7 +71,7 @@ export class SelectionPage {
       let count = 0;
       setInterval(()=> {
           if(!this.comment_list[count]){
-              this.http.get('/api/getQuestion/uram/1', {}, {})
+              this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
               .then(data => {
                   // console.log(data.status);
                   console.log(JSON.parse(data.data)['data']['q_text']); // data received by server

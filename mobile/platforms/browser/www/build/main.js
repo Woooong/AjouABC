@@ -170,7 +170,7 @@ var SelectionPage = /** @class */ (function () {
         var count = 0;
         setInterval(function () {
             if (!_this.comment_list[count]) {
-                _this.http.get('/api/getQuestion/uram/1', {}, {})
+                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
                     .then(function (data) {
                     // console.log(data.status);
                     console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
@@ -229,11 +229,11 @@ webpackEmptyAsyncContext.id = 112;
 
 var map = {
 	"../pages/diary/diary.module": [
-		277,
+		276,
 		3
 	],
 	"../pages/login/login.module": [
-		276,
+		277,
 		2
 	],
 	"../pages/selection/selection.module": [
@@ -317,7 +317,7 @@ var HomePage = /** @class */ (function () {
         this.camera.getPicture(options).then(function (imageData) {
             _this.img = 'data:image/jpeg;base64,' + imageData;
             // 얼굴인식 안됬을 경우 this.CameraOn(); 입력해줘야함 결과값에 따라 다름
-            _this.http.post('/api/getEmotion/uram/123', { 'image': _this.img }, {})
+            _this.http.post('/api/getEmotion/' + localStorage.getItem('username') + '/123', { 'image': _this.img }, {})
                 .then(function (data) {
                 console.log(data.data);
                 _this.emotion_code = JSON.parse(data.data)['represent_emotion'];
@@ -578,8 +578,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
                     ]

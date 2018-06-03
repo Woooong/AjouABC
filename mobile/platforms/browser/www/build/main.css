@@ -25680,7 +25680,6 @@ ion-navbar.toolbar {
 
 html, body, .ion-app, .ion-content {
   background-color: transparent;
-  color: #8ad5f5;
 }
 
 .cordova-camera-capture {
@@ -25790,7 +25789,7 @@ page-home ion-content {
 
 page-selection ion-content {
   background: #000 !important;
-  color: #FFF !important;
+  color: #8ad5f5 !important;
 }
 
 page-therapy ion-content {
