@@ -32,11 +32,9 @@ export class LoginPage {
               ) {
       this.username ='uram';
       this.password ='201221002';
-
-  }
-
-  ionViewDidLoad() {
-    console.log('ionViewDidLoad LoginPage');
+      // if(localStorage.getItem("username") != ''){
+      //     this.navCtrl.push(HomePage);
+      // }
   }
 
   user_login() {
@@ -56,7 +54,7 @@ export class LoginPage {
                       duration: 2000
                   });
                   toast.present(toast);
-              this.navCtrl.push(HomePage);
+                  this.navCtrl.push(HomePage);
               }
               else{
                   let toast = this.toastCtrl.create({
@@ -79,14 +77,6 @@ export class LoginPage {
               // alert("잠시 후 다시 시도해 주세요.");
 
           });
-
-      // let toast = this.toastCtrl.create({
-      //     message: '로그인 되었습니다.',
-      //     duration: 2000
-      // });
-      //
-      // toast.present(toast);
-      // this.navCtrl.push(HomePage);
   }
 
 }

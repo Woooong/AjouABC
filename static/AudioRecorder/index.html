@@ -57,36 +57,16 @@
 	</style>
 </head>
 <script>
-	var getParameters = function (paramName) {
-		// 리턴값을 위한 변수 선언
-		var returnValue;
-
-		// 현재 URL 가져오기
-		var url = location.href;
-
-		// get 파라미터 값을 가져올 수 있는 ? 를 기점으로 slice 한 후 split 으로 나눔
-		var parameters = (url.slice(url.indexOf('?') + 1, url.length)).split('&');
-
-		// 나누어진 값의 비교를 통해 paramName 으로 요청된 데이터의 값만 return
-		for (var i = 0; i < parameters.length; i++) {
-			var varName = parameters[i].split('=')[0];
-			if (varName.toUpperCase() == paramName.toUpperCase()) {
-				returnValue = parameters[i].split('=')[1];
-				return decodeURIComponent(returnValue);
-			}
-		}
-	};
 	window.onload = function () {
 	 document.getElementById("q_div").innerHTML=getParameters('q_text');
 	}
 
 </script>
 <body style="background: #000000">
-	<div id="q_div" style="color: #FFFFFF; padding: 25px;
-    text-align: center;">
+	<div id="q_div" style="color: #FFFFFF; padding: 25px; text-align: center;">
 
 	</div>
-	<div id="controls" style="height: 	63%; line-height: 63%;">
+	<div id="controls" style="height: 63%; line-height: 63%;">
 		<img id="record" src="img/mic128.png" onclick="toggleRecording(this);">
 		<a id="save" href="#" style="display: none"><img src="img/save.svg"></a>
 	</div>

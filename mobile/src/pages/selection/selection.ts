@@ -19,13 +19,14 @@ import { TherapyPage } from '../therapy/therapy';
 })
 export class SelectionPage {
 
-    public emotion_data;
-    public emotion_code;
-    public emotion;
-    public age;
-    public gender;
-    public q_text;
-    public q_id;
+    private emotion_data;
+    private emotion_code;
+    private emotion;
+    private age;
+    private gender;
+    private q_text;
+    private q_id;
+    private comment_list = [];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -63,8 +64,13 @@ export class SelectionPage {
       }
 
       this.age = parseInt(this.emotion_data['represent_age'])
-      setTimeout(() =>
-          {
+      this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
+      this.comment_list.push("오늘 무슨일이 있으셨나요?");
+      this.comment_list.push("별일이 없으셨군요. 오늘도 다이어리를 입력해 봅시다.");
+      console.log(this.comment_list);
+      let count = 0;
+      setInterval(()=> {
+          if(!this.comment_list[count]){
               this.http.get('/api/getQuestion/uram/1', {}, {})
               .then(data => {
                   // console.log(data.status);
@@ -79,39 +85,11 @@ export class SelectionPage {
                   // console.log(error.error); // error message as string
                   // console.log(error.headers);
                   // alert("잠시 후 다시 시도해 주세요.");
-
               });
-          },
-          5000);
-
+          }else{
+              document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
+              count++;
+          }
+      }, 5000)
   }
-
-    selectEmotion(emo) {
-        // location.replace('/AudioRecorder/index.html');
-        this.http.get('/api/getQuestion/uram/1', {}, {})
-          .then(data => {
-              // console.log(data.status);
-              //
-              // console.log(data.headers);
-              // location.replace('/AudioRecorder/index.html')
-          })
-          .catch(error => {
-              // console.log(error.status);
-              // console.log(error.error); // error message as string
-              // console.log(error.headers);
-              // alert("잠시 후 다시 시도해 주세요.");
-
-          });
-
-
-    }
-
-    emotion_cehck(chk){
-      if(chk == 'Y'){
-        location.replace('/AudioRecorder/index.html')
-      }else{
-        document.getElementById('step1').style.display= "none";
-        document.getElementById('step2').style.display= "inline-block";
-      }
-    }
 }
