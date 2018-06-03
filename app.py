@@ -2,7 +2,7 @@ import base64
 import io
 import json, os
 import re
-
+import random
 import boto3 as boto3
 import pyexcel as pexcel
 import cognitive_face as face_api
@@ -334,7 +334,7 @@ def get_question_api(user_id, device_id):
         return_data["msg"] = "No Match User"
 
     else:
-        today_emotion = Emotion.query.filter_by(user_id=user.id).first()
+        today_emotion = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).first()
 
         selected_question = select_question_process(today, today_emotion.result)
 
@@ -401,10 +401,11 @@ def select_question_process(today, today_emotion):
     selected_question = Question.query.filter_by(tag1=today).first()
 
     if selected_question is None:
-        if today_emotion is not None:
-            selected_question = Question.query.filter_by(emotion=today_emotion).first()
-        else:
-            selected_question = Question.order_by()
+        selected_question = Question.query.filter_by(emotion=today_emotion).first()
+
+    if selected_question is None:
+        rand = random.randrange(0, Question.query.count())
+        selected_question = Question.query[rand]
 
     return selected_question
 
