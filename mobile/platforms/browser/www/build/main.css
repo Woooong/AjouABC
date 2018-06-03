@@ -25682,6 +25682,10 @@ html, body, .ion-app, .ion-content {
   background-color: transparent;
 }
 
+.cordova-camera-capture {
+  display: none;
+}
+
 page-diary ion-content {
   background: #000 !important;
   color: #FFF !important;
