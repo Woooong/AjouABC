@@ -1,138 +1,99 @@
 {% extends "layout.html" %}
 
 {% block content %}
-<div id="page-wrapper">
-    <div class="row">
-        <div class="col-lg-12">
-            <h1 class="page-header">{{ current_user }}님의 누적 감정 기록</h1>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Anger</strong>
-                        <span class="pull-right text-muted">{{ (data.anger*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.anger*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.anger*100)|int }}%</span>
+    <script>
+        $( document ).ready(function() {
+            console.log( "ready!" );
+
+            var ctx = document.getElementById("myChart").getContext('2d');
+            var myChart = new Chart(ctx, {
+                type: 'radar',
+                data: {
+                    labels: ['화남', '경멸하는', '역겨운', '무서운', '행복한', '평범한', '슬픈', '놀란'],
+                    datasets: [{
+                        data: [0.2, 0.3, 0.43, 0.1, 0.1, 0.13, 0.23, 0.03]
+                    }]
+                }
+            });
+        });
+
+        function getEmotionGraph(emotion_id) {
+            console.log(emotion_id);
+            $.ajax({
+                method: "POST",
+                url: "/getGraph",
+                data: JSON.stringify({ emotion_id: emotion_id }),
+                contentType: 'application/json;charset=UTF-8',
+                 error : function(error) {
+                    alert("Error!");
+                },
+                success : function(data) {
+                    console.log(data);
+                    var myChart = new Chart(ctx, {
+                        type: 'radar',
+                        data: {
+                            labels: ['화남', '경멸하는', '역겨운', '무서운', '행복한', '평범한', '슬픈', '놀란'],
+                            datasets: [{
+                                data: [0.2, 0.3, 0.43, 0.1, 0.1, 0.13, 0.23, 0.03]
+                            }]
+                        }
+                    });
+
+                    alert("success!");
+                }
+            });
+
+        }
+    </script>
+ <!-- MAIN CONTENT-->
+    <div class="main-content">
+        <div class="section__content section__content--p30">
+            <div class="container-fluid">
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="overview-wrap">
+                            <h2 class="title-1">{{ current_user }}님의 누적 감정 기록</h2>
                         </div>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Contempt</strong>
-                        <span class="pull-right text-muted">{{ (data.contempt*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.contempt*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.contempt*100)|int }}% Complete</span>
+                <div class="row">
+                    <div class="col-lg-6">
+                        <div class="table-responsive table--no-card m-b-30">
+                            <table class="table table-borderless table-striped table-earning">
+                                <thead>
+                                    <tr>
+                                        <th>Date</th>
+                                        <th>Emotion ID</th>
+                                        <th>Emotion</th>
+                                    </tr>
+                                </thead>
+                                <tbody>
+                                    {% for emotion in emotions %}
+                                        <tr onclick="getEmotionGraph({{ emotion.id }})">
+                                            <td>{{ emotion.date }}</td>
+                                            <td>{{ emotion.id }}</td>
+                                            <td>{{ emotion.result }}</td>
+                                        </tr>
+                                    {% endfor %}
+                                </tbody>
+                            </table>
                         </div>
                     </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Disgust</strong>
-                        <span class="pull-right text-muted">{{ (data.disgust*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.disgust*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.disgust*100)|int }}%</span>
-                        </div>
+                    <div class="col-lg-6">
+                        <canvas id="myChart" width="400" height="400"></canvas>
                     </div>
                 </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Fear</strong>
-                        <span class="pull-right text-muted">{{ (data.fear*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.fear*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.fear*100)|int }}%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Happiness</strong>
-                        <span class="pull-right text-muted">{{ (data.happiness*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="59" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.happiness*100)|int }}%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Sadness</strong>
-                        <span class="pull-right text-muted">{{ (data.sadness*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.sadness*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.sadness*100)|int }}%</span>
+
+                <div class="row">
+                    <div class="col-md-12">
+                        <div class="copyright">
+                            <p>Copyright © 2018 Ajou ABC. All rights reserved. Template by <a href="https://colorlib.com">Colorlib</a>.</p>
                         </div>
                     </div>
                 </div>
             </div>
         </div>
     </div>
-    <div class="row">
-        <div class="col-md-6">
-            <div class="panel panel-default">
-                <div class="panel-heading">
-                    <p>
-                        <strong>Surprise</strong>
-                        <span class="pull-right text-muted">{{ (data.surprise*100)|int }}%</span>
-                    </p>
-                </div>
-                <div class="panel-body">
-                    <div class="progress progress-striped active">
-                        <div class="progress-bar progress-bar-success" role="progressbar" aria-valuenow="{{ (data.surprise*100)|int }}" aria-valuemin="0" aria-valuemax="100" style="width: 40%">
-                            <span class="sr-only">{{ (data.surprise*100)|int }}%</span>
-                        </div>
-                    </div>
-                </div>
-            </div>
-        </div>
-    </div>
-</div>
+    <!-- END MAIN CONTENT-->
+
 {% endblock %}

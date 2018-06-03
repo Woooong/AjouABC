@@ -52,13 +52,14 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
+        start_date = datetime.now().strftime("%Y-%m-01")
         end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
-        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
-        user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
-        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
 
         data = dict()
         data['emotions'] = len(emotions)
@@ -199,8 +200,16 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    data = Emotion.query.filter_by(user_id=user.id).first()
-    return render_template('emotion.html', current_user=current_user, data=data)
+    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
+    return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
+
+
+@app.route("/getGraph", methods=['POST'])
+def get_graph_data():
+
+    emotion = Emotion.query.filter_by(id=request.json['emotion_id']).first()
+
+    return jsonify(emotion)
 
 # Diary View Page
 @app.route("/diary")
@@ -249,6 +258,7 @@ def get_face_api(user_id, device_id):
 
     return jsonify(return_data)
 
+
 @app.route("/api/getVoice", methods=['POST'])
 def get_voice():
 
@@ -268,6 +278,7 @@ def get_voice():
 
     else:
         return jsonify({'result': False})
+
 
 def get_record_file(record_data):
     key_name = 'reply_ment.'+str(datetime.now().timestamp()) + '.mp3'
@@ -435,16 +446,17 @@ def analysis_emotion_process(emotion_data):
 
 # 질문 선택 함수
 def select_question_process(today, today_emotion):
-
+    rand = divmod(datetime.now().microsecond, Question.query.count())[1]
     selected_question = Question.query.filter_by(tag1=today).first()
 
     if selected_question is None:
         selected_question = Question.query.filter_by(emotion=today_emotion).first()
 
     if selected_question is None:
-        rand = random.randrange(0, Question.query.count())
+        rand = divmod(datetime.now().microsecond, Question.query.count())[1]
         selected_question = Question.query[rand]
 
+    selected_question = Question.query[rand]
     return selected_question
 
 
