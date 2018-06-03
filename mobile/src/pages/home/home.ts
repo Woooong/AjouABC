@@ -75,6 +75,9 @@ export class HomePage implements AfterViewInit {
                     else if(this.emotion_code == "surprise"){
                         this.emotion = "놀란"
                     }
+                    else if(this.emotion_code == "neutral"){
+                        this.emotion = "무표정한"
+                    }
                     if(this.emotion == null){
                         this.CameraOn();
                         return null

@@ -28,6 +28,7 @@ export class SelectionPage implements OnInit{
     private q_id;
     private ment;
     private comment_list = [];
+    private tts_list=[];
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -57,6 +58,9 @@ export class SelectionPage implements OnInit{
       else if(this.emotion_code == "surprise"){
           this.emotion = "놀란";
       }
+      else if(this.emotion_code == "neutral"){
+          this.emotion = "무표정한";
+      }
 
       if(this.emotion_data['represent_gender'] == 'male') {
           this.gender = '남자';
@@ -70,12 +74,25 @@ export class SelectionPage implements OnInit{
   }
 
   ngOnInit() {
-    this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
+      this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
       this.comment_list.push(this.ment);
-      this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
-      console.log(this.comment_list);
+      this.comment_list.push("오늘도 다이어리를 작성해 볼까요?");
+
       document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
-      let count = 1;
+      this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment_list.join(', ')}, {})
+      .then(data => {
+          // console.log(data.status);
+          console.log(JSON.parse(data.data)); // data received by server
+          document.getElementById('mp3audio').setAttribute('src',JSON.parse(data.data)['url'])
+          // console.log(data.headers);
+      })
+      .catch(error => {
+
+      });
+      // for(let index=0; this.comment_list.length>index; index++){
+      //
+      // }
+      let count = 1
       setInterval(()=> {
           if(!this.comment_list[count]){
               this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
@@ -97,6 +114,6 @@ export class SelectionPage implements OnInit{
               document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
               count++;
           }
-      }, 5000)
+      }, 4300)
   }
 }
