@@ -48,13 +48,14 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
+        start_date = datetime.now().strftime("%Y-%m-01")
         end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
-        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
         user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
-        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
+        user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
 
         data = dict()
         data['emotions'] = len(emotions)
