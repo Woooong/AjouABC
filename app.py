@@ -47,7 +47,7 @@ def index():
     # If User is authenticated
     if 'current_user' in session:
         current_user = session['current_user']
-        end_date = datetime.now().strftime("%Y-%m-31")
+        end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).all()
@@ -77,19 +77,15 @@ def login():
         user = User.query.filter_by(username=form.username.data).first()
 
         rtype = 'html'
-        # if hasattr(form, 'rtype'):
-        #     rtype = form.rtype.data
         if 'rtype' in request.form:
-            if request.form['rtype'] == 'json':
-                rtype = request.form['rtype']
+            rtype = request.form['rtype']
 
         # ID가 있을 시
         if user is not None:
 
             # Check Password
             if bcrypt.checkpw(form.password.data.encode('utf-8'), user.password.encode('utf-8')):
-            # if user.password == form.password.data:
-                json_result = {'status_code': '200', 'msg': 'success login', 'user': '<%s>' % user.username}
+                json_result = {'status_code': '200', 'msg': 'success login', 'user': '%s' % user.username}
 
                 if rtype == 'html':
                     session['current_user'] = form.username.data
@@ -113,6 +109,7 @@ def login():
                 return redirect(url_for('login'))
             else:
                 return jsonify(json_result)
+
     return render_template('login.html', form=form)
 
 
@@ -121,32 +118,18 @@ def login():
 def register():
     form = RegisterForm(request.form)
     if form.validate_on_submit():
-        rtype = 'html'
-        if hasattr(form, 'rtype'):
-            rtype = form.rtype.data
 
         u = User(username=form.username.data, email=form.email.data, password_text=form.password.data)
         # u = User(username="taewoo", password="201221002")
         db.session.add(u)
         try:
-            json_result = {'status code': '200', 'msg': 'Success Register', 'username:':
-                           '<%s>' % u.username}
-
-            if rtype == 'html':
-                db.session.commit()
-                flash('Success Register')
-                return redirect(url_for('login'))
-            else:
-                return jsonify(json_result)
+            db.session.commit()
+            flash('Success Register')
+            return redirect(url_for('login'))
 
         # Error : 223 (Already exist username)
         except IntegrityError:
-            json_result = {'status code': '223', 'error': 'Already exist username.'}
-
-            if rtype == 'html':
-                flash('Already exist username.')
-            else:
-                return jsonify(json_result)
+            flash('Already exist username.')
     return render_template('register.html', form=form)
 
 
@@ -205,6 +188,13 @@ def reset_password():
         return redirect(url_for('login'))
     return render_template('reset.html', form=form)
 
+# 누적 감정 기록 View Page
+@app.route("/emotion")
+def emotion():
+    current_user = session['current_user']
+    user = User.query.filter_by(username=current_user).first()
+    data = Emotion.query.filter_by(user_id=user.id).first()
+    return render_template('emotion.html', current_user=current_user, data=data)
 
 # 다이어리 저장
 @app.route("/api/record", methods=['POST'])
@@ -325,7 +315,6 @@ def set_question_api(q_name):
 
     qs = Question.query().all()
     return "Questions Count: {c}".format(c=len(qs))
-
 
 # 질문 조회
 @app.route("/api/getQuestion/<user_id>/<device_id>", methods=['GET', 'POST'])
