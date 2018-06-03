@@ -3,10 +3,12 @@ import io
 import json, os
 import re
 import random
+import urllib
+
 import boto3 as boto3
 import pyexcel as pexcel
 import cognitive_face as face_api
-import requests as requests
+import requests
 from PIL import Image
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
@@ -24,8 +26,10 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
-
 img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
+client_id = "xhsr2ijg89"
+client_secret = "bmUlMLuKzMdfgQoOFfzfCNrgZd6dwJTuK9ThsIIa"
+url = "https://naveropenapi.apigw.ntruss.com/voice/v1/tts"
 s3_client = boto3.client("s3", aws_access_key_id=os.environ['AWS_ACCESS'], aws_secret_access_key=os.environ['AWS_SECRET'])
 
 face_api.Key.set(MS_KEY)
@@ -238,6 +242,23 @@ def get_face_api(user_id, device_id):
 
     return jsonify(return_data)
 
+@app.route("/api/getVoice", methods=['POST'])
+def get_voice():
+
+    text = request.form['text']
+
+    encText = urllib.parse.quote(text)
+    data = "speaker=jinho&speed=0&text=" + encText
+    req = urllib.request.Request(url)
+    req.add_header("X-NCP-APIGW-API-KEY-ID", client_id)
+    req.add_header("X-NCP-APIGW-API-KEY", client_secret)
+    response = urllib.request.urlopen(req, data=data.encode('utf-8'))
+    rescode = response.getcode()
+    if (rescode == 200):
+        response_body = response.read()
+        return response_body, 200, {'content-type': 'audio/mpeg;charset=utf-8'}
+    else:
+        return jsonify({'result': False})
 
 def prepare_img(rotate=None):
     image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
