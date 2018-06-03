@@ -31,6 +31,7 @@ s3_client = boto3.client("s3", aws_access_key_id=os.environ['AWS_ACCESS'], aws_s
 face_api.Key.set(MS_KEY)
 face_api.BaseUrl.set(MS_BASE_URL)
 
+
 # Index Page
 @app.route("/")
 def main():
@@ -188,6 +189,7 @@ def reset_password():
         return redirect(url_for('login'))
     return render_template('reset.html', form=form)
 
+
 # 누적 감정 기록 View Page
 @app.route("/emotion")
 def emotion():
@@ -195,6 +197,7 @@ def emotion():
     user = User.query.filter_by(username=current_user).first()
     data = Emotion.query.filter_by(user_id=user.id).first()
     return render_template('emotion.html', current_user=current_user, data=data)
+
 
 # 다이어리 저장
 @app.route("/api/record", methods=['POST'])
@@ -224,7 +227,7 @@ def get_face_api(user_id, device_id):
 
     if request.method == 'POST':
         headers, params = make_params()
-        img_str = prepare_img()
+        img_str = prepare_img(Image.ROTATE_90)
         api_result = faceapi_request_process(None, base64.decodebytes(img_str), headers, params)
 
     else:
@@ -240,7 +243,8 @@ def prepare_img(rotate=None):
     image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
     im = Image.open(io.BytesIO(base64.b64decode(image_data)))
     buffered = io.BytesIO()
-    if rotate: im = im.transpose(rotate)
+    if rotate:
+        im = im.transpose(rotate)
     im.save(buffered, format="PNG")
     img_str = base64.b64encode(buffered.getvalue())
     return img_str
@@ -293,7 +297,7 @@ def set_user_emotion(user_id, device_id):
     db.session.add(emotion)
     db.session.commit()
 
-    return ;
+    return jsonify({'result': True, 'save_id': emotion.id})
 
 
 # 질문 입력
@@ -315,6 +319,7 @@ def set_question_api(q_name):
 
     qs = Question.query().all()
     return "Questions Count: {c}".format(c=len(qs))
+
 
 # 질문 조회
 @app.route("/api/getQuestion/<user_id>/<device_id>", methods=['GET', 'POST'])
