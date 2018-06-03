@@ -10,12 +10,11 @@ import requests as requests
 from PIL import Image
 
 from flask import Flask, request, session, redirect, url_for, render_template, flash, jsonify, send_from_directory
-from models import db, User, Emotion, Question, UserQuestion
+from models import db, User, Emotion, Question, UserQuestion, ReplyMent
 from form import LoginForm, RegisterForm, ForgotPasswordForm, ResetPasswordForm
-from sqlalchemy.exc import IntegrityError, DataError
+from sqlalchemy.exc import IntegrityError
 from datetime import datetime
 import bcrypt
-
 
 
 app = Flask(__name__)
@@ -25,15 +24,14 @@ app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
 MS_KEY = os.environ['MS_KEY']
-# MS_KEY = '33c24d8bf94f4daa9fad6b0cfc69e9bd'     # 테스트용 KEY
 
-face_api.Key.set(MS_KEY)
-face_api.BaseUrl.set(MS_BASE_URL)
 img_url = 'https://raw.githubusercontent.com/Microsoft/Cognitive-Face-Windows/master/Data/detection1.jpg'
 s3_client = boto3.client("s3", aws_access_key_id=os.environ['AWS_ACCESS'], aws_secret_access_key=os.environ['AWS_SECRET'])
 
-# Index Page
+face_api.Key.set(MS_KEY)
+face_api.BaseUrl.set(MS_BASE_URL)
 
+# Index Page
 @app.route("/")
 def main():
     return send_from_directory('./mobile/platforms/browser/www', 'index.html')
@@ -208,14 +206,27 @@ def reset_password():
     return render_template('reset.html', form=form)
 
 
+# 다이어리 저장
 @app.route("/api/record", methods=['POST'])
-def get_record_file():
-    print(request.form['data'])
+def set_record():
+    record_url = get_record_file(request.form['data'])
+    user = User.query.filter_by(username=request.form['username']).first()
+    question = Question.query.filter_by(id=request.form['q_id']).first()
+
+    uq = UserQuestion(user=user, question=question, reply=record_url)
+    db.session.add(uq)
+    db.session.commit()
+
+    return jsonify({'result': True, 'save_id': uq.id})
+
+
+def get_record_file(record_data):
     key_name = str(datetime.now().timestamp()) + '.mp3'
-    s3_client.put_object(ACL='public-read', Body=base64.b64decode(request.form['data'].split(',')[1]), Key=key_name,
+    s3_client.put_object(ACL='public-read', Body=base64.b64decode(record_data.split(',')[1]), Key=key_name,
                          Metadata={'Content-Type': 'audio/mpeg'}, Bucket='ryun.capstone')
 
-    return jsonify({'url': 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/' + key_name})
+    return 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/' + key_name
+
 
 # 감정 조회
 @app.route("/api/getEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
@@ -261,6 +272,7 @@ def make_return_data(api_result, user):
         user_emotion = str(json.dumps(api_result[0]["faceAttributes"]["emotion"]))
         represent_emotion = analysis_emotion_process(api_result[0]["faceAttributes"])
 
+        ment = ReplyMent.query.filter_by(emotion=represent_emotion).first()
         e = Emotion(user=user, emotion_json=user_emotion, res=represent_emotion)
         db.session.add(e)
         db.session.commit()
@@ -270,6 +282,7 @@ def make_return_data(api_result, user):
         return_data["represent_emotion"] = represent_emotion
         return_data["represent_age"] = api_result[0]["faceAttributes"]["age"]
         return_data["represent_gender"] = api_result[0]["faceAttributes"]["gender"]
+        return_data["ment"] = ment.reply_ment
 
     elif len(api_result) == 0:
         return_data["code"] = 203
@@ -279,6 +292,18 @@ def make_return_data(api_result, user):
         return_data["code"] = 404
         return_data["msg"] = "Other Error!"
     return return_data
+
+
+# 감정 수동입력
+@app.route("/api/setEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
+def set_user_emotion(user_id, device_id):
+    user = User.query.filter_by(username=user_id).first()
+    emotion = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).first()
+    emotion.result = request.form['emotion']
+    db.session.add(emotion)
+    db.session.commit()
+
+    return ;
 
 
 # 질문 입력
@@ -355,18 +380,21 @@ def faceapi_request_process(json, data, headers, params):
 
     return result
 
+
 # 감정정보 분석 함수
 def analysis_emotion_process(emotion_data):
-    user_emotion = None
 
     # lists
     temp = emotion_data['emotion'].items()
     emotion_list = list(temp)
     emotion_list.sort(key=lambda x: x[1])
 
-    #Emotion 분석 시작
+    # Emotion 분석 시작
     if emotion_list[emotion_list.__len__() - 1][0] in 'neutral':
-        user_emotion = emotion_list[emotion_list.__len__() - 2][0]
+        if emotion_list[emotion_list.__len__()-1][1] > 0.980:
+            user_emotion = emotion_list[emotion_list.__len__() - 1][0]
+        else:
+            user_emotion = emotion_list[emotion_list.__len__() - 2][0]
     else:
         user_emotion = emotion_list[emotion_list.__len__() - 1][0]
 
@@ -395,14 +423,3 @@ def init_database():
 if __name__ == '__main__':
     init_database()
     app.run(port=5000, debug=True)
-
-
-def transpose_image(name):
-    img = Image.open(name)
-    transposed = img.transpose(Image.ROTATE_90)
-    return transposed
-
-
-def transpose_image_bytes(name):
-
-    return None
