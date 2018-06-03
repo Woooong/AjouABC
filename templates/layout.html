@@ -2,181 +2,238 @@
 <html lang="en">
 
 <head>
+    <!-- Required meta tags-->
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+    <meta name="description" content="au theme template">
+    <meta name="author" content="Hau Nguyen">
+    <meta name="keywords" content="au theme template">
 
-    <meta charset="utf-8">
-    <meta http-equiv="X-UA-Compatible" content="IE=edge">
-    <meta name="viewport" content="width=device-width, initial-scale=1">
-    <meta name="description" content="">
-    <meta name="author" content="">
-
+    <!-- Title Page-->
     <title>Mirror</title>
 
-    <!-- Bootstrap Core CSS -->
-    <link href="static/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link href="static/bootstrap/css/bootstrap-theme.min.css" rel="stylesheet">
+    <!-- Fontfaces CSS-->
+    <link href="static/css/font-face.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-4.7/css/font-awesome.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/font-awesome-5/css/fontawesome-all.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/mdi-font/css/material-design-iconic-font.min.css" rel="stylesheet" media="all">
 
-    <!-- MetisMenu CSS -->
-    <link href="static/metisMenu/metisMenu.min.css" rel="stylesheet">
+    <!-- Bootstrap CSS-->
+    <link href="static/vendor/bootstrap-4.1/bootstrap.min.css" rel="stylesheet" media="all">
 
-    <!-- Custom CSS -->
-    <link href="static/css/sb-admin-2.css" rel="stylesheet">
+    <!-- Vendor CSS-->
+    <link href="static/vendor/animsition/animsition.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/bootstrap-progressbar/bootstrap-progressbar-3.3.4.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/wow/animate.css" rel="stylesheet" media="all">
+    <link href="static/vendor/css-hamburgers/hamburgers.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/slick/slick.css" rel="stylesheet" media="all">
+    <link href="static/vendor/select2/select2.min.css" rel="stylesheet" media="all">
+    <link href="static/vendor/perfect-scrollbar/perfect-scrollbar.css" rel="stylesheet" media="all">
 
-    <!-- Morris Charts CSS -->
-    <link href="static/morrisjs/morris.css" rel="stylesheet">
-
-    <!-- Custom Fonts -->
-    <link href="static/font-awesome/css/font-awesome.min.css" rel="stylesheet" type="text/css">
-
-    <!-- HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries -->
-    <!-- WARNING: Respond.js doesn't work if you view the page via file:// -->
-    <!--[if lt IE 9]>
-        <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
-        <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
-    <![endif]-->
+    <!-- Main CSS-->
+    <link href="static/css/theme.css" rel="stylesheet" media="all">
 
 </head>
 
-<body>
-
-    <div id="wrapper">
-
-        <!-- Navigation -->
-        <nav class="navbar navbar-default navbar-static-top" role="navigation" style="margin-bottom: 0">
-            <div class="navbar-header">
-                <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse">
-                    <span class="sr-only">Toggle navigation</span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                    <span class="icon-bar"></span>
-                </button>
-                <a class="navbar-brand" href="{{ url_for('index') }}">Mirror</a>
-            </div>
-            <!-- /.navbar-header -->
-
-            <ul class="nav navbar-top-links navbar-right">
-                <!-- /.dropdown -->
-                <li class="dropdown">
-                    <a class="dropdown-toggle" data-toggle="dropdown" href="#">
-                        <i class="fa fa-bell fa-fw"></i> <i class="fa fa-caret-down"></i>
-                    </a>
-                    <ul class="dropdown-menu dropdown-alerts">
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-user-md fa-fw"></i> 감정 기록
-                                    <span class="pull-right text-muted small">4 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a href="#">
-                                <div>
-                                    <i class="fa fa-calendar fa-fw"></i> 다이어리
-                                    <span class="pull-right text-muted small">12 minutes ago</span>
-                                </div>
-                            </a>
-                        </li>
-                        <li class="divider"></li>
-                        <li>
-                            <a class="text-center" href="#">
-                                <strong>See All Alerts</strong>
-                                <i class="fa fa-angle-right"></i>
-                            </a>
-                        </li>
-                    </ul>
-                    <!-- /.dropdown-alerts -->
-                </li>
-                <!-- /.dropdown -->
-                {% if current_user %}
-                <li>
-                    <a href="{{ url_for('logout') }}">
-                        <span class="glyphicon glyphicon-log-out">
-                            Logout
-                        </span>
-                    </a>
-                </li>
-                {% else %}
-                <li>
-                    <a href="{{ url_for('login') }}">
-                        <span class="glyphicon glyphicon-log-in">
-                            Login
-                        </span>
-                    </a>
-                </li>
-                <li>
-                    <a href="{{ url_for('register') }}">
-                        <span class="glyphicon glyphicon-user">
-                            Register
-                        </span>
-                    </a>
-                </li>
-                {% endif %}
-                <!-- /.dropdown -->
-            </ul>
-            <!-- /.navbar-top-links -->
-
-            <div class="navbar-default sidebar" role="navigation">
-                <div class="sidebar-nav navbar-collapse">
-                    <ul class="nav" id="side-menu">
-                        <li class="sidebar-search">
-                            <div class="input-group custom-search-form">
-                                <input type="text" class="form-control" placeholder="Search...">
-                                <span class="input-group-btn">
-                                <button class="btn btn-default" type="button">
-                                    <i class="fa fa-search"></i>
-                                </button>
+<body class="animsition">
+    <div class="page-wrapper">
+        <!-- HEADER MOBILE-->
+        <header class="header-mobile d-block d-lg-none">
+            <div class="header-mobile__bar">
+                <div class="container-fluid">
+                    <div class="header-mobile-inner">
+                        <a class="logo" href="{{ url_for('index') }}">
+                            <img src="images/icon/wep_logo2.png" alt="CoolAdmin" />
+                        </a>
+                        <button class="hamburger hamburger--slider" type="button">
+                            <span class="hamburger-box">
+                                <span class="hamburger-inner"></span>
                             </span>
-                            </div>
-                            <!-- /input-group -->
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <nav class="navbar-mobile">
+                <div class="container-fluid">
+                    <ul class="navbar-mobile__list list-unstyled">
+                        <li class="has-sub">
+                            <a class="js-arrow" href="{{ url_for('index') }}">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
                         </li>
                         <li>
-                            <a href="index.html"><i class="fa fa-dashboard fa-fw"></i> Dashboard</a>
+                            <a href="chart.html">
+                                <i class="fas fa-chart-bar"></i>Charts</a>
                         </li>
                         <li>
-                            <a href="diary.html"><i class="fa fa-table fa-fw"></i> Diary</a>
-                        </li>
-                        <li>
-                            <a href="{{ url_for('emotion') }}"><i class="fa fa-bar-chart-o fa-fw"></i> Emotion<span class="fa arrow"></span></a>
-                            <ul class="nav nav-second-level">
-                                <li>
-                                    <a href="flot.html">A Charts</a>
-                                </li>
-                                <li>
-                                    <a href="morris.html">B Charts</a>
-                                </li>
-                            </ul>
-                            <!-- /.nav-second-level -->
+                            <a href="#">
+                                <i class="fas fa-calendar-alt"></i>Calendar</a>
                         </li>
                     </ul>
                 </div>
-                <!-- /.sidebar-collapse -->
+            </nav>
+        </header>
+        <!-- END HEADER MOBILE-->
+
+        <!-- MENU SIDEBAR-->
+        <aside class="menu-sidebar d-none d-lg-block">
+            <div class="logo">
+                <a href="{{ url_for('index') }}">
+                    <img src="static/images/icon/web_logo.png" alt="Cool Admin" />
+                </a>
             </div>
-            <!-- /.navbar-static-side -->
-        </nav>
+            <div class="menu-sidebar__content js-scrollbar1">
+                <nav class="navbar-sidebar">
+                    <ul class="list-unstyled navbar__list">
+                        <li class="active has-sub">
+                            <a class="js-arrow" href="{{ url_for('index') }}">
+                                <i class="fas fa-tachometer-alt"></i>Dashboard</a>
+                        </li>
+                        <li>
+                            <a href="{{ url_for('emotion') }}">
+                                <i class="fas fa-chart-bar"></i>Emotions</a>
+                        </li>
+                        <li>
+                            <a href="#">
+                                <i class="fas fa-calendar-alt"></i>Diary</a>
+                        </li>
+                    </ul>
+                </nav>
+            </div>
+        </aside>
+        <!-- END MENU SIDEBAR-->
 
-        {% block content %} {% endblock %}
+        <!-- PAGE CONTAINER-->
+        <div class="page-container">
 
+            <!-- HEADER DESKTOP-->
+            <header class="header-desktop">
+                <div class="section__content section__content--p30">
+                    <div class="container-fluid">
+                        <div class="header-wrap">
+                            <form class="form-header" action="" method="POST">
+                                <input class="au-input au-input--xl" type="text" name="search" placeholder="Search for datas &amp; reports..." />
+                                <button class="au-btn--submit" type="submit">
+                                    <i class="zmdi zmdi-search"></i>
+                                </button>
+                            </form>
+                            <div class="header-button">
+                                <div class="noti-wrap">
+                                    <div class="noti__item js-item-menu">
+                                        <i class="zmdi zmdi-notifications"></i>
+                                        <span class="quantity">3</span>
+                                        <div class="notifi-dropdown js-dropdown">
+                                            <div class="notifi__title">
+                                                <p>You have 3 Notifications</p>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c1 img-cir img-40">
+                                                    <i class="zmdi zmdi-email-open"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>You got a email notification</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c2 img-cir img-40">
+                                                    <i class="zmdi zmdi-account-box"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>Your account has been blocked</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__item">
+                                                <div class="bg-c3 img-cir img-40">
+                                                    <i class="zmdi zmdi-file-text"></i>
+                                                </div>
+                                                <div class="content">
+                                                    <p>You got a new file</p>
+                                                    <span class="date">April 12, 2018 06:50</span>
+                                                </div>
+                                            </div>
+                                            <div class="notifi__footer">
+                                                <a href="#">All notifications</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                                <div class="account-wrap">
+                                    <div class="account-item clearfix js-item-menu">
+                                        <div class="image">
+                                            <img src="static/images/icon/profile1.jpg" alt="{{ current_user }}" />
+                                        </div>
+                                        <div class="content">
+                                            <a class="js-acc-btn" href="#">{{ current_user }}</a>
+                                        </div>
+                                        <div class="account-dropdown js-dropdown">
+                                            <div class="info clearfix">
+                                                <div class="image">
+                                                    <a href="#">
+                                                        <img src="static/images/icon/profile1.jpg" alt="{{ current_user }}" />
+                                                    </a>
+                                                </div>
+                                                <div class="content">
+                                                    <h5 class="name">
+                                                        <a href="#">{{ current_user }}</a>
+                                                    </h5>
+                                                    <span class="email">{{ user.email }}</span>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__body">
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-account"></i>Account</a>
+                                                </div>
+                                                <div class="account-dropdown__item">
+                                                    <a href="#">
+                                                        <i class="zmdi zmdi-settings"></i>Setting</a>
+                                                </div>
+                                            </div>
+                                            <div class="account-dropdown__footer">
+                                                <a href="{{ url_for('logout') }}">
+                                                    <i class="zmdi zmdi-power"></i>Logout</a>
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </header>
+            <!-- HEADER DESKTOP-->
+
+            {% block content %} {% endblock %}
+        <!-- END PAGE CONTAINER-->
+        </div>
     </div>
-    <!-- /#wrapper -->
 
-    <!-- jQuery -->
-    <script src="static/jquery/jquery.min.js"></script>
+    <!-- Jquery JS-->
+    <script src="static/vendor/jquery-3.2.1.min.js"></script>
+    <!-- Bootstrap JS-->
+    <script src="static/vendor/bootstrap-4.1/popper.min.js"></script>
+    <script src="static/vendor/bootstrap-4.1/bootstrap.min.js"></script>
+    <!-- Vendor JS       -->
+    <script src="static/vendor/slick/slick.min.js">
+    </script>
+    <script src="static/vendor/wow/wow.min.js"></script>
+    <script src="static/vendor/animsition/animsition.min.js"></script>
+    <script src="static/vendor/bootstrap-progressbar/bootstrap-progressbar.min.js">
+    </script>
+    <script src="static/vendor/counter-up/jquery.waypoints.min.js"></script>
+    <script src="static/vendor/counter-up/jquery.counterup.min.js">
+    </script>
+    <script src="static/vendor/circle-progress/circle-progress.min.js"></script>
+    <script src="static/vendor/perfect-scrollbar/perfect-scrollbar.js"></script>
+    <script src="static/vendor/chartjs/Chart.bundle.min.js"></script>
+    <script src="static/vendor/select2/select2.min.js">
+    </script>
 
-    <!-- Bootstrap Core JavaScript -->
-    <script src="static/bootstrap/js/bootstrap.min.js"></script>
-
-    <!-- Metis Menu Plugin JavaScript -->
-    <script src="static/metisMenu/metisMenu.min.js"></script>
-
-    <!-- Morris Charts JavaScript -->
-    <script src="static/raphael/raphael.min.js"></script>
-    <script src="static/morrisjs/morris.min.js"></script>
-    <script src="static/data/morris-data.js"></script>
-
-    <!-- Custom Theme JavaScript -->
-    <script src="static/dist/js/sb-admin-2.js"></script>
+    <!-- Main JS-->
+    <script src="static/js/main.js"></script>
 
 </body>
 
 </html>
+<!-- end document-->
