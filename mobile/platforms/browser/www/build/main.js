@@ -4,6 +4,123 @@ webpackJsonp([4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectionPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(47);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+/**
+ * Generated class for the SelectionPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var SelectionPage = /** @class */ (function () {
+    function SelectionPage(navCtrl, navParams, toastCtrl, http) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.toastCtrl = toastCtrl;
+        this.http = http;
+        this.comment_list = [];
+        this.emotion_data = navParams.get("emotion_data");
+        console.log(this.emotion_data['represent_emotion']);
+        console.log(this.emotion_data['represent_age']);
+        console.log(this.emotion_data['represent_gender']);
+        this.emotion_code = this.emotion_data['represent_emotion'];
+        this.emotion = null;
+        if (this.emotion_code == "anger") {
+            this.emotion = "화난";
+        }
+        else if (this.emotion_code == "contempt") {
+            this.emotion = "경멸하는";
+        }
+        else if (this.emotion_code == "disgust") {
+            this.emotion = "역겨워하는";
+        }
+        else if (this.emotion_code == "fear") {
+            this.emotion = "두려워하는";
+        }
+        else if (this.emotion_code == "happiness") {
+            this.emotion = "행복한";
+        }
+        else if (this.emotion_code == "sadness") {
+            this.emotion = "슬픈";
+        }
+        else if (this.emotion_code == "surprise") {
+            this.emotion = "놀란";
+        }
+        if (this.emotion_data['represent_gender'] == 'male') {
+            this.gender = '남자';
+        }
+        else {
+            this.gender = '여자';
+        }
+        this.age = parseInt(this.emotion_data['represent_age']);
+        this.ment = this.emotion_data['ment'];
+    }
+    SelectionPage.prototype.ngOnInit = function () {
+        var _this = this;
+        this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
+        this.comment_list.push(this.ment);
+        this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
+        console.log(this.comment_list);
+        document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
+        var count = 1;
+        setInterval(function () {
+            if (!_this.comment_list[count]) {
+                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
+                    .then(function (data) {
+                    // console.log(data.status);
+                    console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
+                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
+                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
+                    // console.log(data.headers);
+                    location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text);
+                })
+                    .catch(function (error) {
+                    // console.log(error.status);
+                    // console.log(error.error); // error message as string
+                    // console.log(error.headers);
+                    // alert("잠시 후 다시 시도해 주세요.");
+                });
+            }
+            else {
+                document.getElementById('comment').innerHTML = "<h1>" + _this.comment_list[count] + "</h1>";
+                count++;
+            }
+        }, 5000);
+    };
+    SelectionPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */]])
+    ], SelectionPage);
+    return SelectionPage;
+}());
+
+//# sourceMappingURL=selection.js.map
+
+/***/ }),
+
+/***/ 102:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
@@ -94,122 +211,6 @@ var LoginPage = /** @class */ (function () {
 
 /***/ }),
 
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectionPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(47);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-/**
- * Generated class for the SelectionPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var SelectionPage = /** @class */ (function () {
-    function SelectionPage(navCtrl, navParams, toastCtrl, http) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.toastCtrl = toastCtrl;
-        this.http = http;
-        this.comment_list = [];
-        this.emotion_data = navParams.get("emotion_data");
-        console.log(this.emotion_data['represent_emotion']);
-        console.log(this.emotion_data['represent_age']);
-        console.log(this.emotion_data['represent_gender']);
-        this.emotion_code = this.emotion_data['represent_emotion'];
-        this.emotion = null;
-        if (this.emotion_code == "anger") {
-            this.emotion = "화난";
-        }
-        else if (this.emotion_code == "contempt") {
-            this.emotion = "경멸하는";
-        }
-        else if (this.emotion_code == "disgust") {
-            this.emotion = "역겨워하는";
-        }
-        else if (this.emotion_code == "fear") {
-            this.emotion = "두려워하는";
-        }
-        else if (this.emotion_code == "happiness") {
-            this.emotion = "행복한";
-        }
-        else if (this.emotion_code == "sadness") {
-            this.emotion = "슬픈";
-        }
-        else if (this.emotion_code == "surprise") {
-            this.emotion = "놀란";
-        }
-        if (this.emotion_data['represent_gender'] == 'male') {
-            this.gender = '남자';
-        }
-        else {
-            this.gender = '여자';
-        }
-        this.age = parseInt(this.emotion_data['represent_age']);
-    }
-    SelectionPage.prototype.ngOnInit = function () {
-        var _this = this;
-        this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
-        this.comment_list.push("오늘 무슨일이 있으셨나요?");
-        this.comment_list.push("별일이 없으셨군요. 오늘도 다이어리를 입력해 봅시다.");
-        console.log(this.comment_list);
-        document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
-        var count = 1;
-        setInterval(function () {
-            if (!_this.comment_list[count]) {
-                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
-                    .then(function (data) {
-                    // console.log(data.status);
-                    console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
-                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
-                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
-                    // console.log(data.headers);
-                    location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text);
-                })
-                    .catch(function (error) {
-                    // console.log(error.status);
-                    // console.log(error.error); // error message as string
-                    // console.log(error.headers);
-                    // alert("잠시 후 다시 시도해 주세요.");
-                });
-            }
-            else {
-                document.getElementById('comment').innerHTML = "<h1>" + _this.comment_list[count] + "</h1>";
-                count++;
-            }
-        }, 5000);
-    };
-    SelectionPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */]])
-    ], SelectionPage);
-    return SelectionPage;
-}());
-
-//# sourceMappingURL=selection.js.map
-
-/***/ }),
-
 /***/ 112:
 /***/ (function(module, exports) {
 
@@ -236,15 +237,15 @@ var map = {
 		3
 	],
 	"../pages/login/login.module": [
-		277,
+		279,
 		2
 	],
 	"../pages/selection/selection.module": [
-		278,
+		277,
 		1
 	],
 	"../pages/therapy/therapy.module": [
-		279,
+		278,
 		0
 	]
 };
@@ -273,7 +274,7 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(47);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -540,8 +541,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera_preview__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_therapy_therapy__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -582,9 +583,9 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],
@@ -623,7 +624,7 @@ var AppModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(102);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
