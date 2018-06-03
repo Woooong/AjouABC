@@ -52,7 +52,7 @@ def index():
         end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
-        emotions = Emotion.query.filter_by(user_id=user.id).all()
+        emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
         emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
         user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
         user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= '2018-05-01', Emotion.date <= end_date).all()
@@ -63,7 +63,7 @@ def index():
         data['userQuestions'] = len(user_questions)
         data['userQuestions_month'] = len(user_questions_month)
 
-        return render_template('index.html', current_user=user, data=data)
+        return render_template('index.html', current_user=current_user, data=data, user=user, emotions=emotions)
     else:
         return redirect(url_for('login'))
 
