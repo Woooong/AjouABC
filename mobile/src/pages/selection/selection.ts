@@ -74,43 +74,43 @@ export class SelectionPage implements OnInit{
       this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
       this.comment_list.push(this.ment);
       this.comment_list.push("오늘도 다이어리를 입력해 봅시다.");
-      // document.getElementById('mp3audio').setAttribute('src','https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/reply_ment.1528033404.711417.mp3')
+
       document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
       this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment_list.join(', ')}, {})
       .then(data => {
           // console.log(data.status);
           console.log(JSON.parse(data.data)); // data received by server
-          // document.getElementById('comment').appendChild('')
+          document.getElementById('mp3audio').setAttribute('src',JSON.parse(data.data)['url'])
           // console.log(data.headers);
       })
       .catch(error => {
 
       });
-      for(let index=0; this.comment_list.length>index; index++){
-
-      }
-
-      // setInterval(()=> {
-      //     if(!this.comment_list[count]){
-      //         this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
-      //         .then(data => {
-      //             // console.log(data.status);
-      //             console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
-      //             this.q_text = JSON.parse(data.data)['data']['q_text'];
-      //             this.q_id = JSON.parse(data.data)['data']['q_id'];
-      //             // console.log(data.headers);
-      //             location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text)
-      //         })
-      //         .catch(error => {
-      //             // console.log(error.status);
-      //             // console.log(error.error); // error message as string
-      //             // console.log(error.headers);
-      //             // alert("잠시 후 다시 시도해 주세요.");
-      //         });
-      //     }else{
-      //         document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
-      //         count++;
-      //     }
-      // }, 5000)
+      // for(let index=0; this.comment_list.length>index; index++){
+      //
+      // }
+      let count = 1
+      setInterval(()=> {
+          if(!this.comment_list[count]){
+              this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
+              .then(data => {
+                  // console.log(data.status);
+                  console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
+                  this.q_text = JSON.parse(data.data)['data']['q_text'];
+                  this.q_id = JSON.parse(data.data)['data']['q_id'];
+                  // console.log(data.headers);
+                  location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text)
+              })
+              .catch(error => {
+                  // console.log(error.status);
+                  // console.log(error.error); // error message as string
+                  // console.log(error.headers);
+                  // alert("잠시 후 다시 시도해 주세요.");
+              });
+          }else{
+              document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
+              count++;
+          }
+      }, 4300)
   }
 }
