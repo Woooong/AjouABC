@@ -108,12 +108,12 @@ class ReplyMent(db.Model):
     id = db.Column(db.Integer, primary_key=True)
     reply_ment = db.Column(db.String(1000), unique=True, nullable=False)
     emotion = db.Column(db.String(10), nullable=True)
-    tag1 = db.Column(db.String(50), nullable=True)
+    tts = db.Column(db.String(100), nullable=True)
     tag2 = db.Column(db.String(50), nullable=True)
 
     def __init__(self, ment):
         m = json.loads(ment)
         self.reply_ment = m['m_content']
         self.emotion =m['m_emotion']
-        self.tag1 = m['m_tag1']
+        self.tts = m['m_tts']
         self.tag2 = m['m_tag2']

@@ -277,6 +277,7 @@ def make_return_data(api_result, user):
         return_data["represent_age"] = api_result[0]["faceAttributes"]["age"]
         return_data["represent_gender"] = api_result[0]["faceAttributes"]["gender"]
         return_data["ment"] = ment.reply_ment
+        return_data["tts"] = ment.tts
 
     elif len(api_result) == 0:
         return_data["code"] = 203
