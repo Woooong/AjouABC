@@ -11,7 +11,8 @@
                 data: {
                     labels: ['화남', '경멸하는', '역겨운', '무서운', '행복한', '평범한', '슬픈', '놀란'],
                     datasets: [{
-                        data: [0.2, 0.3, 0.43, 0.1, 0.1, 0.13, 0.23, 0.03]
+                        label: 'My Emotion',
+                        data: [0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125]
                     }]
                 }
             });
@@ -29,17 +30,18 @@
                 },
                 success : function(data) {
                     console.log(data);
+                    var ctx = document.getElementById("myChart").getContext('2d');
                     var myChart = new Chart(ctx, {
                         type: 'radar',
                         data: {
                             labels: ['화남', '경멸하는', '역겨운', '무서운', '행복한', '평범한', '슬픈', '놀란'],
                             datasets: [{
-                                data: [0.2, 0.3, 0.43, 0.1, 0.1, 0.13, 0.23, 0.03]
+                                label: 'My Emotion',
+                                data: [data.anger, data.contempt, data.disgust, data.fear,
+                                    data.happiness, data.neutral, data.sadness, data.surprise]
                             }]
                         }
                     });
-
-                    alert("success!");
                 }
             });
 
