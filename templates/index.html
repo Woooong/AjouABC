@@ -150,54 +150,19 @@
                                 <p>Tasks for {{ current_user }}</p>
                             </div>
                             <div class="au-task-list js-scrollbar3">
-                                <div class="au-task__item au-task__item--danger">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[0].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[0].date }}</span>
+                                {% for e in emotions %}
+                                    <div class="au-task__item au-task__item--danger">
+                                        <div class="au-task__item-inner">
+                                            <h5 class="task">
+                                                <a href="#">이날은 {{ e.result }} 하시군요</a>
+                                            </h5>
+                                            <span class="time">{{ e.date }}</span>
+                                        </div>
                                     </div>
-                                </div>
-                                <div class="au-task__item au-task__item--warning">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[1].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[1].date }}</span>
-                                    </div>
-                                </div>
-                                <div class="au-task__item au-task__item--primary">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[2].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[2].date }}</span>
-                                    </div>
-                                </div>
-                                <div class="au-task__item au-task__item--success">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[3].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[3].date }}</span>
-                                    </div>
-                                </div>
-                                <div class="au-task__item au-task__item--danger js-load-item">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[4].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[4].date }}</span>
-                                    </div>
-                                </div>
-                                <div class="au-task__item au-task__item--warning js-load-item">
-                                    <div class="au-task__item-inner">
-                                        <h5 class="task">
-                                            <a href="#">이날은 {{ emotions[5].result }} 하시군요</a>
-                                        </h5>
-                                        <span class="time">{{ emotions[5].date }}</span>
-                                    </div>
-                                </div>
+                                    {% if loop.index == 6 %}
+                                            {% break %}
+                                    {% endif %}
+                                {% endfor %}
                             </div>
                             <div class="au-task__footer">
                                 <button class="au-btn au-btn-load js-load-btn">load more</button>
@@ -220,108 +185,28 @@
                                     </p>
                                 </div>
                                 <div class="au-message-list">
-                                    <div class="au-task__item au-task__item--danger">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[0].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
+                                    {% for q in user_questions %}
+                                        <div class="au-task__item au-task__item--danger">
+                                            <div class="au-message__item-inner">
+                                                <div class="au-message__item-text">
+                                                    <div class="avatar-wrap">
+                                                        <div class="avatar">
+                                                            <button type="button" onclick="javascript:PlaySound('{{ q.question_reply }}');">
+                                                                <img class="btn-img" src="static/images/icon/Play.jpg">
+                                                            </button>
+                                                        </div>
                                                     </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[0].question_content}}"</h5>
-                                                    <p>{{ user_questions[0].updated}}</p>
+                                                    <div class="text">
+                                                        <h5 class="time">"{{ q.question_content}}"</h5>
+                                                        <p>{{ q.updated }}</p>
+                                                    </div>
                                                 </div>
                                             </div>
                                         </div>
-                                    </div>
-                                    <div class="au-task__item au-task__item--primary">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap online">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[1].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[1].question_content}}"</h5>
-                                                    <p>{{ user_questions[1].updated}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="au-task__item au-task__item--warning">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap online">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[2].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[1].question_content}}"</h5>
-                                                    <p>{{ user_questions[1].updated}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="au-task__item au-task__item--success">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[3].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[1].question_content}}"</h5>
-                                                    <p>{{ user_questions[1].updated}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="au-message__item js-load-item">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap online">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[3].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[1].question_content}}"</h5>
-                                                    <p>{{ user_questions[1].updated}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
-                                    <div class="au-message__item js-load-item">
-                                        <div class="au-message__item-inner">
-                                            <div class="au-message__item-text">
-                                                <div class="avatar-wrap">
-                                                    <div class="avatar">
-                                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[1].question_reply }}');">
-                                                            <img class="btn-img" src="static/images/icon/Play.jpg">
-                                                        </button>
-                                                    </div>
-                                                </div>
-                                                <div class="text">
-                                                    <h5 class="time">"{{ user_questions[1].question_content}}"</h5>
-                                                    <p>{{ user_questions[1].updated}}</p>
-                                                </div>
-                                            </div>
-                                        </div>
-                                    </div>
+                                        {% if loop.index == 6 %}
+                                            {% break %}
+                                        {% endif %}
+                                    {% endfor %}
                                 </div>
                                 <div class="au-message__footer">
                                     <button class="au-btn au-btn-load js-load-btn">load more</button>
