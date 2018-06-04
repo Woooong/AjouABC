@@ -22,6 +22,7 @@ import bcrypt
 app = Flask(__name__)
 db.init_app(app)
 app.secret_key = 'Secret'
+app.jinja_env.add_extension('jinja2.ext.loopcontrols')
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL']
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 MS_BASE_URL = 'https://westcentralus.api.cognitive.microsoft.com/face/v1.0'
@@ -58,7 +59,7 @@ def index():
         user = User.query.filter_by(username=current_user).first()
         emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
         emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
-        user_questions = UserQuestion.query.filter_by(user_id=user.id).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
         user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
 
         data = dict()

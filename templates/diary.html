@@ -12,41 +12,23 @@
                         <table class="table table-borderless table-data3">
                             <thead>
                                 <tr>
-                                    <th>번호</th>
                                     <th>질문</th>
                                     <th>녹음 재생</th>
                                     <th>날짜</th>
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr>
-                                    <td>1</td>
-                                    <td>{{ user_questions[0].question_content }}</td>
-                                    <td class="process">
-                                        <button type="button" onclick="javascript:PlaySound('{{ user_questions[0].question_reply }}');">
-                                            Play
-                                        </button>
-                                    </td>
-                                    <td>{{ user_questions[0].updated }}</td>
-                                </tr>
-                                <tr>
-                                    <td>2</td>
-                                    <td>{{ user_questions[1].question_content }}</td>
-                                    <td class="process">Play</td>
-                                    <td>{{ user_questions[1].updated }}</td>
-                                </tr>
-                                <tr>
-                                    <td>3</td>
-                                    <td>{{ user_questions[2].question_content }}</td>
-                                    <td class="process">Play</td>
-                                    <td>{{ user_questions[2].updated }}</td>
-                                </tr>
-                                <tr>
-                                    <td>4</td>
-                                    <td>{{ user_questions[3].question_content }}</td>
-                                    <td class="process">Play</td>
-                                    <td>{{ user_questions[3].updated }}</td>
-                                </tr>
+                                {% for q in user_questions %}
+                                    <tr>
+                                        <td>{{ q.question_content }}</td>
+                                        <td class="process">
+                                            <button type="button" onclick="javascript:PlaySound('{{ q.question_reply }}');">
+                                                Play
+                                            </button>
+                                        </td>
+                                        <td>{{ q.updated }}</td>
+                                    </tr>
+                                {% endfor %}
                             </tbody>
                         </table>
                     </div>
