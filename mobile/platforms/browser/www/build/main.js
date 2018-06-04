@@ -132,6 +132,7 @@ var SelectionPage = /** @class */ (function () {
         this.http = http;
         this.comment_list = [];
         this.tts_list = [];
+        this.comment = '';
         this.emotion_data = navParams.get("emotion_data");
         console.log(this.emotion_data['represent_emotion']);
         console.log(this.emotion_data['represent_age']);
@@ -177,29 +178,32 @@ var SelectionPage = /** @class */ (function () {
         this.comment_list.push(this.ment);
         this.comment_list.push("오늘도 다이어리를 작성해 볼까요?");
         document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
-        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment_list.join(', ') }, {})
-            .then(function (data) {
+        this.comment = this.comment_list.join(', ');
+        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment }, {})
+            .then(function (tts) {
             // console.log(data.status);
-            console.log(JSON.parse(data.data)); // data received by server
-            document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['url']);
+            document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
             // console.log(data.headers);
         })
             .catch(function (error) {
         });
-        // for(let index=0; this.comment_list.length>index; index++){
-        //
-        // }
         var count = 1;
         setInterval(function () {
             if (!_this.comment_list[count]) {
                 _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
                     .then(function (data) {
                     // console.log(data.status);
-                    console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
                     _this.q_text = JSON.parse(data.data)['data']['q_text'];
                     _this.q_id = JSON.parse(data.data)['data']['q_id'];
-                    // console.log(data.headers);
-                    location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text);
+                    _this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": _this.q_text }, {})
+                        .then(function (tts) {
+                        // console.log(data.status);
+                        // console.log(data.headers);
+                        location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text + '&tts=' + JSON.parse(tts.data)['url']);
+                        // console.log(data.headers);
+                    })
+                        .catch(function (error) {
+                    });
                 })
                     .catch(function (error) {
                     // console.log(error.status);
@@ -213,6 +217,8 @@ var SelectionPage = /** @class */ (function () {
                 count++;
             }
         }, 4300);
+    };
+    SelectionPage.prototype.get_tts = function (comment) {
     };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
@@ -251,11 +257,11 @@ webpackEmptyAsyncContext.id = 112;
 
 var map = {
 	"../pages/diary/diary.module": [
-		276,
+		277,
 		3
 	],
 	"../pages/login/login.module": [
-		277,
+		276,
 		2
 	],
 	"../pages/selection/selection.module": [
@@ -603,8 +609,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_0__angular_platform_browser__["a" /* BrowserModule */],
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* MyApp */], {}, {
                     links: [
-                        { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
                     ]

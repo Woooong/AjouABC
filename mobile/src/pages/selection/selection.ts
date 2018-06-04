@@ -29,6 +29,7 @@ export class SelectionPage implements OnInit{
     private ment;
     private comment_list = [];
     private tts_list=[];
+    private comment = '';
 
 
   constructor(public navCtrl: NavController, public navParams: NavParams,
@@ -79,30 +80,38 @@ export class SelectionPage implements OnInit{
       this.comment_list.push("오늘도 다이어리를 작성해 볼까요?");
 
       document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
-      this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment_list.join(', ')}, {})
-      .then(data => {
+      this.comment = this.comment_list.join(', ');
+      this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment}, {})
+      .then(tts => {
           // console.log(data.status);
-          console.log(JSON.parse(data.data)); // data received by server
-          document.getElementById('mp3audio').setAttribute('src',JSON.parse(data.data)['url'])
+          document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url'])
           // console.log(data.headers);
       })
       .catch(error => {
 
       });
-      // for(let index=0; this.comment_list.length>index; index++){
-      //
-      // }
+
+
       let count = 1
       setInterval(()=> {
           if(!this.comment_list[count]){
               this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
               .then(data => {
                   // console.log(data.status);
-                  console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
                   this.q_text = JSON.parse(data.data)['data']['q_text'];
                   this.q_id = JSON.parse(data.data)['data']['q_id'];
-                  // console.log(data.headers);
-                  location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text)
+                  this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.q_text}, {})
+                  .then(tts => {
+                      // console.log(data.status);
+
+                      // console.log(data.headers);
+                      location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text+'&tts='+JSON.parse(tts.data)['url'])
+                      // console.log(data.headers);
+                  })
+                  .catch(error => {
+
+                  });
+
               })
               .catch(error => {
                   // console.log(error.status);
@@ -116,4 +125,8 @@ export class SelectionPage implements OnInit{
           }
       }, 4300)
   }
+
+    public get_tts(comment) {
+
+    }
 }
