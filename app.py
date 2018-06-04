@@ -207,10 +207,11 @@ def emotion():
 
 @app.route("/getGraph", methods=['POST'])
 def get_graph_data():
-
     emotion = Emotion.query.filter_by(id=request.json['emotion_id']).first()
 
-    return jsonify(emotion)
+    return jsonify({"result": True, "anger": emotion.anger, "contempt": emotion.contempt, "disgust": emotion.disgust, "fear": emotion.fear,
+                    "happiness": emotion.happiness, "neutral": emotion.neutral})
+
 
 # Diary View Page
 @app.route("/diary")
@@ -220,6 +221,7 @@ def diary():
     emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
     user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
     return render_template('diary.html', current_user=current_user, emotions=emotions, user_questions=user_questions, user=user)
+
 
 @app.route("/api/record", methods=['POST'])
 def set_record():
@@ -264,7 +266,6 @@ def get_face_api(user_id, device_id):
 def get_voice():
 
     text = request.form['text']
-
     encText = urllib.parse.quote(text)
     data = "speaker=jinho&speed=0&text=" + encText
     req = urllib.request.Request(url)
@@ -287,6 +288,7 @@ def get_voice_ment(record_data):
                          Metadata={'Content-Type': 'audio/mpeg'}, Bucket='ryun.capstone')
 
     return 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/' + key_name
+
 
 def prepare_img(rotate=None):
     image_data = re.sub('^data:image/.+;base64,', '', request.form['image'])
