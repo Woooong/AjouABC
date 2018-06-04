@@ -26,7 +26,7 @@
                                                 Play
                                             </button>
                                         </td>
-                                        <td>{{ q.updated }}</td>
+                                        <td>{{ q.updated.strftime("%Y-%m-%d %H:%M") }}</td>
                                     </tr>
                                 {% endfor %}
                             </tbody>
