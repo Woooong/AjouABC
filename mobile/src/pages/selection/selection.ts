@@ -147,4 +147,35 @@ export class SelectionPage implements OnInit{
       }
   }
 
+  selectEmotion(emotion){
+      console.log(123);
+      this.http.post('/api/setEmotion/'+localStorage.getItem('username')+'/111', {"change_emotion": emotion}, {})
+          .then(data => {
+              console.log(JSON.parse(data.data));
+              document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['tts'])
+              document.getElementById('comment').innerHTML="<h1>"+JSON.parse(data.data)['ment']+"</h1>";
+              setTimeout(()=> {
+                  this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
+                    .then(data => {
+                        this.q_text = JSON.parse(data.data)['data']['q_text'];
+                        this.q_id = JSON.parse(data.data)['data']['q_id'];
+                        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.q_text}, {})
+                        .then(tts => {
+
+                            location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text+'&tts='+JSON.parse(tts.data)['url'])
+                        })
+                        .catch(error => {
+
+                        });
+
+                    })
+                    .catch(error => {
+
+                    });
+              }, 4300);
+          })
+          .catch(error => {
+          });
+  }
+
 }
