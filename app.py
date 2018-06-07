@@ -225,14 +225,14 @@ def diary():
 @app.route("/api/record", methods=['POST'])
 def set_record():
     record_url = get_record_file(request.form['data'])
-    user = User.query.filter_by(username=request.form['username']).first()
+    user = User.query.filter_by(username=request.form['user_id']).first()
     question = Question.query.filter_by(id=request.form['q_id']).first()
 
     uq = UserQuestion(user=user, question=question, reply=record_url)
     db.session.add(uq)
     db.session.commit()
 
-    return jsonify({'result': True, 'save_id': uq.id})
+    return jsonify({'code': 200, 'save_id': uq.id})
 
 
 def get_record_file(record_data):
@@ -272,13 +272,12 @@ def get_voice():
     req.add_header("X-NCP-APIGW-API-KEY", client_secret)
     response = urllib.request.urlopen(req, data=data.encode('utf-8'))
     rescode = response.getcode()
+
     if (rescode == 200):
         response_body = response.read()
-        return json.dumps({'url': get_voice_ment(response_body)})
-
-
+        return json.dumps({'code': 200, 'url': get_voice_ment(response_body)})
     else:
-        return jsonify({'result': False})
+        return jsonify({'code': 404})
 
 
 def get_voice_ment(record_data):
@@ -360,7 +359,7 @@ def set_user_emotion(user_id, device_id):
     else:
         bgm_url = ment.tag2
 
-    return jsonify({'result': True, 'ment': ment.reply_ment, 'tts': ment.tts, 'bgm': bgm_url})
+    return jsonify({'code': 200, 'ment': ment.reply_ment, 'tts': ment.tts, 'bgm': bgm_url})
 
 
 # 질문 입력
@@ -381,7 +380,7 @@ def set_question_api(q_name):
         db.session.commit()
 
     qs = Question.query().all()
-    return "Questions Count: {c}".format(c=len(qs))
+    return jsonify({'code': 200, 'count': len(qs)})
 
 
 # 질문 조회
@@ -402,7 +401,8 @@ def get_question_api(user_id, device_id):
         selected_question = select_question_process(today, today_emotion.result)
 
         return_data["code"] = 200
-        return_data["data"] = {'q_id': selected_question.id, 'q_text': selected_question.content}
+        return_data["q_id"] = selected_question.id
+        return_data["q_text"] = selected_question.content
 
     return jsonify(return_data)
 
