@@ -2,7 +2,6 @@ import base64
 import io
 import json, os
 import re
-import random
 import urllib
 
 import boto3 as boto3
@@ -201,7 +200,7 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
+    emotions = Emotion.query.filter(Emotion.result != 'neutral').filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
     return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
 
 
@@ -329,6 +328,10 @@ def make_return_data(api_result, user):
         return_data["represent_gender"] = api_result[0]["faceAttributes"]["gender"]
         return_data["ment"] = ment.reply_ment
         return_data["tts"] = ment.tts
+        if ment.tag2 is None:
+            return_data["bgm"] = 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3'
+        else:
+            return_data["bgm"] = ment.tag2
 
     elif len(api_result) == 0:
         return_data["code"] = 203
@@ -343,13 +346,21 @@ def make_return_data(api_result, user):
 # 감정 수동입력
 @app.route("/api/setEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def set_user_emotion(user_id, device_id):
+    change_emotion = request.form['change_emotion']
+
     user = User.query.filter_by(username=user_id).first()
     emotion = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).first()
-    emotion.result = request.form['emotion']
+    emotion.result = change_emotion
     db.session.add(emotion)
     db.session.commit()
 
-    return jsonify({'result': True, 'save_id': emotion.id})
+    ment = ReplyMent.query.filter_by(emotion=change_emotion).first()
+    if ment.tag2 is None:
+        bgm_url = 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3'
+    else:
+        bgm_url = ment.tag2
+
+    return jsonify({'result': True, 'ment': ment.reply_ment, 'tts': ment.tts, 'bgm': bgm_url})
 
 
 # 질문 입력

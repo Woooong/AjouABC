@@ -12,9 +12,17 @@
                     labels: ['화남', '경멸하는', '역겨운', '무서운', '행복한', '평범한', '슬픈', '놀란'],
                     datasets: [{
                         label: 'My Emotion',
-                        data: [0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125]
+                        data: [0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125, 0.125],
+                        "fill":true,
+                        "backgroundColor":"rgba(54, 162, 235, 0.2)",
+                        "borderColor":"rgb(54, 162, 235)",
+                        "pointBackgroundColor":"rgb(54, 162, 235)",
+                        "pointBorderColor":"#fff",
+                        "pointHoverBackgroundColor":"#fff",
+                        "pointHoverBorderColor":"rgb(54, 162, 235)"
                     }]
-                }
+                },
+                "options":{"elements":{"line":{"tension":0,"borderWidth":3}}}
             });
         });
 
@@ -29,7 +37,6 @@
                     alert("Error!");
                 },
                 success : function(data) {
-                    console.log(data);
                     var ctx = document.getElementById("myChart").getContext('2d');
                     var myChart = new Chart(ctx, {
                         type: 'radar',
@@ -38,9 +45,17 @@
                             datasets: [{
                                 label: 'My Emotion',
                                 data: [data.anger, data.contempt, data.disgust, data.fear,
-                                    data.happiness, data.neutral, data.sadness, data.surprise]
+                                    data.happiness, data.neutral, data.sadness, data.surprise],
+                                "fill":true,
+                                "backgroundColor":"rgba(54, 162, 235, 0.2)",
+                                "borderColor":"rgb(54, 162, 235)",
+                                "pointBackgroundColor":"rgb(54, 162, 235)",
+                                "pointBorderColor":"#fff",
+                                "pointHoverBackgroundColor":"#fff",
+                                "pointHoverBorderColor":"rgb(54, 162, 235)"
                             }]
-                        }
+                        },
+                        "options":{"elements":{"line":{"tension":0,"borderWidth":3}}}
                     });
                 }
             });
@@ -64,17 +79,17 @@
                             <table class="table table-borderless table-striped table-earning">
                                 <thead>
                                     <tr>
-                                        <th>Date</th>
                                         <th>Emotion ID</th>
-                                        <th>Emotion</th>
+                                        <th class="emotion-mid">Emotion</th>
+                                        <th>Save Date</th>
                                     </tr>
                                 </thead>
                                 <tbody>
                                     {% for emotion in emotions %}
                                         <tr onclick="getEmotionGraph({{ emotion.id }})">
+                                            <td class="emotion-id">{{ emotion.id }}</td>
+                                            <td class="emotion-mid">{{ emotion.result }}</td>
                                             <td>{{ emotion.date }}</td>
-                                            <td>{{ emotion.id }}</td>
-                                            <td>{{ emotion.result }}</td>
                                         </tr>
                                     {% endfor %}
                                 </tbody>
