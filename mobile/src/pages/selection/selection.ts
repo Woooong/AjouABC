@@ -3,7 +3,6 @@ import { IonicPage, NavController, NavParams } from 'ionic-angular';
 
 import { ToastController } from 'ionic-angular';
 import { HTTP } from '@ionic-native/http';
-import { TherapyPage } from '../therapy/therapy';
 
 /**
  * Generated class for the SelectionPage page.
@@ -28,7 +27,6 @@ export class SelectionPage implements OnInit{
     private q_id;
     private ment;
     private comment_list = [];
-    private tts_list=[];
     private comment = '';
 
 
@@ -113,11 +111,10 @@ export class SelectionPage implements OnInit{
               setTimeout(()=> {
                   this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
                     .then(data => {
-                        this.q_text = JSON.parse(data.data)['data']['q_text'];
-                        this.q_id = JSON.parse(data.data)['data']['q_id'];
+                        this.q_text = JSON.parse(data.data)['q_text'];
+                        this.q_id = JSON.parse(data.data)['q_id'];
                         this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.q_text}, {})
                         .then(tts => {
-
                             location.replace('/static/AudioRecorder/index.html?q_id='+this.q_id+'&q_text='+this.q_text+'&tts='+JSON.parse(tts.data)['url'])
                         })
                         .catch(error => {
@@ -157,8 +154,8 @@ export class SelectionPage implements OnInit{
               setTimeout(()=> {
                   this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
                     .then(data => {
-                        this.q_text = JSON.parse(data.data)['data']['q_text'];
-                        this.q_id = JSON.parse(data.data)['data']['q_id'];
+                        this.q_text = JSON.parse(data.data)['q_text'];
+                        this.q_id = JSON.parse(data.data)['q_id'];
                         this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.q_text}, {})
                         .then(tts => {
 
