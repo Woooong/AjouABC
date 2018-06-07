@@ -59,6 +59,7 @@
 <script>
 	window.onload = function () {
 	 document.getElementById("q_div").innerHTML=getParameters('q_text');
+	 document.getElementById('mp3audio').setAttribute('src', getParameters('tts'))
 	}
 
 </script>
@@ -67,6 +68,7 @@
 
 	</div>
 	<div id="controls" style="height: 63%; line-height: 63%;">
+		<audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>
 		<img id="record" src="img/mic128.png" onclick="toggleRecording(this);">
 		<a id="save" href="#" style="display: none"><img src="img/save.svg"></a>
 	</div>

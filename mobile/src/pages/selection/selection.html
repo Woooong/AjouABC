@@ -10,15 +10,21 @@
     text-align: center;
     background: #1CA4FC !important; font-weight: bold;">
   </div>
+  <div id="YNbuttons" style="margin: 20px; padding: 10px;
+    text-align: center; display: none;">
+    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select('Y')">맞아요!</button>
+    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select('N')">아닙니다!</button>
+  </div>
   <audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>
+  <audio style="display: none;" id="bgmaudio" src="" controls="" autoplay="autoplay" preload="auto" loop="loop"></audio>
+  <button style="display: none;" id="bgmvolume" onclick="document.getElementById('bgmaudio').volume=0.1">Volume Down</button>
 
-  <!--<div id="step2" style="display: block;">-->
-    <!--<h1>{{comment_list[1]}}</h1>-->
-    <!--<div>-->
-      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion('angry')">-->
-      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion('happy')">-->
-      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion('sad')">-->
-      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion('tired')">-->
-    <!--</div>-->
-  <!--</div>-->
+  <div id="step2" style="display: none;">
+    <div>
+      <img width="150" height="150" src="assets/imgs/angry.gif" (click)="selectEmotion('anger')">
+      <img width="150" height="150" src="assets/imgs/happy.gif" (click)="selectEmotion('happiness')">
+      <img width="150" height="150" src="assets/imgs/sad.gif" (click)="selectEmotion('sadness')">
+      <img width="150" height="150" src="assets/imgs/surprise.gif" (click)="selectEmotion('surprise')">
+    </div>
+  </div>
 </ion-content>

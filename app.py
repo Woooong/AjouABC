@@ -2,7 +2,6 @@ import base64
 import io
 import json, os
 import re
-import random
 import urllib
 
 import boto3 as boto3
@@ -201,8 +200,8 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
-    return render_template('emotion.html', user=user, current_user=current_user, emotions=emotions)
+    emotions = Emotion.query.filter(Emotion.result != 'neutral').filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
+    return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
 
 # Therapy
 @app.route("/therapy.html")
@@ -232,14 +231,14 @@ def diary():
 @app.route("/api/record", methods=['POST'])
 def set_record():
     record_url = get_record_file(request.form['data'])
-    user = User.query.filter_by(username=request.form['username']).first()
+    user = User.query.filter_by(username=request.form['user_id']).first()
     question = Question.query.filter_by(id=request.form['q_id']).first()
 
     uq = UserQuestion(user=user, question=question, reply=record_url)
     db.session.add(uq)
     db.session.commit()
 
-    return jsonify({'result': True, 'save_id': uq.id})
+    return jsonify({'code': 200, 'save_id': uq.id})
 
 
 def get_record_file(record_data):
@@ -279,13 +278,12 @@ def get_voice():
     req.add_header("X-NCP-APIGW-API-KEY", client_secret)
     response = urllib.request.urlopen(req, data=data.encode('utf-8'))
     rescode = response.getcode()
+
     if (rescode == 200):
         response_body = response.read()
-        return json.dumps({'url': get_voice_ment(response_body)})
-
-
+        return json.dumps({'code': 200, 'url': get_voice_ment(response_body)})
     else:
-        return jsonify({'result': False})
+        return jsonify({'code': 404})
 
 
 def get_voice_ment(record_data):
@@ -335,6 +333,10 @@ def make_return_data(api_result, user):
         return_data["represent_gender"] = api_result[0]["faceAttributes"]["gender"]
         return_data["ment"] = ment.reply_ment
         return_data["tts"] = ment.tts
+        if ment.tag2 is None:
+            return_data["bgm"] = 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3'
+        else:
+            return_data["bgm"] = ment.tag2
 
     elif len(api_result) == 0:
         return_data["code"] = 203
@@ -349,13 +351,21 @@ def make_return_data(api_result, user):
 # 감정 수동입력
 @app.route("/api/setEmotion/<user_id>/<device_id>", methods=['GET', 'POST'])
 def set_user_emotion(user_id, device_id):
+    change_emotion = request.form['change_emotion']
+
     user = User.query.filter_by(username=user_id).first()
     emotion = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).first()
-    emotion.result = request.form['emotion']
+    emotion.result = change_emotion
     db.session.add(emotion)
     db.session.commit()
 
-    return jsonify({'result': True, 'save_id': emotion.id})
+    ment = ReplyMent.query.filter_by(emotion=change_emotion).first()
+    if ment.tag2 is None:
+        bgm_url = 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3'
+    else:
+        bgm_url = ment.tag2
+
+    return jsonify({'code': 200, 'ment': ment.reply_ment, 'tts': ment.tts, 'bgm': bgm_url})
 
 
 # 질문 입력
@@ -376,7 +386,7 @@ def set_question_api(q_name):
         db.session.commit()
 
     qs = Question.query().all()
-    return "Questions Count: {c}".format(c=len(qs))
+    return jsonify({'code': 200, 'count': len(qs)})
 
 
 # 질문 조회
@@ -397,7 +407,8 @@ def get_question_api(user_id, device_id):
         selected_question = select_question_process(today, today_emotion.result)
 
         return_data["code"] = 200
-        return_data["data"] = {'q_id': selected_question.id, 'q_text': selected_question.content}
+        return_data["q_id"] = selected_question.id
+        return_data["q_text"] = selected_question.content
 
     return jsonify(return_data)
 

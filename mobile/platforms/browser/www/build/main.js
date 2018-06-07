@@ -132,6 +132,7 @@ var SelectionPage = /** @class */ (function () {
         this.http = http;
         this.comment_list = [];
         this.tts_list = [];
+        this.comment = '';
         this.emotion_data = navParams.get("emotion_data");
         console.log(this.emotion_data['represent_emotion']);
         console.log(this.emotion_data['represent_age']);
@@ -174,39 +175,22 @@ var SelectionPage = /** @class */ (function () {
     SelectionPage.prototype.ngOnInit = function () {
         var _this = this;
         this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
-        this.comment_list.push(this.ment);
-        this.comment_list.push("오늘도 다이어리를 작성해 볼까요?");
+        this.comment_list.push("제가 분석한 감정이 맞나요?");
         document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
-        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment_list.join(', ') }, {})
-            .then(function (data) {
-            // console.log(data.status);
-            console.log(JSON.parse(data.data)); // data received by server
-            document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['url']);
-            // console.log(data.headers);
+        this.comment = this.comment_list.join(', ');
+        this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment }, {})
+            .then(function (tts) {
+            document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
         })
             .catch(function (error) {
         });
-        // for(let index=0; this.comment_list.length>index; index++){
-        //
-        // }
+        document.getElementById('bgmvolume').click();
+        document.getElementById('bgmaudio').setAttribute('src', 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3');
         var count = 1;
-        setInterval(function () {
+        var interval = setInterval(function () {
             if (!_this.comment_list[count]) {
-                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
-                    .then(function (data) {
-                    // console.log(data.status);
-                    console.log(JSON.parse(data.data)['data']['q_text']); // data received by server
-                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
-                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
-                    // console.log(data.headers);
-                    location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text);
-                })
-                    .catch(function (error) {
-                    // console.log(error.status);
-                    // console.log(error.error); // error message as string
-                    // console.log(error.headers);
-                    // alert("잠시 후 다시 시도해 주세요.");
-                });
+                document.getElementById("YNbuttons").style.display = "block";
+                clearInterval(interval);
             }
             else {
                 document.getElementById('comment').innerHTML = "<h1>" + _this.comment_list[count] + "</h1>";
@@ -214,9 +198,75 @@ var SelectionPage = /** @class */ (function () {
             }
         }, 4300);
     };
+    SelectionPage.prototype.select = function (sel) {
+        var _this = this;
+        if (sel == 'Y') {
+            document.getElementById("YNbuttons").style.display = "none";
+            this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.ment }, {})
+                .then(function (tts) {
+                document.getElementById('comment').innerHTML = "<h1>" + _this.ment + "</h1>";
+                document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
+                setTimeout(function () {
+                    _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
+                        .then(function (data) {
+                        _this.q_text = JSON.parse(data.data)['data']['q_text'];
+                        _this.q_id = JSON.parse(data.data)['data']['q_id'];
+                        _this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": _this.q_text }, {})
+                            .then(function (tts) {
+                            location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text + '&tts=' + JSON.parse(tts.data)['url']);
+                        })
+                            .catch(function (error) {
+                        });
+                    })
+                        .catch(function (error) {
+                    });
+                }, 4300);
+            })
+                .catch(function (error) {
+            });
+        }
+        else {
+            this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": "당신은 지금 어떤 기분이신가요?" }, {})
+                .then(function (tts) {
+                document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
+                document.getElementById('comment').innerHTML = "<h1>당신은 지금 어떤 기분이신가요?</h1>";
+                document.getElementById("YNbuttons").style.display = "none";
+                document.getElementById("step2").style.display = "block";
+            })
+                .catch(function (error) {
+            });
+        }
+    };
+    SelectionPage.prototype.selectEmotion = function (emotion) {
+        var _this = this;
+        console.log(123);
+        this.http.post('/api/setEmotion/' + localStorage.getItem('username') + '/111', { "change_emotion": emotion }, {})
+            .then(function (data) {
+            console.log(JSON.parse(data.data));
+            document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['tts']);
+            document.getElementById('comment').innerHTML = "<h1>" + JSON.parse(data.data)['ment'] + "</h1>";
+            setTimeout(function () {
+                _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
+                    .then(function (data) {
+                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
+                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
+                    _this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": _this.q_text }, {})
+                        .then(function (tts) {
+                        location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text + '&tts=' + JSON.parse(tts.data)['url']);
+                    })
+                        .catch(function (error) {
+                    });
+                })
+                    .catch(function (error) {
+                });
+            }, 4300);
+        })
+            .catch(function (error) {
+        });
+    };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n  <audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>\n\n  <!--<div id="step2" style="display: block;">-->\n    <!--<h1>{{comment_list[1]}}</h1>-->\n    <!--<div>-->\n      <!--<img width="150" height="150" src="assets/imgs/angry.jpeg" (click)="selectEmotion(\'angry\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/happy.jpeg" (click)="selectEmotion(\'happy\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/sad.jpeg" (click)="selectEmotion(\'sad\')">-->\n      <!--<img width="150" height="150" src="assets/imgs/tired.jpeg" (click)="selectEmotion(\'tired\')">-->\n    <!--</div>-->\n  <!--</div>-->\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n  <div id="YNbuttons" style="margin: 20px; padding: 10px;\n    text-align: center; display: none;">\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select(\'Y\')">맞아요!</button>\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select(\'N\')">아닙니다!</button>\n  </div>\n  <audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>\n  <audio style="display: none;" id="bgmaudio" src="" controls="" autoplay="autoplay" preload="auto" loop="loop"></audio>\n  <button style="display: none;" id="bgmvolume" onclick="document.getElementById(\'bgmaudio\').volume=0.1">Volume Down</button>\n\n  <div id="step2" style="display: none;">\n    <div>\n      <img width="150" height="150" src="assets/imgs/angry.gif" (click)="selectEmotion(\'angry\')">\n      <img width="150" height="150" src="assets/imgs/happy.gif" (click)="selectEmotion(\'happy\')">\n      <img width="150" height="150" src="assets/imgs/sad.gif" (click)="selectEmotion(\'sad\')">\n      <img width="150" height="150" src="assets/imgs/surprise.gif" (click)="selectEmotion(\'surprise\')">\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
@@ -259,11 +309,11 @@ var map = {
 		2
 	],
 	"../pages/selection/selection.module": [
-		278,
+		279,
 		1
 	],
 	"../pages/therapy/therapy.module": [
-		279,
+		278,
 		0
 	]
 };
@@ -605,8 +655,8 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],

@@ -14639,3 +14639,13 @@ section {
 .vue-lists ul, .vue-lists ol {
     padding-left: 30px;
 }
+
+.emotion-id {
+    text-align:center;
+}
+
+.emotion-mid {
+    border-left: 1px solid;
+    border-right: 1px solid;
+    border-color: lightblue;
+}
