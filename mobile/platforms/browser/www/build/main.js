@@ -83,7 +83,7 @@ var LoginPage = /** @class */ (function () {
     };
     LoginPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content padding>\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed>Username</ion-label>\n      <ion-input type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed>Password</ion-label>\n      <ion-input type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
+            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content style="top:30%;">\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Username</ion-label>\n      <ion-input style="font-size: 90px;" type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Password</ion-label>\n      <ion-input style="font-size: 90px;" type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button style="font-size: 90px; padding: 60px;" id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
@@ -131,7 +131,6 @@ var SelectionPage = /** @class */ (function () {
         this.toastCtrl = toastCtrl;
         this.http = http;
         this.comment_list = [];
-        this.tts_list = [];
         this.comment = '';
         this.emotion_data = navParams.get("emotion_data");
         console.log(this.emotion_data['represent_emotion']);
@@ -176,7 +175,7 @@ var SelectionPage = /** @class */ (function () {
         var _this = this;
         this.comment_list.push("오늘 당신은 " + this.age + "세 " + this.gender + "의 " + this.emotion + "얼굴을 가지고 있군요.");
         this.comment_list.push("제가 분석한 감정이 맞나요?");
-        document.getElementById('comment').innerHTML = "<h1>" + this.comment_list[0] + "</h1>";
+        document.getElementById('comment').innerHTML = "<h1  style='font-size: 75px'>" + this.comment_list[0] + "</h1>";
         this.comment = this.comment_list.join(', ');
         this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.comment }, {})
             .then(function (tts) {
@@ -193,7 +192,7 @@ var SelectionPage = /** @class */ (function () {
                 clearInterval(interval);
             }
             else {
-                document.getElementById('comment').innerHTML = "<h1>" + _this.comment_list[count] + "</h1>";
+                document.getElementById('comment').innerHTML = "<h1 style='font-size: 75px'>" + _this.comment_list[count] + "</h1>";
                 count++;
             }
         }, 4300);
@@ -204,13 +203,13 @@ var SelectionPage = /** @class */ (function () {
             document.getElementById("YNbuttons").style.display = "none";
             this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": this.ment }, {})
                 .then(function (tts) {
-                document.getElementById('comment').innerHTML = "<h1>" + _this.ment + "</h1>";
+                document.getElementById('comment').innerHTML = "<h1  style='font-size: 75px'>" + _this.ment + "</h1>";
                 document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
                 setTimeout(function () {
                     _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
                         .then(function (data) {
-                        _this.q_text = JSON.parse(data.data)['data']['q_text'];
-                        _this.q_id = JSON.parse(data.data)['data']['q_id'];
+                        _this.q_text = JSON.parse(data.data)['q_text'];
+                        _this.q_id = JSON.parse(data.data)['q_id'];
                         _this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": _this.q_text }, {})
                             .then(function (tts) {
                             location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text + '&tts=' + JSON.parse(tts.data)['url']);
@@ -229,7 +228,7 @@ var SelectionPage = /** @class */ (function () {
             this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": "당신은 지금 어떤 기분이신가요?" }, {})
                 .then(function (tts) {
                 document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
-                document.getElementById('comment').innerHTML = "<h1>당신은 지금 어떤 기분이신가요?</h1>";
+                document.getElementById('comment').innerHTML = "<h1  style='font-size: 75px'>당신은 지금 어떤 기분이신가요?</h1>";
                 document.getElementById("YNbuttons").style.display = "none";
                 document.getElementById("step2").style.display = "block";
             })
@@ -244,12 +243,12 @@ var SelectionPage = /** @class */ (function () {
             .then(function (data) {
             console.log(JSON.parse(data.data));
             document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['tts']);
-            document.getElementById('comment').innerHTML = "<h1>" + JSON.parse(data.data)['ment'] + "</h1>";
+            document.getElementById('comment').innerHTML = "<h1  style='font-size: 75px'>" + JSON.parse(data.data)['ment'] + "</h1>";
             setTimeout(function () {
                 _this.http.get('/api/getQuestion/' + localStorage.getItem('username') + '/1', {}, {})
                     .then(function (data) {
-                    _this.q_text = JSON.parse(data.data)['data']['q_text'];
-                    _this.q_id = JSON.parse(data.data)['data']['q_id'];
+                    _this.q_text = JSON.parse(data.data)['q_text'];
+                    _this.q_id = JSON.parse(data.data)['q_id'];
                     _this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', { "text": _this.q_text }, {})
                         .then(function (tts) {
                         location.replace('/static/AudioRecorder/index.html?q_id=' + _this.q_id + '&q_text=' + _this.q_text + '&tts=' + JSON.parse(tts.data)['url']);
@@ -266,7 +265,7 @@ var SelectionPage = /** @class */ (function () {
     };
     SelectionPage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 10px;\n    text-align: center;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n  <div id="YNbuttons" style="margin: 20px; padding: 10px;\n    text-align: center; display: none;">\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select(\'Y\')">맞아요!</button>\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold;" (click)="select(\'N\')">아닙니다!</button>\n  </div>\n  <audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>\n  <audio style="display: none;" id="bgmaudio" src="" controls="" autoplay="autoplay" preload="auto" loop="loop"></audio>\n  <button style="display: none;" id="bgmvolume" onclick="document.getElementById(\'bgmaudio\').volume=0.1">Volume Down</button>\n\n  <div id="step2" style="display: none;">\n    <div>\n      <img width="150" height="150" src="assets/imgs/angry.gif" (click)="selectEmotion(\'angry\')">\n      <img width="150" height="150" src="assets/imgs/happy.gif" (click)="selectEmotion(\'happy\')">\n      <img width="150" height="150" src="assets/imgs/sad.gif" (click)="selectEmotion(\'sad\')">\n      <img width="150" height="150" src="assets/imgs/surprise.gif" (click)="selectEmotion(\'surprise\')">\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
+            selector: 'page-selection',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/'<!--\n  Generated template for the SelectionPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-content>\n\n  <div id="comment" style="margin: 20px; padding: 50px;\n    text-align: center; top: 30%; position: relative;\n    background: #1CA4FC !important; font-weight: bold;">\n  </div>\n  <div id="YNbuttons" style="margin: 20px; padding: 10px; position: relative; top:32%;\n    text-align: center; display: none;">\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold; font-size: 70px; padding:50px; margin: 30px;" (click)="select(\'Y\')">맞아요!</button>\n    <button ion-button round style="background: #1CA4FC !important; font-weight: bold; font-size: 70px; padding:50px; margin: 30px;" (click)="select(\'N\')">아닙니다!</button>\n  </div>\n  <audio style="display: none;" id="mp3audio" src="" controls="" autoplay="autoplay" preload="auto"></audio>\n  <audio style="display: none;" id="bgmaudio" src="" controls="" autoplay="autoplay" preload="auto" loop="loop"></audio>\n  <button style="display: none;" id="bgmvolume" onclick="document.getElementById(\'bgmaudio\').volume=0.1">Volume Down</button>\n\n  <div id="step2" style="display: none;">\n    <div>\n      <img width="150" height="150" src="assets/imgs/angry.gif" (click)="selectEmotion(\'anger\')">\n      <img width="150" height="150" src="assets/imgs/happy.gif" (click)="selectEmotion(\'happiness\')">\n      <img width="150" height="150" src="assets/imgs/sad.gif" (click)="selectEmotion(\'sadness\')">\n      <img width="150" height="150" src="assets/imgs/surprise.gif" (click)="selectEmotion(\'surprise\')">\n    </div>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/selection/selection.html"*/,
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */], __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
             __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
@@ -309,11 +308,11 @@ var map = {
 		2
 	],
 	"../pages/selection/selection.module": [
-		279,
+		278,
 		1
 	],
 	"../pages/therapy/therapy.module": [
-		278,
+		279,
 		0
 	]
 };
@@ -453,7 +452,7 @@ var HomePage = /** @class */ (function () {
     };
     HomePage = __decorate([
         Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-home',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/'<script>\n    console.log(123);\n</script>\n<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/
+            selector: 'page-home',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/'<ion-content>\n  <ion-card style="display: none;">\n      <img *ngIf="img"\n           [src]="domSanitizer.bypassSecurityTrustUrl(this.img)" />\n  </ion-card>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/home/home.html"*/
         }),
         __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_3_ionic_angular__["f" /* NavController */],
             __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__["a" /* Camera */],
@@ -655,8 +654,8 @@ var AppModule = /** @class */ (function () {
                     links: [
                         { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] }
+                        { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
                     ]
                 })
             ],

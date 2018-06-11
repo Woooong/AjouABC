@@ -122,7 +122,7 @@ function postToServer(blob) {
             url: "/api/record",
             method: "POST",
             data: {data: fileReader.result, 'q_id': getParameters('q_id'), 'q_text': getParameters('q_text'),
-            'username': localStorage.getItem("username")}
+            'user_id': localStorage.getItem("username")}
         }).done(function(data) {
          console.log(data);
          location.replace("/");

@@ -76,7 +76,7 @@ export class SelectionPage implements OnInit{
       this.comment_list.push("오늘 당신은 "+this.age+"세 "+this.gender+"의 "+this.emotion+"얼굴을 가지고 있군요.");
       this.comment_list.push("제가 분석한 감정이 맞나요?");
 
-      document.getElementById('comment').innerHTML="<h1>"+this.comment_list[0]+"</h1>";
+      document.getElementById('comment').innerHTML="<h1  style='font-size: 75px'>"+this.comment_list[0]+"</h1>";
       this.comment = this.comment_list.join(', ');
       this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.comment}, {})
       .then(tts => {
@@ -95,7 +95,7 @@ export class SelectionPage implements OnInit{
               document.getElementById("YNbuttons").style.display="block";
               clearInterval(interval);
           }else{
-              document.getElementById('comment').innerHTML="<h1>"+this.comment_list[count]+"</h1>";
+              document.getElementById('comment').innerHTML="<h1 style='font-size: 75px'>"+this.comment_list[count]+"</h1>";
               count++;
           }
       }, 4300)
@@ -106,7 +106,7 @@ export class SelectionPage implements OnInit{
           document.getElementById("YNbuttons").style.display="none";
           this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": this.ment}, {})
           .then(tts => {
-              document.getElementById('comment').innerHTML="<h1>"+this.ment+"</h1>";
+              document.getElementById('comment').innerHTML="<h1  style='font-size: 75px'>"+this.ment+"</h1>";
               document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url']);
               setTimeout(()=> {
                   this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
@@ -134,7 +134,7 @@ export class SelectionPage implements OnInit{
           this.http.post('https://dev.ryuneeee.com:5000/api/getVoice', {"text": "당신은 지금 어떤 기분이신가요?"}, {})
           .then(tts => {
               document.getElementById('mp3audio').setAttribute('src', JSON.parse(tts.data)['url'])
-              document.getElementById('comment').innerHTML="<h1>당신은 지금 어떤 기분이신가요?</h1>";
+              document.getElementById('comment').innerHTML="<h1  style='font-size: 75px'>당신은 지금 어떤 기분이신가요?</h1>";
               document.getElementById("YNbuttons").style.display="none";
               document.getElementById("step2").style.display="block";
           })
@@ -150,7 +150,7 @@ export class SelectionPage implements OnInit{
           .then(data => {
               console.log(JSON.parse(data.data));
               document.getElementById('mp3audio').setAttribute('src', JSON.parse(data.data)['tts'])
-              document.getElementById('comment').innerHTML="<h1>"+JSON.parse(data.data)['ment']+"</h1>";
+              document.getElementById('comment').innerHTML="<h1  style='font-size: 75px'>"+JSON.parse(data.data)['ment']+"</h1>";
               setTimeout(()=> {
                   this.http.get('/api/getQuestion/'+localStorage.getItem('username')+'/1', {}, {})
                     .then(data => {

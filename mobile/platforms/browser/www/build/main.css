@@ -25680,6 +25680,7 @@ ion-navbar.toolbar {
 
 html, body, .ion-app, .ion-content {
   background-color: transparent;
+  overflow-y: hidden !important;
 }
 
 .cordova-camera-capture {
@@ -25787,9 +25788,24 @@ page-home ion-content {
   color: #FFF !important;
 }
 
+page-login {
+  font-size: 90px;
+}
+
+page-login .button-md-primary {
+  padding: 60px;
+}
+
 page-selection ion-content {
   background: #000 !important;
   color: #FFF !important;
+}
+
+page-selection img {
+  width: 300px !important;
+  height: 300px !important;
+  margin: 77px !important;
+  margin-left: 130px !important;
 }
 
 page-therapy ion-content {

@@ -13,22 +13,22 @@
 </ion-header>
 
 
-<ion-content padding>
+<ion-content style="top:30%;">
   <ion-list>
 
     <ion-item>
-      <ion-label fixed>Username</ion-label>
-      <ion-input type="text" [(ngModel)]="username"></ion-input>
+      <ion-label fixed style="min-width: 300px; font-size: 50px;">Username</ion-label>
+      <ion-input style="font-size: 90px;" type="text" [(ngModel)]="username"></ion-input>
     </ion-item>
 
     <ion-item>
-      <ion-label fixed>Password</ion-label>
-      <ion-input type="password" [(ngModel)]="password"></ion-input>
+      <ion-label fixed style="min-width: 300px; font-size: 50px;">Password</ion-label>
+      <ion-input style="font-size: 90px;" type="password" [(ngModel)]="password"></ion-input>
     </ion-item>
 
   </ion-list>
 
   <div padding>
-    <button id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>
+    <button style="font-size: 90px; padding: 60px;" id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>
   </div>
 </ion-content>
