@@ -25683,6 +25683,10 @@ html, body, .ion-app, .ion-content {
   overflow-y: hidden !important;
 }
 
+.scroll-content {
+  overflow-y: hidden !important;
+}
+
 .cordova-camera-capture {
   display: none;
 }
