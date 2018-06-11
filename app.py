@@ -203,6 +203,12 @@ def emotion():
     emotions = Emotion.query.filter(Emotion.result != 'neutral').filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
     return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
 
+# Therapy
+@app.route("/therapy.html")
+def therapy():
+    current_user = session['current_user']
+    user = User.query.filter_by(username=current_user).first()
+    return render_template('therapy.html', user=user, current_user=current_user)
 
 @app.route("/getGraph", methods=['POST'])
 def get_graph_data():
