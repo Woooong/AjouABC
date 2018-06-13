@@ -56,9 +56,9 @@ def index():
         end_date = datetime.now().strftime("%Y-%m-30")
 
         user = User.query.filter_by(username=current_user).first()
-        emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
+        emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.id.desc()).all()
         emotions_month = Emotion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
-        user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
+        user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.id.desc()).all()
         user_questions_month = UserQuestion.query.filter_by(user_id=user.id).filter(Emotion.date >= start_date, Emotion.date <= end_date).all()
 
         data = dict()
@@ -200,7 +200,7 @@ def reset_password():
 def emotion():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
-    emotions = Emotion.query.filter(Emotion.result != 'neutral').filter_by(user_id=user.id).order_by(Emotion.date.desc()).limit(10).all()
+    emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.id.desc()).limit(10).all()
     return render_template('emotion.html',user=user, current_user=current_user, emotions=emotions)
 
 # Therapy
@@ -224,7 +224,7 @@ def diary():
     current_user = session['current_user']
     user = User.query.filter_by(username=current_user).first()
     emotions = Emotion.query.filter_by(user_id=user.id).order_by(Emotion.date.desc()).all()
-    user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.updated.desc()).all()
+    user_questions = UserQuestion.query.filter_by(user_id=user.id).order_by(UserQuestion.id.desc()).all()
     return render_template('diary.html', current_user=current_user, emotions=emotions, user_questions=user_questions, user=user)
 
 
