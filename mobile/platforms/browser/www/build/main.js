@@ -170,6 +170,7 @@ var SelectionPage = /** @class */ (function () {
         }
         this.age = parseInt(this.emotion_data['represent_age']);
         this.ment = this.emotion_data['ment'];
+        this.bgm = this.emotion_data['bgm'];
     }
     SelectionPage.prototype.ngOnInit = function () {
         var _this = this;
@@ -184,7 +185,7 @@ var SelectionPage = /** @class */ (function () {
             .catch(function (error) {
         });
         document.getElementById('bgmvolume').click();
-        document.getElementById('bgmaudio').setAttribute('src', 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3');
+        document.getElementById('bgmaudio').setAttribute('src', this.bgm);
         var count = 1;
         var interval = setInterval(function () {
             if (!_this.comment_list[count]) {

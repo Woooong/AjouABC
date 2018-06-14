@@ -26,6 +26,7 @@ export class SelectionPage implements OnInit{
     private q_text;
     private q_id;
     private ment;
+    private bgm;
     private comment_list = [];
     private comment = '';
 
@@ -67,8 +68,9 @@ export class SelectionPage implements OnInit{
           this.gender = '여자';
       }
 
-      this.age = parseInt(this.emotion_data['represent_age'])
-      this.ment = this.emotion_data['ment']
+      this.age = parseInt(this.emotion_data['represent_age']);
+      this.ment = this.emotion_data['ment'];
+      this.bgm = this.emotion_data['bgm'];
 
   }
 
@@ -87,7 +89,7 @@ export class SelectionPage implements OnInit{
       });
 
       document.getElementById('bgmvolume').click();
-      document.getElementById('bgmaudio').setAttribute('src', 'https://s3.ap-northeast-2.amazonaws.com/ryun.capstone/sadness.mp3')
+      document.getElementById('bgmaudio').setAttribute('src', this.bgm)
 
       let count = 1
       let interval = setInterval(()=> {
