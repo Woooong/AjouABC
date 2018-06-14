@@ -100,7 +100,7 @@ export class SelectionPage implements OnInit{
               document.getElementById('comment').innerHTML="<h1 style='font-size: 75px'>"+this.comment_list[count]+"</h1>";
               count++;
           }
-      }, 4300)
+      }, 6500)
   }
 
   select(sel){
@@ -127,7 +127,7 @@ export class SelectionPage implements OnInit{
                     .catch(error => {
 
                     });
-              }, 4300);
+              }, 6500);
 
           })
           .catch(error => {
@@ -171,7 +171,7 @@ export class SelectionPage implements OnInit{
                     .catch(error => {
 
                     });
-              }, 4300);
+              }, 6500);
           })
           .catch(error => {
           });

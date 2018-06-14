@@ -4,103 +4,6 @@ webpackJsonp([4],{
 /***/ (function(module, __webpack_exports__, __webpack_require__) {
 
 "use strict";
-/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(47);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(155);
-var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
-    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
-    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
-    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
-    return c > 3 && r && Object.defineProperty(target, key, r), r;
-};
-var __metadata = (this && this.__metadata) || function (k, v) {
-    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
-};
-
-
-
-
-
-/**
- * Generated class for the LoginPage page.
- *
- * See https://ionicframework.com/docs/components/#navigation for more info on
- * Ionic pages and navigation.
- */
-var LoginPage = /** @class */ (function () {
-    function LoginPage(navCtrl, navParams, toastCtrl, http) {
-        this.navCtrl = navCtrl;
-        this.navParams = navParams;
-        this.toastCtrl = toastCtrl;
-        this.http = http;
-        this.username = 'uram';
-        this.password = '201221002';
-        // if(localStorage.getItem("username") != ''){
-        //     this.navCtrl.push(HomePage);
-        // }
-    }
-    LoginPage.prototype.user_login = function () {
-        var _this = this;
-        document.getElementById('login_btn').setAttribute('disabled', 'disabled');
-        this.http.post('/login', { 'username': this.username, 'password': this.password, 'rtype': 'json' }, {})
-            .then(function (data) {
-            // console.log(data.status);
-            // console.log(data.data); // data received by server
-            // console.log(data.headers);
-            _this.login_data = JSON.parse(data.data);
-            if (_this.login_data['status_code'] == 200) {
-                localStorage.setItem("username", _this.login_data['user']);
-                var toast = _this.toastCtrl.create({
-                    message: '로그인 되었습니다.',
-                    duration: 2000
-                });
-                toast.present(toast);
-                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
-            }
-            else {
-                var toast = _this.toastCtrl.create({
-                    message: '아이디 또는 비밀번호가 잘못 되었습니다.',
-                    duration: 2000
-                });
-                document.getElementById('login_btn').removeAttribute('disabled');
-                toast.present(toast);
-            }
-        })
-            .catch(function (error) {
-            document.getElementById('login_btn').removeAttribute('disabled');
-            var toast = _this.toastCtrl.create({
-                message: '아이디 또는 비밀번호가 잘못 되었습니다.',
-                duration: 2000
-            });
-            toast.present(toast);
-            // console.log(error.status);
-            // console.log(error.error); // error message as string
-            // console.log(error.headers);
-            // alert("잠시 후 다시 시도해 주세요.");
-        });
-    };
-    LoginPage = __decorate([
-        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
-            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content style="top:30%;">\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Username</ion-label>\n      <ion-input style="font-size: 90px;" type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Password</ion-label>\n      <ion-input style="font-size: 90px;" type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button style="font-size: 90px; padding: 60px;" id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
-        }),
-        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
-            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
-            __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */]])
-    ], LoginPage);
-    return LoginPage;
-}());
-
-//# sourceMappingURL=login.js.map
-
-/***/ }),
-
-/***/ 102:
-/***/ (function(module, __webpack_exports__, __webpack_require__) {
-
-"use strict";
 /* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return SelectionPage; });
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
@@ -196,7 +99,7 @@ var SelectionPage = /** @class */ (function () {
                 document.getElementById('comment').innerHTML = "<h1 style='font-size: 75px'>" + _this.comment_list[count] + "</h1>";
                 count++;
             }
-        }, 4300);
+        }, 6500);
     };
     SelectionPage.prototype.select = function (sel) {
         var _this = this;
@@ -220,7 +123,7 @@ var SelectionPage = /** @class */ (function () {
                     })
                         .catch(function (error) {
                     });
-                }, 4300);
+                }, 6500);
             })
                 .catch(function (error) {
             });
@@ -259,7 +162,7 @@ var SelectionPage = /** @class */ (function () {
                 })
                     .catch(function (error) {
                 });
-            }, 4300);
+            }, 6500);
         })
             .catch(function (error) {
         });
@@ -276,6 +179,103 @@ var SelectionPage = /** @class */ (function () {
 }());
 
 //# sourceMappingURL=selection.js.map
+
+/***/ }),
+
+/***/ 102:
+/***/ (function(module, __webpack_exports__, __webpack_require__) {
+
+"use strict";
+/* harmony export (binding) */ __webpack_require__.d(__webpack_exports__, "a", function() { return LoginPage; });
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_0__angular_core__ = __webpack_require__(0);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__ = __webpack_require__(47);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__home_home__ = __webpack_require__(155);
+var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
+    var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
+    if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
+    else for (var i = decorators.length - 1; i >= 0; i--) if (d = decorators[i]) r = (c < 3 ? d(r) : c > 3 ? d(target, key, r) : d(target, key)) || r;
+    return c > 3 && r && Object.defineProperty(target, key, r), r;
+};
+var __metadata = (this && this.__metadata) || function (k, v) {
+    if (typeof Reflect === "object" && typeof Reflect.metadata === "function") return Reflect.metadata(k, v);
+};
+
+
+
+
+
+/**
+ * Generated class for the LoginPage page.
+ *
+ * See https://ionicframework.com/docs/components/#navigation for more info on
+ * Ionic pages and navigation.
+ */
+var LoginPage = /** @class */ (function () {
+    function LoginPage(navCtrl, navParams, toastCtrl, http) {
+        this.navCtrl = navCtrl;
+        this.navParams = navParams;
+        this.toastCtrl = toastCtrl;
+        this.http = http;
+        this.username = 'uram';
+        this.password = '201221002';
+        // if(localStorage.getItem("username") != ''){
+        //     this.navCtrl.push(HomePage);
+        // }
+    }
+    LoginPage.prototype.user_login = function () {
+        var _this = this;
+        document.getElementById('login_btn').setAttribute('disabled', 'disabled');
+        this.http.post('/login', { 'username': this.username, 'password': this.password, 'rtype': 'json' }, {})
+            .then(function (data) {
+            // console.log(data.status);
+            // console.log(data.data); // data received by server
+            // console.log(data.headers);
+            _this.login_data = JSON.parse(data.data);
+            if (_this.login_data['status_code'] == 200) {
+                localStorage.setItem("username", _this.login_data['user']);
+                var toast = _this.toastCtrl.create({
+                    message: '로그인 되었습니다.',
+                    duration: 2000
+                });
+                toast.present(toast);
+                _this.navCtrl.push(__WEBPACK_IMPORTED_MODULE_3__home_home__["a" /* HomePage */]);
+            }
+            else {
+                var toast = _this.toastCtrl.create({
+                    message: '아이디 또는 비밀번호가 잘못 되었습니다.',
+                    duration: 2000
+                });
+                document.getElementById('login_btn').removeAttribute('disabled');
+                toast.present(toast);
+            }
+        })
+            .catch(function (error) {
+            document.getElementById('login_btn').removeAttribute('disabled');
+            var toast = _this.toastCtrl.create({
+                message: '아이디 또는 비밀번호가 잘못 되었습니다.',
+                duration: 2000
+            });
+            toast.present(toast);
+            // console.log(error.status);
+            // console.log(error.error); // error message as string
+            // console.log(error.headers);
+            // alert("잠시 후 다시 시도해 주세요.");
+        });
+    };
+    LoginPage = __decorate([
+        Object(__WEBPACK_IMPORTED_MODULE_0__angular_core__["m" /* Component */])({
+            selector: 'page-login',template:/*ion-inline-start:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/'<!--\n  Generated template for the LoginPage page.\n\n  See http://ionicframework.com/docs/components/#navigation for more info on\n  Ionic pages and navigation.\n-->\n<ion-header>\n\n  <ion-navbar>\n    <ion-title>Login</ion-title>\n  </ion-navbar>\n\n</ion-header>\n\n\n<ion-content style="top:30%;">\n  <ion-list>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Username</ion-label>\n      <ion-input style="font-size: 90px;" type="text" [(ngModel)]="username"></ion-input>\n    </ion-item>\n\n    <ion-item>\n      <ion-label fixed style="min-width: 300px; font-size: 50px;">Password</ion-label>\n      <ion-input style="font-size: 90px;" type="password" [(ngModel)]="password"></ion-input>\n    </ion-item>\n\n  </ion-list>\n\n  <div padding>\n    <button style="font-size: 90px; padding: 60px;" id="login_btn" ion-button color="primary" block (click)="user_login()">Sign In</button>\n  </div>\n</ion-content>\n'/*ion-inline-end:"/Users/woong/Documents/WCD2018/AjouABC/mobile/src/pages/login/login.html"*/,
+        }),
+        __metadata("design:paramtypes", [__WEBPACK_IMPORTED_MODULE_1_ionic_angular__["f" /* NavController */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["g" /* NavParams */],
+            __WEBPACK_IMPORTED_MODULE_1_ionic_angular__["i" /* ToastController */],
+            __WEBPACK_IMPORTED_MODULE_2__ionic_native_http__["a" /* HTTP */]])
+    ], LoginPage);
+    return LoginPage;
+}());
+
+//# sourceMappingURL=login.js.map
 
 /***/ }),
 
@@ -305,11 +305,11 @@ var map = {
 		3
 	],
 	"../pages/login/login.module": [
-		277,
+		278,
 		2
 	],
 	"../pages/selection/selection.module": [
-		278,
+		277,
 		1
 	],
 	"../pages/therapy/therapy.module": [
@@ -342,7 +342,7 @@ module.exports = webpackAsyncContext;
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1__ionic_native_camera__ = __webpack_require__(156);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__angular_platform_browser__ = __webpack_require__(26);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3_ionic_angular__ = __webpack_require__(12);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__selection_selection__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_5__ionic_native_http__ = __webpack_require__(47);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
@@ -612,8 +612,8 @@ Object(__WEBPACK_IMPORTED_MODULE_0__angular_platform_browser_dynamic__["a" /* pl
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_7__ionic_native_camera_preview__ = __webpack_require__(274);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_8__app_component__ = __webpack_require__(275);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_9__pages_home_home__ = __webpack_require__(155);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(101);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_10__pages_login_login__ = __webpack_require__(102);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_11__pages_selection_selection__ = __webpack_require__(101);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_12__pages_diary_diary__ = __webpack_require__(198);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_13__pages_therapy_therapy__ = __webpack_require__(199);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
@@ -654,8 +654,8 @@ var AppModule = /** @class */ (function () {
                 __WEBPACK_IMPORTED_MODULE_2_ionic_angular__["d" /* IonicModule */].forRoot(__WEBPACK_IMPORTED_MODULE_8__app_component__["a" /* MyApp */], {}, {
                     links: [
                         { loadChildren: '../pages/diary/diary.module#DiaryPageModule', name: 'DiaryPage', segment: 'diary', priority: 'low', defaultHistory: [] },
-                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/selection/selection.module#SelectionPageModule', name: 'SelectionPage', segment: 'selection', priority: 'low', defaultHistory: [] },
+                        { loadChildren: '../pages/login/login.module#LoginPageModule', name: 'LoginPage', segment: 'login', priority: 'low', defaultHistory: [] },
                         { loadChildren: '../pages/therapy/therapy.module#TherapyPageModule', name: 'TherapyPage', segment: 'therapy', priority: 'low', defaultHistory: [] }
                     ]
                 })
@@ -695,7 +695,7 @@ var AppModule = /** @class */ (function () {
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_1_ionic_angular__ = __webpack_require__(12);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_2__ionic_native_status_bar__ = __webpack_require__(197);
 /* harmony import */ var __WEBPACK_IMPORTED_MODULE_3__ionic_native_splash_screen__ = __webpack_require__(196);
-/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(101);
+/* harmony import */ var __WEBPACK_IMPORTED_MODULE_4__pages_login_login__ = __webpack_require__(102);
 var __decorate = (this && this.__decorate) || function (decorators, target, key, desc) {
     var c = arguments.length, r = c < 3 ? target : desc === null ? desc = Object.getOwnPropertyDescriptor(target, key) : desc, d;
     if (typeof Reflect === "object" && typeof Reflect.decorate === "function") r = Reflect.decorate(decorators, target, key, desc);
