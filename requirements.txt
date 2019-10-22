@@ -20,7 +20,7 @@ lml==0.0.1
 MarkupSafe==1.0
 more-itertools==4.1.0
 passlib==1.7.1
-Pillow==5.1.0
+Pillow==6.2.0
 pipenv==2018.5.18
 pluggy==0.6.0
 psycopg2==2.7.4
